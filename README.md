@@ -1,4 +1,4 @@
-### README ###
+### ICP project README ###
 
 ## STRUCTURE ##
 In the main directory, there are these files and directories:
