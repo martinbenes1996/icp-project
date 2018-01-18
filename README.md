@@ -24,4 +24,5 @@ hope you will find your answers there.
 
 ## PROJECT MANAGEMENT FILE ##
 https://docs.google.com/spreadsheets/d/1JtXTV29CZU13yNuqYmr7pkMTcFdrBl7JjV3prGpRkrM/edit?usp=sharing
+
 Please change your status, when you are working on it, or when you are done. Statuses: {TO DO, DOING, DONE}
