@@ -9,8 +9,11 @@ install.sh - installs necessary and useful files and programs to the computer
 .gitignore - list of ignored files
 
 dev/ - all the developer stuff (scripts, howtos etc.)
+
 doc/ - documentation generation target
+
 src/ - source files with code
+
 test/ - test files, compiler
 
 - INTERFACE
