@@ -4,6 +4,8 @@
 # FIT VUT
 # 2017/2018
 
+Makefile
+icp
 
 ### Temporary files ###
 *.dep
