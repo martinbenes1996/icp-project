@@ -1,3 +1,0 @@
-#!/bin/bash
-
-qmake -o Makefile icp.pro
