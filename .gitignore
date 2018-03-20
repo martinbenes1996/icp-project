@@ -8,6 +8,7 @@ Makefile
 icp
 gen/*
 !gen/
+doc/html
 
 ### Temporary files ###
 *.dep
