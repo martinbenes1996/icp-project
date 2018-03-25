@@ -1,8 +1,8 @@
 
+#include <iostream>
+
 #include <QApplication>
 #include <QPushButton>
-
-#include "hello.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,7 +1,7 @@
 
-SOURCES = src/hello.cpp
-HEADERS = src/hello.h
-TARGET = icp
+SOURCES = src/main.cpp src/defs.cpp src/block.cpp src/wire.cpp
+HEADERS = src/defs.h src/block.h src/wire.h src/iblock.h
+TARGET = blockeditor
 
 
 CONFIG += qt debug
