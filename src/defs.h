@@ -47,4 +47,10 @@ struct MyError {
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 #define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
 
+#define B_2I1O 0x01
+#define B_1I1O 0x02
+inline long unmask(long type) { return type >> 8; }
+
+
+
 #endif // DEFS_H

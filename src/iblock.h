@@ -4,12 +4,14 @@
 #include "defs.h"
 
 class Wire;
+
 /**
  * @brief IBlock interface.
  */
 class IBlock
 {
     public:
+
         /**
          * @brief Value getter.
          * @returns The block value.
@@ -29,7 +31,11 @@ class IBlock
          * @param w         Wire to assign.
          * @param port      Port to assign to.
          */
-        virtual void AddWire(Wire* w, int port = 0) = 0;
+        virtual void AddWire(Wire* w, int port = 0)
+        { 
+            // just to prevent warnings
+            (void)w; (void)port;
+        }
 
         /**
          * @brief Level setter. 
@@ -40,17 +46,13 @@ class IBlock
          * @brief Level getter.
          * @returns The level value.
          */
-        int getLevel() const 
-        { 
-            if(mlevel != -1) return mlevel;
-            else throw MyError("Level not assigned to the block", ErrorType::BlockError); 
-        }
+        int getLevel() const { return mlevel; }
     
     private:
         Value mvalue; /**< Value. */
         bool mcounted = false; /**< Value already counted. */
 
-        int mlevel = -1; /**< Level. */
+        int mlevel = 0; /**< Level. */
 };
 
 #endif // IBLOCK_H
