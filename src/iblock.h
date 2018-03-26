@@ -19,10 +19,19 @@ class IBlock
         virtual void setValue(const Value& value) { mvalue = value; }
 
         virtual void AddWire(Wire* w, int port = 0) = 0;
+
+        void setLevel(int level) { mlevel = level; }
+        int getLevel() const 
+        { 
+            if(mlevel != -1) return mlevel;
+            else throw MyError("Level not assigned to the block", ErrorType::BlockError); 
+        }
     
     private:
         Value mvalue; /**< Value. */
         bool mcounted = false; /**< Value already counted. */
+
+        int mlevel = -1;
 };
 
 #endif // IBLOCK_H

@@ -1,6 +1,6 @@
 
 SOURCES = src/main.cpp src/defs.cpp src/block.cpp src/wire.cpp
-HEADERS = src/defs.h src/block.h src/wire.h src/iblock.h
+HEADERS = src/defs.h src/block.h src/wire.h src/iblock.h src/ioblock.h
 TARGET = blockeditor
 
 

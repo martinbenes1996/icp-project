@@ -24,6 +24,8 @@ class Wire
         /** @brief Value setter (set output). */
         void setValue(const Value& value) { mo.setValue(value); }
 
+        int getLevel() { return mi.getLevel() + 1; }
+
     private:
         IBlock& mi; /**< Input block reference. */
         IBlock& mo; /**< Output block reference. */
@@ -40,6 +42,11 @@ struct Port
 
     std::string type = ""; /* Type, that port accepts. */
     Wire* wire = nullptr;  /* Wire pointer. */
+
+    int getLevel() { check(); return wire->getLevel(); }
+    Value getValue() { check(); return wire->getValue(); }
+    
+    void check() { if(wire == nullptr) throw MyError("Port not assigned yet", ErrorType::WireError); }
 };
 
 #endif // WIRE_H

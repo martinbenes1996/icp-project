@@ -44,4 +44,7 @@ struct MyError {
         ErrorType mcode = ErrorType::Ok; /**< Error code. */
 };
 
+#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
+#define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
+
 #endif // DEFS_H
