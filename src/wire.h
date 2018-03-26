@@ -17,14 +17,22 @@ class Wire
          * @param o     Output block.
          * @param oport Output block port.
          */
-        Wire(IBlock&, int, IBlock&, int);
+        Wire(IBlock& i, int iport, IBlock& o, int oport):
+            mi(i), mo(o) 
+        {
+            mi.AddWire(this, iport);
+            mo.AddWire(this, oport);
+            propagateLevel();
+        }
 
         /** @brief Value getter (ask input). */
         Value getValue() const { return mi.getValue(); }
         /** @brief Value setter (set output). */
         void setValue(const Value& value) { mo.setValue(value); }
 
-        int getLevel() { return mi.getLevel() + 1; }
+        /** @brief Level getter (ask input). */
+        int getLevel() { return mi.getLevel(); }
+        void propagateLevel() { mo.setLevel( mi.getLevel() + 1 ); }
 
     private:
         IBlock& mi; /**< Input block reference. */
@@ -43,10 +51,19 @@ struct Port
     std::string type = ""; /* Type, that port accepts. */
     Wire* wire = nullptr;  /* Wire pointer. */
 
+    /** @brief Level getter. */
     int getLevel() { check(); return wire->getLevel(); }
+    /** @brief Value getter. */
     Value getValue() { check(); return wire->getValue(); }
     
-    void check() { if(wire == nullptr) throw MyError("Port not assigned yet", ErrorType::WireError); }
+    /**
+     * @brief Checks, wheather the port has assigned wire. Throws, if not.
+     */
+    void check()
+    { 
+        if(wire == nullptr) 
+            throw MyError("Port not assigned yet", ErrorType::WireError);
+    }
 };
 
 #endif // WIRE_H

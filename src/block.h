@@ -30,6 +30,12 @@ class Block_2I1O: public IBlock
          * @param port  Port, to which the wire is being appended.
          */
         void AddWire(Wire *, int port = 0) override;
+
+        /**
+         * @brief Level setter. 
+         * @param level     New level value.     
+         */
+        void setLevel(int) override;
     
     private:
         std::function<double(double,double)> mfunc; /**< Represents the functionality. */
@@ -65,6 +71,12 @@ class Block_1I1O: public IBlock
          * @param port  Port, to which the wire is being appended.
          */
         void AddWire(Wire *, int port = 0) override;
+
+        /**
+         * @brief Level setter. 
+         * @param level     New level value.     
+         */
+        void setLevel(int) override;
     
     private:
         std::function<double(double)> mfunc; /**< Represents the functionality. */

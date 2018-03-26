@@ -40,6 +40,12 @@ void Block_2I1O::AddWire(Wire * w, int port)
     else throw MyError("Unknown port for a vector", ErrorType::WireError);
 }
 
+void Block_2I1O::setLevel(int level)
+{
+    IBlock::setLevel(level);
+    if(mO.wire != nullptr) mO.wire->propagateLevel();
+}
+
 Block_1I1O::Block_1I1O(std::function<double(double)> func, std::string type_i, std::string type_o):
     mfunc(func),
     mI(type_i),
@@ -67,4 +73,10 @@ void Block_1I1O::AddWire(Wire * w, int port)
         setLevel( mI.getLevel() );
     }
     else throw MyError("Unknown port for a vector", ErrorType::WireError);
+}
+
+void Block_1I1O::setLevel(int level)
+{
+    IBlock::setLevel(level);
+    if(mO.wire != nullptr) mO.wire->propagateLevel();
 }
