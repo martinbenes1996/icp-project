@@ -1,7 +1,11 @@
 #ifndef VIEW_H
 #define VIEW_H
 
+#include <iostream>
+
 #include <QObject>
+
+#include "defs.h"
 
 class View: public QObject
 {
@@ -12,7 +16,7 @@ class View: public QObject
     signals:
         void sigCreateBlock(long type, long& key);
         void sigDeleteBlock(long key);
-        void sigCreateWire(long startkey, long endkey, long& id);
+        void sigCreateWire(PortID startkey, PortID endkey, long& id);
         void sigDeleteWire(long key);
 
 };

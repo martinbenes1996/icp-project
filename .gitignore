@@ -4,7 +4,7 @@
 # FIT VUT
 # 2017/2018
 
-Makefile
+src/Makefile
 blockeditor
 gen/*
 !gen/

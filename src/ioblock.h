@@ -19,12 +19,14 @@ class Input: public IBlock
         /**
          * @brief Assigns wire to the port.
          * @param w         Wire to assign.
+         * @param key       Key of the wire.
          * @param port      Port to assign to.
          */
-        void AddWire(Wire* w, int port = 0) override
+        void AddWire(Wire* w, long key, int port = 0) override
         {
             if(port == -1) mO = w;
             else throw MyError("Input has only output port", ErrorType::BlockError);
+            IBlock::AddWire(w, key, port);
         }
 
     private:

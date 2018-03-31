@@ -1,5 +1,6 @@
 
 #include "block.h"
+#include "debug.h"
 
 Block_2I1O::Block_2I1O(std::function<double(double,double)> func, std::string type_i1, std::string type_i2, std::string type_o):
     mfunc(func),
@@ -10,6 +11,7 @@ Block_2I1O::Block_2I1O(std::function<double(double,double)> func, std::string ty
 
 void Block_2I1O::Compute()
 {
+    Debug::Block("Block_2I1O::Compute");
 
     // check, if assigned
     mI1.check(); mI2.check(); mO.check();
@@ -24,8 +26,10 @@ void Block_2I1O::Compute()
     setValue(result);
 }
 
-void Block_2I1O::AddWire(Wire * w, int port)
+void Block_2I1O::AddWire(Wire * w, long key, int port)
 {
+    Debug::Block("Block_2I1O::AddWire");
+
     if(port == -1) mO.wire = w;
     else if(port == 1) 
     {
@@ -38,6 +42,8 @@ void Block_2I1O::AddWire(Wire * w, int port)
         setLevel( MAX(getLevel(), mI2.getLevel()) );
     }
     else throw MyError("Unknown port for a vector", ErrorType::WireError);
+
+    IBlock::AddWire(w, key, port);
 }
 
 void Block_2I1O::setLevel(int level)
@@ -54,6 +60,7 @@ Block_1I1O::Block_1I1O(std::function<double(double)> func, std::string type_i, s
 
 void Block_1I1O::Compute()
 {
+    Debug::Block("Block_1I1O::Compute");
     Value result;
     if(mI.wire == nullptr || mO.wire == nullptr) throw MyError("The block port is not assigned yet", ErrorType::BlockError);
     if(mI.type != mI.getValue().type) throw MyError("Incompatible types", ErrorType::TypeError);
@@ -64,8 +71,10 @@ void Block_1I1O::Compute()
     setValue(result);
 }
 
-void Block_1I1O::AddWire(Wire * w, int port)
+void Block_1I1O::AddWire(Wire * w, long key, int port)
 {
+    Debug::Block("Block_1I1O::AddWire");
+
     if(port == -1) mO.wire = w;
     else if(port == 1) 
     {
@@ -73,6 +82,8 @@ void Block_1I1O::AddWire(Wire * w, int port)
         setLevel( mI.getLevel() );
     }
     else throw MyError("Unknown port for a vector", ErrorType::WireError);
+
+    IBlock::AddWire(w, key, port);
 }
 
 void Block_1I1O::setLevel(int level)

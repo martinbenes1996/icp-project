@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Model_t {
     QByteArrayData data[13];
-    char stringdata0[117];
+    char stringdata0[121];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,15 +38,15 @@ QT_MOC_LITERAL(5, 41, 4), // "type"
 QT_MOC_LITERAL(6, 46, 5), // "long&"
 QT_MOC_LITERAL(7, 52, 15), // "slotDeleteBlock"
 QT_MOC_LITERAL(8, 68, 14), // "slotCreateWire"
-QT_MOC_LITERAL(9, 83, 8), // "startkey"
-QT_MOC_LITERAL(10, 92, 6), // "endkey"
-QT_MOC_LITERAL(11, 99, 2), // "id"
-QT_MOC_LITERAL(12, 102, 14) // "slotDeleteWire"
+QT_MOC_LITERAL(9, 83, 6), // "PortID"
+QT_MOC_LITERAL(10, 90, 8), // "startkey"
+QT_MOC_LITERAL(11, 99, 6), // "endkey"
+QT_MOC_LITERAL(12, 106, 14) // "slotDeleteWire"
 
     },
     "Model\0sigDeleteWire\0\0key\0slotCreateBlock\0"
     "type\0long&\0slotDeleteBlock\0slotCreateWire\0"
-    "startkey\0endkey\0id\0slotDeleteWire"
+    "PortID\0startkey\0endkey\0slotDeleteWire"
 };
 #undef QT_MOC_LITERAL
 
@@ -78,7 +78,7 @@ static const uint qt_meta_data_Model[] = {
  // slots: parameters
     QMetaType::Void, QMetaType::Long, 0x80000000 | 6,    5,    3,
     QMetaType::Void, QMetaType::Long,    3,
-    QMetaType::Void, QMetaType::Long, QMetaType::Long, 0x80000000 | 6,    9,   10,   11,
+    QMetaType::Void, 0x80000000 | 9, 0x80000000 | 9, 0x80000000 | 6,   10,   11,    3,
     QMetaType::Void, QMetaType::Long,    3,
 
        0        // eod
@@ -93,7 +93,7 @@ void Model::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         case 0: _t->sigDeleteWire((*reinterpret_cast< long(*)>(_a[1]))); break;
         case 1: _t->slotCreateBlock((*reinterpret_cast< long(*)>(_a[1])),(*reinterpret_cast< long(*)>(_a[2]))); break;
         case 2: _t->slotDeleteBlock((*reinterpret_cast< long(*)>(_a[1]))); break;
-        case 3: _t->slotCreateWire((*reinterpret_cast< long(*)>(_a[1])),(*reinterpret_cast< long(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
+        case 3: _t->slotCreateWire((*reinterpret_cast< PortID(*)>(_a[1])),(*reinterpret_cast< PortID(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
         case 4: _t->slotDeleteWire((*reinterpret_cast< long(*)>(_a[1]))); break;
         default: ;
         }

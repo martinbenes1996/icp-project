@@ -1,9 +1,19 @@
 #ifndef IBLOCK_H
 #define IBLOCK_H
 
+#include <vector>
+
 #include "defs.h"
 
 class Wire;
+
+/**
+ * @brief Value in the block or on the wire,
+ */
+struct Value {
+    std::string type; /**< Type of the value. */
+    double value = 0; /**< Value itself. */
+};
 
 /**
  * @brief IBlock interface.
@@ -11,6 +21,7 @@ class Wire;
 class IBlock
 {
     public:
+        virtual ~IBlock() {}
 
         /**
          * @brief Value getter.
@@ -29,13 +40,10 @@ class IBlock
         /**
          * @brief Assigns wire to the port.
          * @param w         Wire to assign.
+         * @param key       Key of the wire.
          * @param port      Port to assign to.
          */
-        virtual void AddWire(Wire* w, int port = 0)
-        { 
-            // just to prevent warnings
-            (void)w; (void)port;
-        }
+        virtual void AddWire(Wire*, long key, int port = 0) { mkeys.push_back(key); (void)port; }
 
         /**
          * @brief Level setter. 
@@ -47,12 +55,16 @@ class IBlock
          * @returns The level value.
          */
         int getLevel() const { return mlevel; }
+
+        std::vector<long> getWireKeys() const { return mkeys; }
     
     private:
         Value mvalue; /**< Value. */
         bool mcounted = false; /**< Value already counted. */
 
         int mlevel = 0; /**< Level. */
+
+        std::vector<long> mkeys;
 };
 
 #endif // IBLOCK_H

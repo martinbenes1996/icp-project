@@ -1,6 +1,7 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#include <iostream>
 #include <string>
 
 /**
@@ -14,18 +15,13 @@ enum ErrorType {
 };
 
 /**
- * @brief Value in the block or on the wire,
+ * @brief Port descriptor.
  */
-struct Value {
-    std::string type; /**< Type of the value. */
-    double value = 0; /**< Value itself. */
-    
-    /** @brief Assignment operator overload. */
-    Value& operator=(const Value& v) { type = v.type; value = v.value; return *this; }
-    /** @brief Equality operator overload. */
-    bool operator==(const Value& v) { return (type == v.type) && (value == v.value); }
+struct PortID
+{
+    long key; /**< Key of the block. */
+    int port; /**< Port of the block. */
 };
-
 
 /**
  * @brief Error to raise.
@@ -50,6 +46,7 @@ struct MyError {
 #define B_2I1O 0x01
 #define B_1I1O 0x02
 inline long unmask(long type) { return type >> 8; }
+
 
 
 

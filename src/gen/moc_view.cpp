@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_View_t {
-    QByteArrayData data[13];
-    char stringdata0[113];
+    QByteArrayData data[14];
+    char stringdata0[120];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,16 +37,18 @@ QT_MOC_LITERAL(4, 26, 5), // "long&"
 QT_MOC_LITERAL(5, 32, 3), // "key"
 QT_MOC_LITERAL(6, 36, 14), // "sigDeleteBlock"
 QT_MOC_LITERAL(7, 51, 13), // "sigCreateWire"
-QT_MOC_LITERAL(8, 65, 8), // "startkey"
-QT_MOC_LITERAL(9, 74, 6), // "endkey"
-QT_MOC_LITERAL(10, 81, 2), // "id"
-QT_MOC_LITERAL(11, 84, 13), // "sigDeleteWire"
-QT_MOC_LITERAL(12, 98, 14) // "slotDeleteWire"
+QT_MOC_LITERAL(8, 65, 6), // "PortID"
+QT_MOC_LITERAL(9, 72, 8), // "startkey"
+QT_MOC_LITERAL(10, 81, 6), // "endkey"
+QT_MOC_LITERAL(11, 88, 2), // "id"
+QT_MOC_LITERAL(12, 91, 13), // "sigDeleteWire"
+QT_MOC_LITERAL(13, 105, 14) // "slotDeleteWire"
 
     },
     "View\0sigCreateBlock\0\0type\0long&\0key\0"
-    "sigDeleteBlock\0sigCreateWire\0startkey\0"
-    "endkey\0id\0sigDeleteWire\0slotDeleteWire"
+    "sigDeleteBlock\0sigCreateWire\0PortID\0"
+    "startkey\0endkey\0id\0sigDeleteWire\0"
+    "slotDeleteWire"
 };
 #undef QT_MOC_LITERAL
 
@@ -67,15 +69,15 @@ static const uint qt_meta_data_View[] = {
        1,    2,   39,    2, 0x06 /* Public */,
        6,    1,   44,    2, 0x06 /* Public */,
        7,    3,   47,    2, 0x06 /* Public */,
-      11,    1,   54,    2, 0x06 /* Public */,
+      12,    1,   54,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      12,    1,   57,    2, 0x0a /* Public */,
+      13,    1,   57,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Long, 0x80000000 | 4,    3,    5,
     QMetaType::Void, QMetaType::Long,    5,
-    QMetaType::Void, QMetaType::Long, QMetaType::Long, 0x80000000 | 4,    8,    9,   10,
+    QMetaType::Void, 0x80000000 | 8, 0x80000000 | 8, 0x80000000 | 4,    9,   10,   11,
     QMetaType::Void, QMetaType::Long,    5,
 
  // slots: parameters
@@ -92,7 +94,7 @@ void View::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         switch (_id) {
         case 0: _t->sigCreateBlock((*reinterpret_cast< long(*)>(_a[1])),(*reinterpret_cast< long(*)>(_a[2]))); break;
         case 1: _t->sigDeleteBlock((*reinterpret_cast< long(*)>(_a[1]))); break;
-        case 2: _t->sigCreateWire((*reinterpret_cast< long(*)>(_a[1])),(*reinterpret_cast< long(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
+        case 2: _t->sigCreateWire((*reinterpret_cast< PortID(*)>(_a[1])),(*reinterpret_cast< PortID(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
         case 3: _t->sigDeleteWire((*reinterpret_cast< long(*)>(_a[1]))); break;
         case 4: _t->slotDeleteWire((*reinterpret_cast< long(*)>(_a[1]))); break;
         default: ;
@@ -113,7 +115,7 @@ void View::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
             }
         }
         {
-            typedef void (View::*_t)(long , long , long & );
+            typedef void (View::*_t)(PortID , PortID , long & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&View::sigCreateWire)) {
                 *result = 2;
             }
@@ -178,7 +180,7 @@ void View::sigDeleteBlock(long _t1)
 }
 
 // SIGNAL 2
-void View::sigCreateWire(long _t1, long _t2, long & _t3)
+void View::sigCreateWire(PortID _t1, PortID _t2, long & _t3)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
