@@ -2,11 +2,24 @@
 #define CONFIG_H
 
 #include <functional>
+#include <string>
+#include <vector>
+
+
+enum BlockType
+{
+    OneIn_OneOut,
+    TwoIn_OneOut,
+};
 
 namespace Config
 {
-    std::function<double(double, double)> get2I1OFunction(long type);
-    std::function<double(double)> get1I1OFunction(long type);
+    std::function<double(double,double)> getFunc_2I1O(long);
+    std::function<double(double)> getFunc_1I1O(long);
+    BlockType getBlockType(long);
+
+    std::vector<std::string> getInput(long);
+    std::vector<std::string> getOutput(long);
 
     std::string getGType();
 }

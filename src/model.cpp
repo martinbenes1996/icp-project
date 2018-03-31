@@ -14,23 +14,32 @@ Model::~Model()
 void Model::slotCreateBlock(long type, long& key)
 {
     key = GenerateBlockKey();
+    std::string gtype = Config::getGType();
 
-    if( type & B_2I1O )
+    IBlock * b;
+    switch( Config::getBlockType(type) )
     {
-        std::string gtype = Config::getGType();
-        IBlock * b = new Block_2I1O( Config::get2I1OFunction(unmask(type)),
-                                        gtype, gtype, gtype );
-        mBlocks.insert( std::make_pair(key, b) );
-    }
-    else if( type & B_1I1O )
-    {
-        std::string gtype = Config::getGType();
-        IBlock * b = new Block_1I1O( Config::get1I1OFunction(unmask(type)),
-                                        gtype, gtype );
-        mBlocks.insert( std::make_pair(key, b) );
-    }
-    else throw MyError("Unknown block type", ErrorType::BlockError);
+        // two inputs, one output
+        case BlockType::TwoIn_OneOut:
+            b = new Block<std::function<double(double,double)>> (
+                    Config::getFunc_2I1O(type),
+                    Config::getInput(type),
+                    Config::getOutput(type));
+            break;
+        
+        // one input, one output
+        case BlockType::OneIn_OneOut:
+            b = new Block<std::function<double(double)>> (
+                    Config::getFunc_1I1O(type),
+                    Config::getInput(type),
+                    Config::getOutput(type));
+            break;
 
+        // unknown block   
+        default:
+            throw MyError("Unknown block type", ErrorType::BlockError);
+    }
+    mBlocks.insert( std::make_pair(key, b) );
 }
 
 void Model::slotDeleteBlock(long key)
@@ -54,8 +63,8 @@ void Model::slotDeleteBlock(long key)
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key)
 {
     key = GenerateWireKey();
-    Wire* w = new Wire(*mBlocks.at(startkey.key), startkey.port,
-                       *mBlocks.at(endkey.key), endkey.port);
+    Wire* w = new Wire(key, *mBlocks.at(startkey.key), startkey.port,
+                            *mBlocks.at(endkey.key), endkey.port);
     
     mWires.insert( std::make_pair(key, w) );
 }

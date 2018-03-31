@@ -14,7 +14,11 @@ class Input: public IBlock
          * @brief Input constructor
          * @param value     Initial value of constructor.
          */
-        Input(double value = 0) { setValue(value); }
+        Input(double value = 0, std::string type) 
+        { 
+            setValue(value); 
+            mO.type = type;
+        }
 
         /**
          * @brief Assigns wire to the port.
@@ -24,13 +28,15 @@ class Input: public IBlock
          */
         void AddWire(Wire* w, long key, int port = 0) override
         {
-            if(port == -1) mO = w;
+            if(mO.wire == nullptr) mO.wire = w;
             else throw MyError("Input has only output port", ErrorType::BlockError);
             IBlock::AddWire(w, key, port);
         }
 
+        inline void setLevel(int) override { throw MyError("Level of the input is constant", ErrorType::BlockError); }
+
     private:
-        Wire * mO = nullptr; /**< Output wire. */
+        Port mO; /**< Output wire. */
 };
 
 #endif // IOBLOCK_H

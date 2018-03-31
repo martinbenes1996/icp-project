@@ -13,6 +13,7 @@ class Wire;
 struct Value {
     std::string type; /**< Type of the value. */
     double value = 0; /**< Value itself. */
+    bool valid = false;
 };
 
 /**
@@ -27,10 +28,12 @@ class IBlock
          * @brief Value getter.
          * @returns The block value.
          */
-        virtual Value getValue() const {
-            if(mcounted) return mvalue;
+        virtual Value getValue() const
+        {
+            if(mvalue.valid) return mvalue;
             else throw MyError("The block value is not assigned yet", ErrorType::BlockError);
         }
+
         /**
          * @brief Value setter.
          * @param value     Assigned value.
@@ -56,11 +59,11 @@ class IBlock
          */
         int getLevel() const { return mlevel; }
 
+
         std::vector<long> getWireKeys() const { return mkeys; }
     
     private:
         Value mvalue; /**< Value. */
-        bool mcounted = false; /**< Value already counted. */
 
         int mlevel = 0; /**< Level. */
 

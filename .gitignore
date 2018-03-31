@@ -9,6 +9,7 @@ blockeditor
 gen/*
 !gen/
 doc/html
+.vscode/
 
 ### Temporary files ###
 *.dep

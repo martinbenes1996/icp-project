@@ -4,6 +4,7 @@
 #include "defs.h"
 #include "iblock.h"
 
+
 /**
  * @brief Wire.
  */
@@ -17,11 +18,11 @@ class Wire
          * @param o     Output block.
          * @param oport Output block port.
          */
-        Wire(IBlock& i, int iport, IBlock& o, int oport):
+        Wire(long key, IBlock& i, int iport, IBlock& o, int oport):
             mi(i), mo(o) 
         {
-            mi.AddWire(this, iport);
-            mo.AddWire(this, oport);
+            mi.AddWire(this, key, iport);
+            mo.AddWire(this, key, oport);
             propagateLevel();
         }
 
@@ -32,7 +33,7 @@ class Wire
 
         /** @brief Level getter (ask input). */
         int getLevel() { return mi.getLevel(); }
-        void propagateLevel() { mo.setLevel( mi.getLevel() + 1 ); }
+        void propagateLevel() { mo.setLevel( MIN(getLevel()+1, mo.getLevel()) ); }
 
     private:
         IBlock& mi; /**< Input block reference. */

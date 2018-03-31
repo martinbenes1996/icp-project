@@ -10,6 +10,7 @@
 enum ErrorType {
     Ok,
     BlockError, /**< Error of a block. */
+    MathError, /**< Math error. */
     TypeError, /**< Error of incompatible types. */
     WireError, /**< Error of a wire. */
 };

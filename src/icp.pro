@@ -1,5 +1,5 @@
 
-SOURCES = main.cpp defs.cpp block.cpp model.cpp controller.cpp view.cpp config.cpp
+SOURCES = main.cpp defs.cpp model.cpp controller.cpp view.cpp config.cpp
 HEADERS = defs.h block.h wire.h iblock.h ioblock.h model.h controller.h view.h config.h debug.h
 TARGET = blockeditor
 

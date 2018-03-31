@@ -10,7 +10,7 @@
 
 namespace Debug
 {
-    void Block(std::string str) {
+    inline void Block(std::string str) {
         #ifdef BLOCK_DEBUG
             std::cerr << str << "\n";
         #endif
