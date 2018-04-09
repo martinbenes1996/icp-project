@@ -99,10 +99,11 @@ void Block<T>::addWire(Wire *w, long key, int port)
     // input port && prev has lvl && my lvl is greater than lvl of prev
     if(port >= 0 && w->getLevel() > 0 && getLevel() > w->getLevel())
     {
+        setLevel( w->getLevel() );
         // propagate lvl to the followers
         for(auto& it: v)
         {
-            it.propagateLevel(level);
+            it.propagateLevel(getLevel());
         }
     }
     
