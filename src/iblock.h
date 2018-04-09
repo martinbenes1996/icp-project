@@ -1,7 +1,7 @@
 #ifndef IBLOCK_H
 #define IBLOCK_H
 
-#include <vector>
+#include <set>
 
 #include "defs.h"
 
@@ -41,14 +41,6 @@ class IBlock
         virtual void setValue(const Value& value) { mvalue = value; }
 
         /**
-         * @brief Assigns wire to the port.
-         * @param w         Wire to assign.
-         * @param key       Key of the wire.
-         * @param port      Port to assign to.
-         */
-        virtual void AddWire(Wire*, long key, int port = 0) { mkeys.push_back(key); (void)port; }
-
-        /**
          * @brief Level setter. 
          * @param level     New level value.     
          */
@@ -59,15 +51,40 @@ class IBlock
          */
         int getLevel() const { return mlevel; }
 
+        /**
+         * @brief Propagates level towards.
+         * @param level     Propagated level.
+         */
+        virtual void propagateLevel(int) = 0;
 
-        std::vector<long> getWireKeys() const { return mkeys; }
+
+        /**
+         * @brief Getter of keys of associated wires.
+         * @returns Set of keys.
+         */
+        std::set<long> getWireKeys() const { return mkeys; }
+        /**
+         * @brief Removes a single wire key.
+         * @param key       Key of wire to remove.
+         */
+        void removeWireKey(long key) { mkeys.erase(key); }
+        /**
+         * @brief Assigns wire to the port.
+         * @param w         Wire to assign.
+         * @param key       Key of the wire.
+         * @param port      Port to assign to.
+         */
+        virtual void addWire(Wire*, long key, int port = 0) 
+        { 
+            mkeys.insert(key);
+            (void)port; // avoid warning
+        }
     
     private:
-        Value mvalue; /**< Value. */
+        Value mvalue; /**< Value, that a block counted/has. */
+        int mlevel = -1; /**< Level of the block in the scheme. */
 
-        int mlevel = 0; /**< Level. */
-
-        std::vector<long> mkeys;
+        std::set<long> mkeys; /**< Keys of the wires connected () */
 };
 
 #endif // IBLOCK_H

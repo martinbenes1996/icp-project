@@ -5,7 +5,7 @@ src/Makefile:
 	@echo "Generating a Makefile with qmake.";\
 	qmake -o src/Makefile src/icp.pro 2> /dev/null > /dev/null
 	@echo "Compiling the files.";\
-	$(MAKE) -C src/ -s 2> /dev/null > /dev/null
+	$(MAKE) -C src/ -s
 	@printf "";\
 	cp src/blockeditor . 2> /dev/null > /dev/null
 

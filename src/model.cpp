@@ -45,7 +45,7 @@ void Model::slotCreateBlock(long type, long& key)
 void Model::slotDeleteBlock(long key)
 {
     // get connected wires
-    std::vector<long> wkeys = mBlocks.at(key)->getWireKeys();
+    std::set<long> wkeys = mBlocks.at(key)->getWireKeys();
 
     // erase connected wires
     for(auto& it: wkeys)

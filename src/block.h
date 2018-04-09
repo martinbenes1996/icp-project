@@ -4,6 +4,7 @@
 #include <functional>
 #include <set>
 #include <string>
+#include <vector>
 
 #include "debug.h"
 #include "defs.h"
@@ -20,7 +21,7 @@ class Block: public IBlock
     public:
         /** 
          * @brief Block constructor. 
-         * @param func      Functionality of the block.
+         * @param func      Functionality of the block (lambdas as templates).
          * @param intypes   Types of inputs.
          * @param outtypes  Types of input.
          * @param type_o    Type of the output.
@@ -38,13 +39,19 @@ class Block: public IBlock
          * @param key   Key of the wire.
          * @param port  Port, to which the wire is being appended.
          */
-        inline void AddWire(Wire *, long, int port = 0) override;
+        inline void addWire(Wire *, long, int port = 0) override;
+
+        /**
+         * @brief Propagates level towards.
+         * @param level     Propagated level.
+         */
+        inline void propagateLevel(int) override;
 
         /**
          * @brief Level setter. 
          * @param level     New level value.     
          */
-        inline void setLevel(int) override;
+        //inline void setLevel(int) override;
 
     
     private:
@@ -63,17 +70,17 @@ class Block: public IBlock
 };
 
 
-template <class T>
-void Block<T>::setLevel(int level)
-{
-    IBlock::setLevel(level);
-    for(auto& it: mOut) { if(it.wire != nullptr) it.wire->propagateLevel(); }
-}
+//template <class T>
+//void Block<T>::setLevel(int level)
+//{
+//    IBlock::setLevel(level);
+//    for(auto& it: mOut) { if(it.wire != nullptr) it.wire->propagateLevel(); }
+//}
 
 template <class T>
-void Block<T>::AddWire(Wire *w, long key, int port)
+void Block<T>::addWire(Wire *w, long key, int port)
 {
-    Debug::Block("Block::AddWire");
+    Debug::Block("Block::addWire");
     std::vector<Port>& v = (port < 0)?mOut:mIn;
     int index = (port < 0) ? (-port-1):(port);
     
@@ -85,21 +92,33 @@ void Block<T>::AddWire(Wire *w, long key, int port)
         else throw MyError("Adding wire to connected port", ErrorType::WireError);
         
         // add to keys
-        IBlock::AddWire(w, key, port);
+        IBlock::addWire(w, key, port);
     }
     catch(std::exception& ex) { throw MyError("Not an existing port", ErrorType::BlockError); }
 }
 
+
 template <class T>
-void Block<T>::CheckTypes(std::vector<Port>& v)
+void Block<T>::propagateLevel(int level)
 {
-    for(auto& it: v)
+    Debug::Block("Block::propagateLEvel");
+    if(level < getLevel())
     {
-        it.check();
-        if(it.type != it.getValue().type)
-            throw MyError("Incompatible types", ErrorType::TypeError);
+        setLevel(level);
+        for(auto& it: mOut) { it.propagateLevel(level); }
     }
 }
+
+//template <class T>
+//void Block<T>::CheckTypes(std::vector<Port>& v)
+//{
+//    for(auto& it: v)
+//    {
+//        it.check();
+//        if(it.type != it.getValue().type)
+//            throw MyError("Incompatible types", ErrorType::TypeError);
+//    }
+//}
 
 template <class T>
 void Block<T>::Compute()

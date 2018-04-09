@@ -21,9 +21,8 @@ class Wire
         Wire(long key, IBlock& i, int iport, IBlock& o, int oport):
             mi(i), mo(o) 
         {
-            mi.AddWire(this, key, iport);
-            mo.AddWire(this, key, oport);
-            propagateLevel();
+            mi.addWire(this, key, iport);
+            mo.addWire(this, key, oport);
         }
 
         /** @brief Value getter (ask input). */
@@ -32,8 +31,8 @@ class Wire
         void setValue(const Value& value) { mo.setValue(value); }
 
         /** @brief Level getter (ask input). */
-        int getLevel() { return mi.getLevel(); }
-        void propagateLevel() { mo.setLevel( MIN(getLevel()+1, mo.getLevel()) ); }
+        //int getLevel() { return mi.getLevel(); }
+        void propagateLevel(int level) { mo.propagateLevel(level+1); }
 
     private:
         IBlock& mi; /**< Input block reference. */
@@ -53,9 +52,11 @@ struct Port
     Wire* wire = nullptr;  /* Wire pointer. */
 
     /** @brief Level getter. */
-    int getLevel() { check(); return wire->getLevel(); }
+    //int getLevel() { check(); return wire->getLevel(); }
     /** @brief Value getter. */
     Value getValue() { check(); return wire->getValue(); }
+    /** @brief Propagate level towards. */
+    void propagateLevel(int level) { check(); wire->propagateLevel(level); }
     
     /**
      * @brief Checks, wheather the port has assigned wire. Throws, if not.

@@ -26,7 +26,7 @@ class Input: public IBlock
          * @param key       Key of the wire.
          * @param port      Port to assign to.
          */
-        void AddWire(Wire* w, long key, int port = 0) override
+        void addWire(Wire* w, long key, int port = 0) override
         {
             if(mO.wire == nullptr) mO.wire = w;
             else throw MyError("Input has only output port", ErrorType::BlockError);
