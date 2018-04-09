@@ -1,7 +1,7 @@
 
-all: src/Makefile
+all: blockeditor
 
-src/Makefile:
+blockeditor:
 	@echo "Generating a Makefile with qmake.";\
 	qmake -o src/Makefile src/icp.pro
 	@echo "Compiling the files.";\

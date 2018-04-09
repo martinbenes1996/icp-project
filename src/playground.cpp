@@ -18,16 +18,20 @@ void PlayGround::mouseMoveEvent(QMouseEvent *event)
 
 void PlayGround::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::RightButton) { emit sigChoiceRejected(); }
     (void)event;
     std::cout << "PlayGround::mousePressEvent()\n";
 }
 
 void PlayGround::mouseReleaseEvent(QMouseEvent *event)
 {
-    QPointF pos = event->localPos();
-    mpoints.push_back(pos);
-    update();
+    if(event->button() == Qt::RightButton) { emit sigChoiceRejected(); }
+    else
+    {
+        QPointF pos = event->localPos();
+        mpoints.push_back(pos);
+        update();
+    }
+    
     
     //(void)event;
     //std::cout << "PlayGround::mouseReleaseEvent()\n";
