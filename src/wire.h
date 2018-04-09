@@ -31,7 +31,7 @@ class Wire
         void setValue(const Value& value) { mo.setValue(value); }
 
         /** @brief Level getter (ask input). */
-        //int getLevel() { return mi.getLevel(); }
+        int getLevel() { return mi.getLevel()+1; }
         void propagateLevel(int level) { mo.propagateLevel(level+1); }
 
     private:
@@ -52,7 +52,7 @@ struct Port
     Wire* wire = nullptr;  /* Wire pointer. */
 
     /** @brief Level getter. */
-    //int getLevel() { check(); return wire->getLevel(); }
+    int getLevel() { check(); return wire->getLevel(); }
     /** @brief Value getter. */
     Value getValue() { check(); return wire->getValue(); }
     /** @brief Propagate level towards. */

@@ -85,7 +85,7 @@ void Block<T>::addWire(Wire *w, long key, int port)
     int index = (port < 0) ? (-port-1):(port);
     
     try
-    {  
+    {
         // connect wire
         if(v[index].wire == nullptr) v[index].wire = w;
         // already connected port
@@ -95,6 +95,17 @@ void Block<T>::addWire(Wire *w, long key, int port)
         IBlock::addWire(w, key, port);
     }
     catch(std::exception& ex) { throw MyError("Not an existing port", ErrorType::BlockError); }
+
+    // input port && prev has lvl && my lvl is greater than lvl of prev
+    if(port >= 0 && w->getLevel() > 0 && getLevel() > w->getLevel())
+    {
+        // propagate lvl to the followers
+        for(auto& it: v)
+        {
+            it.propagateLevel(level);
+        }
+    }
+    
 }
 
 
