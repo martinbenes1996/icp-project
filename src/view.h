@@ -6,10 +6,13 @@
 #include <QObject>
 
 #include "defs.h"
+#include "window.h"
 
 class View: public QObject
 {
     Q_OBJECT
+    public:
+        View();
 
     public slots:
         void slotDeleteWire(long key);
@@ -18,6 +21,9 @@ class View: public QObject
         void sigDeleteBlock(long key);
         void sigCreateWire(PortID startkey, PortID endkey, long& id);
         void sigDeleteWire(long key);
+    
+    private:
+        Window mwin;
 
 };
 

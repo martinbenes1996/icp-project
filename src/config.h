@@ -22,6 +22,8 @@ namespace Config
     std::vector<std::string> getOutput(long);
 
     std::string getGType();
+
+    std::vector<std::string> getBlockNames();
 }
 
 #endif // CONFIG_H

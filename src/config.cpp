@@ -10,6 +10,8 @@ namespace
     std::map<long, std::function<double(double)>> mf_1I1O;
     std::map<long, std::vector<std::string>> mIn;
     std::map<long, std::vector<std::string>> mOut;
+
+    std::vector<std::string> mBlockNames {"prvni", "druhy", "treti", "ctvrty"};
 }
 
 std::function<double(double,double)> Config::getFunc_2I1O(long type)
@@ -43,3 +45,5 @@ std::vector<std::string> Config::getOutput(long type)
 }
 
 std::string Config::getGType() { return "general"; }
+
+std::vector<std::string> Config::getBlockNames() { return mBlockNames; }
