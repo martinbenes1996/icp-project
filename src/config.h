@@ -16,7 +16,6 @@ namespace Config
 {
     std::function<double(double,double)> getFunc_2I1O(long);
     std::function<double(double)> getFunc_1I1O(long);
-    BlockType getBlockType(long);
 
     std::vector<std::string> getInput(long);
     std::vector<std::string> getOutput(long);
@@ -24,6 +23,7 @@ namespace Config
     std::string getGType();
 
     std::vector<std::string> getBlockNames();
+    std::string getDefaultBlockName();
 }
 
 #endif // CONFIG_H

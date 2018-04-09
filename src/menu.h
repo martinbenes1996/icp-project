@@ -16,7 +16,10 @@ class Menu: public QWidget
         Menu(QWidget* parent = 0);
    
     public slots:
-        void slotPressed(QString);
+        void slotChoicePressed(QString);
+        void slotChoiceRejected();
+    signals:
+        void sigChoiceMode(bool);
     private:
         QSignalMapper mmapper;
         std::map<QString, QPushButton*> mButtons;

@@ -6,17 +6,14 @@
 #include <QWidget>
 
 #include "menu.h"
+#include "playground.h"
 
 class Window: public QWidget
 {
     public:
         Window(QWidget *parent = 0);
-        void test() {
-            std::cout << "Playground: " << mplayground << "\n";
-            std::cout << "Menu: " << mmenu << "\n";
-        }
     private:
-        QWidget* mplayground = nullptr;
+        PlayGround* mplayground = nullptr;
         Menu* mmenu = nullptr;
 };
 

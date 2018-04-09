@@ -1,7 +1,7 @@
 
 
-SOURCES = main.cpp defs.cpp controller.cpp config.cpp window.cpp view.cpp model.cpp menu.cpp
-HEADERS = defs.h controller.h config.h debug.h window.h view.h block.h wire.h iblock.h ioblock.h model.h menu.h
+SOURCES = main.cpp defs.cpp controller.cpp playground.cpp config.cpp window.cpp view.cpp model.cpp menu.cpp
+HEADERS = defs.h controller.h config.h debug.h playground.h window.h view.h block.h wire.h iblock.h ioblock.h model.h menu.h
 
 TARGET = blockeditor
 

@@ -6,12 +6,14 @@
 #include <QString>
 
 #include "config.h"
+#include "defs.h"
 #include "menu.h"
 
 Menu::Menu(QWidget* parent): QWidget(parent)
 {
     std::vector<std::string> names = Config::getBlockNames();
     QVBoxLayout * layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignTop);
 
     for(auto& it: names)
     {
@@ -30,17 +32,20 @@ Menu::Menu(QWidget* parent): QWidget(parent)
         mmapper.setMapping(btn, s);
         QObject::connect(btn, SIGNAL(pressed()), &mmapper, SLOT(map()));
     }
-    QObject::connect(&mmapper, SIGNAL(mapped(QString)), this, SLOT(slotPressed(QString)));
+
+    QObject::connect(&mmapper, SIGNAL(mapped(QString)), this, SLOT(slotChoicePressed(QString)));
     setLayout(layout);
 }
 
-void Menu::slotPressed(QString name)
+void Menu::slotChoicePressed(QString name)
 {
-    for(auto& it: mButtons) 
-    {
-        if(it.first != name) it.second->setChecked(false);
-        else if(it.second->isChecked()) it.second->setChecked(false);
-        #warning WTF logic?
-    }
-    std::cout << name.toStdString() << "\n";
+    emit sigChoiceMode(mButtons.at(name)->isChecked());
+    for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
+    // std::cout << name.toStdString() << "\n";
+}
+
+void Menu::slotChoiceRejected()
+{
+    for(auto& it: mButtons) { it.second->setChecked(false); }
+
 }

@@ -13,6 +13,7 @@ enum ErrorType {
     MathError, /**< Math error. */
     TypeError, /**< Error of incompatible types. */
     WireError, /**< Error of a wire. */
+    ViewError, /**< Error of a view. */
 };
 
 /**
@@ -40,13 +41,6 @@ struct MyError {
         std::string mmsg = ""; /**< Error message. */
         ErrorType mcode = ErrorType::Ok; /**< Error code. */
 };
-
-#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
-#define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
-
-#define B_2I1O 0x01
-#define B_1I1O 0x02
-inline long unmask(long type) { return type >> 8; }
 
 
 

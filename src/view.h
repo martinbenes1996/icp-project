@@ -5,6 +5,7 @@
 
 #include <QObject>
 
+#include "config.h"
 #include "defs.h"
 #include "window.h"
 
@@ -17,7 +18,7 @@ class View: public QObject
     public slots:
         void slotDeleteWire(long key);
     signals:
-        void sigCreateBlock(long type, long& key);
+        void sigCreateBlock(BlockType type, long& key);
         void sigDeleteBlock(long key);
         void sigCreateWire(PortID startkey, PortID endkey, long& id);
         void sigDeleteWire(long key);

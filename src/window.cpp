@@ -5,14 +5,15 @@
 
 Window::Window(QWidget *parent): QWidget(parent)
 {
-    resize(320, 240);
+    resize(800, 600);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setAlignment(Qt::AlignTop);
 
     mmenu = new Menu(this);
-    mplayground = new QWidget(this);
+    mplayground = new PlayGround(this);
 
+    QObject::connect(mplayground, SIGNAL(sigChoiceRejected()), mmenu, SLOT(slotChoiceRejected()));
+    QObject::connect(mmenu, SIGNAL(sigChoiceMode(bool)), mplayground, SLOT(slotChoiceMode(bool)));
     
     layout->addWidget(mmenu);
     layout->addWidget(mplayground);

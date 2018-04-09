@@ -11,13 +11,13 @@ Model::~Model()
     for(auto& it: mBlocks) delete it.second;
 }
 
-void Model::slotCreateBlock(long type, long& key)
+void Model::slotCreateBlock(BlockType type, long& key)
 {
     key = GenerateBlockKey();
     std::string gtype = Config::getGType();
 
     IBlock * b;
-    switch( Config::getBlockType(type) )
+    switch(type)
     {
         // two inputs, one output
         case BlockType::TwoIn_OneOut:
