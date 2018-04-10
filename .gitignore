@@ -4,12 +4,15 @@
 # FIT VUT
 # 2017/2018
 
+
+
+# generated files
 src/Makefile
-blockeditor
+moc_*
 gen/*
 !gen/
-doc/html
-.vscode/
+.qmake.stash
+
 
 ### Temporary files ###
 *.dep
@@ -26,11 +29,14 @@ doc/html
 *.so
 
 ### Executables ###
-*.exe
-*.out
+blockeditor
+doc/html
 
 ### Documentation ###
 *.pdf
 *.aux
 *.toc
 *.log
+
+### Visual studio code ###
+.vscode/
