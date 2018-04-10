@@ -24,6 +24,7 @@ namespace Config
 
     std::vector<std::string> getBlockNames();
     std::string getDefaultBlockName();
+
 }
 
 #endif // CONFIG_H

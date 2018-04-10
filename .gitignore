@@ -8,9 +8,8 @@
 
 # generated files
 src/Makefile
-moc_*
-gen/*
-!gen/
+src/bordel/*
+!src/bordel/
 .qmake.stash
 
 
