@@ -4,19 +4,19 @@
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
+#include <QRectF>
 
-class GuiBlock: public QObject, public QRectF
+class GuiBlock: public QGraphicsRectItem
 {
-  Q_OBJECT
   public:
-    GuiBlock(QPointF);
+    GuiBlock(QPointF, QGraphicsItem* g = 0);
 
-    QGraphicsRectItem *getGRect() { return mgraphic; }
+    QRectF boundingRect() const override;
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
+  
   private:
     double mwidth = 10;
     double mheight = 10;
-
-    QGraphicsRectItem * mgraphic = nullptr;
 };
 
 #endif // GUIBLOCK_H

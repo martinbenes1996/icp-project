@@ -8,7 +8,7 @@
 PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
-  mscene->
+  //mscene->
   mview = new QGraphicsView(this);
 
   QVBoxLayout *layout = new QVBoxLayout();
@@ -26,6 +26,8 @@ void PlayGround::mousePressEvent(QMouseEvent *event)
 {
     (void)event;
     std::cout << "PlayGround::mousePressEvent()\n";
+
+    GuiBlock *b = new GuiBlock(event->pos());
 }
 
 void PlayGround::mouseReleaseEvent(QMouseEvent *event)
@@ -34,14 +36,20 @@ void PlayGround::mouseReleaseEvent(QMouseEvent *event)
     else
     {
 
-      GuiBlock *b = new GuiBlock(event->windowPos());
-      mscene->addItem( b->getGRect() );
-      mview->show();
+        long x = 0;
+        // tady to odesle signal do modelu a nahraje to do x
+        // id, ktere vygeneruje model ;)
+        emit sigCreateBlock(BlockType::OneIn_OneOut, x);
+        //std::cerr << x << std::endl;
 
-      update();
-      //QPointF pos = event->localPos();
-      //mpoints.push_back(pos);
-      //update();
+        GuiBlock *b = new GuiBlock(event->windowPos());
+        mscene->addItem(b);
+        mview->show();
+
+        update();
+        //QPointF pos = event->localPos();
+        //mpoints.push_back(pos);
+        //update();
     }
 
     //(void)event;

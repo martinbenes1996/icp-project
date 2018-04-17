@@ -13,6 +13,7 @@ Model::~Model()
 
 void Model::slotCreateBlock(BlockType type, long& key)
 {
+    key = 42; return;
     key = GenerateBlockKey();
     std::string gtype = Config::getGType();
 

@@ -1,16 +1,25 @@
 
 #include <QBrush>
+#include <QPen>
 
 #include "guiblock.h"
 
-GuiBlock::GuiBlock(QPointF pos):
-  QRectF(pos.x(), pos.y(), mwidth, mheight)
+GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
+  QGraphicsRectItem(g)
 {
-  setWidth(mwidth);
-  setHeight(mheight);
+  QRectF r = QRectF(pos.x(),pos.y(),mwidth,mheight);
+  QBrush b = QBrush(Qt::darkGray, Qt::SolidPattern);
+  QPen p = QPen(b, 5);
 
-  mgraphic = new QGraphicsRectItem(*this);
-
-  QBrush b(Qt::darkGray, Qt::SolidPattern);
-  mgraphic->setBrush(b);
+  setRect(r);
+  setBrush(b);
+  setPen(p);
 }
+
+QRectF GuiBlock::boundingRect() const { return rect(); }
+  
+void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
+{
+  QGraphicsRectItem::paint(p,s,w);
+}
+  

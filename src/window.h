@@ -12,6 +12,8 @@ class Window: public QWidget
 {
     public:
         Window(QWidget *parent = 0);
+
+        PlayGround* getPlayGround() const { return mplayground; }
     private:
         PlayGround* mplayground = nullptr;
         Menu* mmenu = nullptr;

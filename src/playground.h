@@ -1,6 +1,7 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
+#include <map>
 #include <vector>
 
 #include <QGraphicsScene>
@@ -9,6 +10,8 @@
 #include <QPaintEvent>
 #include <QVBoxLayout>
 
+#include "config.h"
+#include "defs.h"
 #include "guiblock.h"
 
 class PlayGround: public QWidget
@@ -28,12 +31,19 @@ class PlayGround: public QWidget
     signals:
         void sigChoiceRejected();
 
+        void sigCreateBlock(BlockType type, long& key);
+        void sigDeleteBlock(long key);
+        void sigCreateWire(PortID startkey, PortID endkey, long& id);
+        void sigDeleteWire(long key);
+
     private:
         bool mchoice = false;
         std::vector<QPointF> mpoints;
 
         QGraphicsView *mview = nullptr;
         QGraphicsScene *mscene = nullptr;
+
+        std::map<long, GuiBlock> mBlocks;
 
 };
 
