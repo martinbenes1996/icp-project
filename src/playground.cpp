@@ -8,7 +8,6 @@
 PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
-  //mscene->
   mview = new QGraphicsView(this);
 
   QVBoxLayout *layout = new QVBoxLayout();
@@ -58,11 +57,9 @@ void PlayGround::mouseReleaseEvent(QMouseEvent *event)
 
 void PlayGround::paintEvent(QPaintEvent *event)
 {
-    QPainter p(this);
-    p.setPen(Qt::blue);
-    p.setBrush(Qt::SolidPattern);
-    for(auto& it: mpoints)
-        p.drawEllipse(it, 5, 5);
+    //QPainter p(this);
+    //p.setPen(Qt::blue);
+    //p.setBrush(Qt::SolidPattern);
+    //for(auto& it: mpoints)
+    //    p.drawEllipse(it, 5, 5);
 }
-
-void PlayGround::slotChoiceMode(bool choice) { mchoice = choice; }

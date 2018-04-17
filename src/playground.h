@@ -27,23 +27,53 @@ class PlayGround: public QWidget
         void paintEvent(QPaintEvent*);
 
     public slots:
-        void slotChoiceMode(bool);
+        /**
+         * @brief   Slot for menu's signal, that choice was set/unset.
+         * @param choice    New choice status.
+         */
+        void slotChoiceMode(bool choice) { mchoice = choice; }
     signals:
+        /**
+         * @brief   Signal (to the menu), that choice is rejected.
+         */
         void sigChoiceRejected();
 
+        /**
+         * @brief   Graphic's signal to the model, that block has been created.
+         *          The generated id (in the model) is passed by key.
+         * @param type      Type of created block.
+         * @param key       Reference for passing a key (backwards).
+         */
         void sigCreateBlock(BlockType type, long& key);
+        /**
+         * @brief   Graphic's signal to the model, that block is deleted.
+         * @param key       Key of deleted block.
+         */
         void sigDeleteBlock(long key);
+        /**
+         * @brief   Graphic's signal to the model, that wire has been created.
+         *          The generated id (in the model) is passed by key.
+         * @param startkey  Start key (port id).
+         * @param endkey    End key (port id)
+         * @param key       Reference for passing a key (backwards).
+         */
         void sigCreateWire(PortID startkey, PortID endkey, long& id);
+        /**
+         * @brief   Graphic's signal to the model, that wire is deleted.
+         * @param key       Key of deleted wire.
+         */
         void sigDeleteWire(long key);
 
     private:
-        bool mchoice = false;
-        std::vector<QPointF> mpoints;
+        bool mchoice = false; /**< Weather the block is being placed. */
 
+        std::map<long, GuiBlock> mBlocks; /**< Placed blocks. */
+
+        // i tried something. read something about these
         QGraphicsView *mview = nullptr;
         QGraphicsScene *mscene = nullptr;
 
-        std::map<long, GuiBlock> mBlocks;
+        
 
 };
 

@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_PlayGround_t {
-    QByteArrayData data[16];
-    char stringdata0[154];
+    QByteArrayData data[17];
+    char stringdata0[161];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,14 +44,15 @@ QT_MOC_LITERAL(11, 106, 8), // "startkey"
 QT_MOC_LITERAL(12, 115, 6), // "endkey"
 QT_MOC_LITERAL(13, 122, 2), // "id"
 QT_MOC_LITERAL(14, 125, 13), // "sigDeleteWire"
-QT_MOC_LITERAL(15, 139, 14) // "slotChoiceMode"
+QT_MOC_LITERAL(15, 139, 14), // "slotChoiceMode"
+QT_MOC_LITERAL(16, 154, 6) // "choice"
 
     },
     "PlayGround\0sigChoiceRejected\0\0"
     "sigCreateBlock\0BlockType\0type\0long&\0"
     "key\0sigDeleteBlock\0sigCreateWire\0"
     "PortID\0startkey\0endkey\0id\0sigDeleteWire\0"
-    "slotChoiceMode"
+    "slotChoiceMode\0choice"
 };
 #undef QT_MOC_LITERAL
 
@@ -86,7 +87,7 @@ static const uint qt_meta_data_PlayGround[] = {
     QMetaType::Void, QMetaType::Long,    7,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Bool,    2,
+    QMetaType::Void, QMetaType::Bool,   16,
 
        0        // eod
 };
