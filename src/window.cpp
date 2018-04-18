@@ -8,24 +8,22 @@ Window::Window(QWidget *parent): QWidget(parent)
 {
     resize(800, 600);
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
-
-    QSplitter *splitter = new QSplitter(this);
-
     mmenu = new Menu(this);
     mplayground = new PlayGround(this);
 
     QObject::connect(mplayground, SIGNAL(sigChoiceRejected()), mmenu, SLOT(slotChoiceRejected()));
     QObject::connect(mmenu, SIGNAL(sigChoiceMode(bool)), mplayground, SLOT(slotChoiceMode(bool)));
 
+    QSplitter *splitter = new QSplitter(this);
     splitter->addWidget(mmenu);
     splitter->addWidget(mplayground);
-
     splitter->setChildrenCollapsible(false);
+
     //layout->addWidget(mmenu);
     //layout->addWidget(mplayground);
-    layout->addWidget(splitter);
 
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(splitter);
     setLayout(layout);
 
 }

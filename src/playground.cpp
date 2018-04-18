@@ -10,6 +10,11 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   mscene = new QGraphicsScene(this);
   mview = new QGraphicsView(this);
 
+  mview->setScene(mscene);
+  mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  //mview->setDragMode(QGraphicsView::ScrollHandDrag);
+  //mscene->addEllipse(10, 10, 100, 100);
+
   QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
 
@@ -58,6 +63,7 @@ void PlayGround::mouseReleaseEvent(QMouseEvent *event)
 void PlayGround::paintEvent(QPaintEvent *event)
 {
     //QPainter p(this);
+    //p.drawLine(10, 10, 1000, 1000);
     //p.setPen(Qt::blue);
     //p.setBrush(Qt::SolidPattern);
     //for(auto& it: mpoints)

@@ -11,7 +11,7 @@ View::View()
     QObject::connect(pg,SIGNAL(sigDeleteBlock(long)),this,SIGNAL(sigDeleteBlock(long)));
     QObject::connect(pg,SIGNAL(sigCreateWire(PortID,PortID,long&)),this,SIGNAL(sigCreateWire(PortID,PortID,long&)), Qt::DirectConnection);
     QObject::connect(pg,SIGNAL(sigDeleteWire(long)),this,SIGNAL(sigDeleteWire(long)));
-    
+
     mwin.show();
 }
 
