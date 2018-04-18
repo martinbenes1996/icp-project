@@ -9,6 +9,8 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
   mview = new QGraphicsView(this);
+  //mview = new QGraphicsView(this);
+  layout = new QVBoxLayout();
 
   //mview->setSceneRect(10, 10, 300, 300);
   mview->setScene(mscene);
@@ -17,7 +19,7 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   //mview->setDragMode(QGraphicsView::ScrollHandDrag);
   //mscene->addEllipse(10, 10, 100, 100);
 
-  QVBoxLayout *layout = new QVBoxLayout();
+  //QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
 
 }

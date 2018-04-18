@@ -70,11 +70,13 @@ class PlayGround: public QWidget
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
 
+        QVBoxLayout *layout = nullptr;
+
         // i tried something. read something about these
         QGraphicsView *mview = nullptr;
         QGraphicsScene *mscene = nullptr;
 
-        
+
 
 };
 
