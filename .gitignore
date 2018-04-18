@@ -8,20 +8,19 @@
 
 # generated files
 src/Makefile
-src/bordel/*
-!src/bordel/
+src/bordel/*.cpp
 .qmake.stash
 
 
 ### Temporary files ###
-*.dep
-*~
+**.dep
+**~
 
 ### Object files ##
-*.o
+**.o
 
 ### Precompiled Headers ###
-*.gch
+**.gch
 
 ### Libraries ###
 *.a

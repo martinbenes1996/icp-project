@@ -23,4 +23,4 @@ zip:
 .PHONY: clean
 clean:
 	@echo "Cleaning generated files.";\
-	rm -rf src/gen/moc_* src/gen/*.o *~ *.gch src/Makefile src/blockeditor blockeditor xbenes49_xpolan09.zip src/.qmake.stash 2> /dev/null > /dev/null
+	rm -rf src/bordel/moc_* src/bordel/*.o *~ *.gch src/Makefile src/blockeditor blockeditor xbenes49_xpolan09.zip src/.qmake.stash 2> /dev/null > /dev/null
