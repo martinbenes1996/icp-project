@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'playground.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.10.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,12 +12,14 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'playground.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.10.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PlayGround_t {
     QByteArrayData data[17];
     char stringdata0[161];
@@ -108,43 +110,47 @@ void PlayGround::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
             typedef void (PlayGround::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&PlayGround::sigChoiceRejected)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PlayGround::sigChoiceRejected)) {
                 *result = 0;
+                return;
             }
         }
         {
             typedef void (PlayGround::*_t)(BlockType , long & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&PlayGround::sigCreateBlock)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PlayGround::sigCreateBlock)) {
                 *result = 1;
+                return;
             }
         }
         {
             typedef void (PlayGround::*_t)(long );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&PlayGround::sigDeleteBlock)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PlayGround::sigDeleteBlock)) {
                 *result = 2;
+                return;
             }
         }
         {
             typedef void (PlayGround::*_t)(PortID , PortID , long & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&PlayGround::sigCreateWire)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PlayGround::sigCreateWire)) {
                 *result = 3;
+                return;
             }
         }
         {
             typedef void (PlayGround::*_t)(long );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&PlayGround::sigDeleteWire)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PlayGround::sigDeleteWire)) {
                 *result = 4;
+                return;
             }
         }
     }
 }
 
-const QMetaObject PlayGround::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject PlayGround::staticMetaObject = {
     { &QWidget::staticMetaObject, qt_meta_stringdata_PlayGround.data,
-      qt_meta_data_PlayGround,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+      qt_meta_data_PlayGround,  qt_static_metacall, nullptr, nullptr}
 };
 
 
@@ -155,9 +161,9 @@ const QMetaObject *PlayGround::metaObject() const
 
 void *PlayGround::qt_metacast(const char *_clname)
 {
-    if (!_clname) return Q_NULLPTR;
+    if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_PlayGround.stringdata0))
-        return static_cast<void*>(const_cast< PlayGround*>(this));
+        return static_cast<void*>(this);
     return QWidget::qt_metacast(_clname);
 }
 
@@ -181,34 +187,35 @@ int PlayGround::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void PlayGround::sigChoiceRejected()
 {
-    QMetaObject::activate(this, &staticMetaObject, 0, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 
 // SIGNAL 1
 void PlayGround::sigCreateBlock(BlockType _t1, long & _t2)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void PlayGround::sigDeleteBlock(long _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void PlayGround::sigCreateWire(PortID _t1, PortID _t2, long & _t3)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
 void PlayGround::sigDeleteWire(long _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
+QT_WARNING_POP
 QT_END_MOC_NAMESPACE

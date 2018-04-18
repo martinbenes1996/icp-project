@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'model.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.10.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,12 +12,14 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'model.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.5.1. It"
+#error "This file was generated using the moc from 5.10.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Model_t {
     QByteArrayData data[14];
     char stringdata0[131];
@@ -101,19 +103,19 @@ void Model::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
             typedef void (Model::*_t)(long );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Model::sigDeleteWire)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Model::sigDeleteWire)) {
                 *result = 0;
+                return;
             }
         }
     }
 }
 
-const QMetaObject Model::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Model::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_Model.data,
-      qt_meta_data_Model,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+      qt_meta_data_Model,  qt_static_metacall, nullptr, nullptr}
 };
 
 
@@ -124,9 +126,9 @@ const QMetaObject *Model::metaObject() const
 
 void *Model::qt_metacast(const char *_clname)
 {
-    if (!_clname) return Q_NULLPTR;
+    if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_Model.stringdata0))
-        return static_cast<void*>(const_cast< Model*>(this));
+        return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
 
@@ -150,7 +152,8 @@ int Model::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void Model::sigDeleteWire(long _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
+QT_WARNING_POP
 QT_END_MOC_NAMESPACE
