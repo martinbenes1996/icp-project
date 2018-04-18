@@ -15,17 +15,22 @@
 #include "defs.h"
 #include "guiblock.h"
 
+class PlayGroundView;
+
 class PlayGround: public QWidget
 {
     Q_OBJECT
     public:
+        PlayGroundView *mview = nullptr;
+        QGraphicsScene *mscene = nullptr;
+        //QGraphicsView *mview = nullptr;
         PlayGround(QWidget* parent = 0);
 
-        void mouseMoveEvent(QMouseEvent *event);
-        void mousePressEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
+        //void mouseMoveEvent(QMouseEvent *event);
+        //void mousePressEvent(QMouseEvent *event);
+        //void mouseReleaseEvent(QMouseEvent *event);
 
-        void paintEvent(QPaintEvent*);
+        //void paintEvent(QPaintEvent*);
 
     public slots:
         /**
@@ -73,8 +78,39 @@ class PlayGround: public QWidget
         QVBoxLayout *layout = nullptr;
 
         // i tried something. read something about these
+        //QGraphicsView *mview = nullptr;
+        //QGraphicsScene *mscene = nullptr;
+
+
+
+};
+
+
+class PlayGroundView: public QWidget
+{
+    Q_OBJECT
+    public:
         QGraphicsView *mview = nullptr;
-        QGraphicsScene *mscene = nullptr;
+        PlayGround *par;
+        PlayGroundView(QWidget* parent = 0);
+
+        //void mouseMoveEvent(QMouseEvent *event);
+        void mousePressEvent(QMouseEvent *event, PlayGround *par);
+        //void mouseReleaseEvent(QMouseEvent *event);
+
+        //void paintEvent(QPaintEvent*);
+
+
+    private:
+        //bool mchoice = false; /**< Weather the block is being placed. */
+
+        //std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
+
+        QVBoxLayout *layout = nullptr;
+
+        // i tried something. read something about these
+        //QGraphicsView *mview = nullptr;
+        //QGraphicsScene *mscene = nullptr;
 
 
 
