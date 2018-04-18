@@ -10,7 +10,9 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   mscene = new QGraphicsScene(this);
   mview = new QGraphicsView(this);
 
+  //mview->setSceneRect(10, 10, 300, 300);
   mview->setScene(mscene);
+
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   //mview->setDragMode(QGraphicsView::ScrollHandDrag);
   //mscene->addEllipse(10, 10, 100, 100);
@@ -30,6 +32,9 @@ void PlayGround::mousePressEvent(QMouseEvent *event)
 {
     (void)event;
     std::cout << "PlayGround::mousePressEvent()\n";
+
+    //GuiBlock *b = new GuiBlock(event->pos());
+    mscene->addRect(event->x(), event->y(), 10, 10);
 }
 
 void PlayGround::mouseReleaseEvent(QMouseEvent *event)
