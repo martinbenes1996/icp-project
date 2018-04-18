@@ -2,6 +2,7 @@
 #define PLAYGROUND_H
 
 #include <map>
+#include <memory>
 #include <vector>
 
 #include <QGraphicsScene>
@@ -67,7 +68,7 @@ class PlayGround: public QWidget
     private:
         bool mchoice = false; /**< Weather the block is being placed. */
 
-        std::map<long, GuiBlock> mBlocks; /**< Placed blocks. */
+        std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
 
         // i tried something. read something about these
         QGraphicsView *mview = nullptr;

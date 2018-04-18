@@ -55,7 +55,7 @@ class IBlock
          * @brief Propagates level towards.
          * @param level     Propagated level.
          */
-        virtual void propagateLevel(int) = 0;
+        virtual void propagateLevel(int) {}
 
 
         /**

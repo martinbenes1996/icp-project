@@ -1,11 +1,14 @@
 
 #include <QObject>
 
+#include "config.h"
 #include "controller.h"
 #include "defs.h"
 
 Controller::Controller()
 {
+    Config::initConfig();
+    
     qRegisterMetaType<BlockType>("BlockType"); 
     QObject::connect(&v, SIGNAL(sigCreateBlock(BlockType, long&)), &m, SLOT(slotCreateBlock(BlockType, long&)), Qt::DirectConnection);
     QObject::connect(&v, SIGNAL(sigDeleteBlock(long)), &m, SLOT(slotDeleteBlock(long)));

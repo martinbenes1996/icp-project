@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include <QObject>
@@ -53,8 +54,8 @@ class Model: public QObject
         void sigDeleteWire(long key);
 
     private:
-        std::map<long, IBlock*> mBlocks; /**< Map of blocks. */
-        std::map<long, Wire*> mWires;    /**< Map of wires. */
+        std::map<long, std::shared_ptr<IBlock>> mBlocks; /**< Map of blocks. */
+        std::map<long, std::shared_ptr<Wire>> mWires;    /**< Map of wires. */
 
         /**
          * @brief Generator of the block key.

@@ -1,5 +1,7 @@
 
+#include <iostream>
 #include <map>
+#include <cmath>
 
 #include "config.h"
 #include "defs.h"
@@ -12,6 +14,14 @@ namespace
     std::map<long, std::vector<std::string>> mOut;
 
     std::vector<std::string> mBlockNames {"prvni", "druhy", "treti", "ctvrty"};
+}
+
+void Config::initConfig()
+{
+    mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
+    mf_2I1O.insert( std::make_pair(1, [](double a,double b){return a*b;}) );
+
+    mf_1I1O.insert( std::make_pair(0, [](double x){return sqrt(x);}) );
 }
 
 std::function<double(double,double)> Config::getFunc_2I1O(long type)

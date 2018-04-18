@@ -14,6 +14,8 @@ enum BlockType
 
 namespace Config
 {
+    void initConfig();
+    
     std::function<double(double,double)> getFunc_2I1O(long);
     std::function<double(double)> getFunc_1I1O(long);
 
