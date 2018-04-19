@@ -21,8 +21,8 @@ class PlayGround: public QWidget
 {
     Q_OBJECT
     public:
-        PlayGroundView *mview = nullptr;
-        QGraphicsScene *mscene = nullptr;
+        //PlayGroundView *mview = nullptr;
+        //QGraphicsScene *mscene = nullptr;
         //QGraphicsView *mview = nullptr;
         PlayGround(QWidget* parent = 0);
 
@@ -32,12 +32,14 @@ class PlayGround: public QWidget
 
         //void paintEvent(QPaintEvent*);
 
+	PlayGroundView *getPlayGroundView() { return mview; }
         bool hasChoice() { return mchoice != -1; }
 
+        // slots and signals will have to be reworked
     public slots:
         /**
-         * @brief   Slot for menu's signal, which type of box is chosen.
-         * @param box       Type of the box.
+         * @brief   Slot for menu's signal, that choice was set/unset.
+         * @param choice    New choice status.
          */
         void slotTypeChoice(long choice) { mchoice = choice; }
 
@@ -81,42 +83,25 @@ class PlayGround: public QWidget
 
         QVBoxLayout *layout = nullptr;
 
-        // i tried something. read something about these
-        //QGraphicsView *mview = nullptr;
-        //QGraphicsScene *mscene = nullptr;
-
-
+        PlayGroundView *mview = nullptr;
+        QGraphicsScene *mscene = nullptr;
 
 };
 
-
-class PlayGroundView: public QWidget
+// class for displaying playground and processing mouse interactions
+class PlayGroundView: public QGraphicsView
 {
     Q_OBJECT
+
+    // borrowed constructor -> this class only overrides some methods and sends signals
+    using QGraphicsView::QGraphicsView;
+
     public:
-        QGraphicsView *mview = nullptr;
-        PlayGround *par;
-        PlayGroundView(QWidget* parent = 0);
 
         //void mouseMoveEvent(QMouseEvent *event);
-        void mousePressEvent(QMouseEvent *event, PlayGround *par);
+        void mousePressEvent(QMouseEvent *event/*, PlayGround *par*/);
         //void mouseReleaseEvent(QMouseEvent *event);
-
         //void paintEvent(QPaintEvent*);
-
-
-    private:
-        //bool mchoice = false; /**< Weather the block is being placed. */
-
-        //std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
-
-        QVBoxLayout *layout = nullptr;
-
-        // i tried something. read something about these
-        //QGraphicsView *mview = nullptr;
-        //QGraphicsScene *mscene = nullptr;
-
-
 
 };
 

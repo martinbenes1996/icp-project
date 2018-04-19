@@ -9,41 +9,21 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
   mview = new PlayGroundView(this);
-  mview->mview->setScene(mscene);
-  //mview = new QGraphicsView(this);
-  layout = new QVBoxLayout();
+  mview->setScene(mscene);
 
-  //mview->setSceneRect(10, 10, 300, 300);
-  //mview->setScene(mscene);
-
-  //mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  //mview->setDragMode(QGraphicsView::ScrollHandDrag);
-  mscene->addEllipse(10, 10, 100, 100);
-
-  //QVBoxLayout *layout = new QVBoxLayout();
-  //layout->addWidget(mview);
-
-}
-
-PlayGroundView::PlayGroundView(QWidget* parent): QWidget(parent)
-{
-  //mscene = new QGraphicsScene(this);
-  //par = parent;
-  mview = new QGraphicsView(this);
-  layout = new QVBoxLayout();
-
-
-  //mview->setSceneRect(10, 10, 300, 300);
-  //mview->setScene(par->mscene);
-
+  // (0;0) coordinates are in the top left corner (hopefully)
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  //mview->setDragMode(QGraphicsView::ScrollHandDrag);
-  //mscene->addEllipse(10, 10, 100, 100);
 
-  //QVBoxLayout *layout = new QVBoxLayout();
+  //mview->setDragMode(QGraphicsView::ScrollHandDrag);
+
+  mscene->addEllipse(10, 10, 100, 100);     // testing elipse, will be removed
+
+  QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
 
 }
+
+// All of these functions, if needed, will have to be moved to PlayGrounView
 /*
 void PlayGround::mouseMoveEvent(QMouseEvent *event)
 {
@@ -97,11 +77,11 @@ void PlayGround::paintEvent(QPaintEvent *event)
 }
 */
 
-void PlayGroundView::mousePressEvent(QMouseEvent *event, PlayGround *par)
+void PlayGroundView::mousePressEvent(QMouseEvent *event)
 {
     (void)event;
     std::cout << "PlayGround::mousePressEvent()\n";
 
     //GuiBlock *b = new GuiBlock(event->pos());
-    par->mscene->addRect(event->x(), event->y(), 10, 10);
+    //par->mscene->addRect(event->x(), event->y(), 10, 10);
 }
