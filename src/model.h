@@ -27,7 +27,7 @@ class Model: public QObject
          * @param type      Type, first octet includes type.
          * @param key       Reference to return generated key.
          */
-        void slotCreateBlock(BlockType type, long& key);
+        void slotCreateBlock(long& key);
         /**
          * @brief Invocated, when block is deleted (in GUI).
          * @param key       Key of deleted block.
@@ -64,7 +64,7 @@ class Model: public QObject
         long GenerateBlockKey(long key) 
         { 
             static long gkey = 0;
-            return ((gkey++) << 8) | key;
+            return ((gkey++) << 16) | (key & 0xFFFF);
         }
         /**
          * @brief Generator of the wire key.
@@ -73,8 +73,9 @@ class Model: public QObject
         long GenerateWireKey(long key) 
         { 
             static long gkey = 0;
-            return ((gkey++) << 8) | key;
+            return ((gkey++) << 16) | (key & 0xFFFF);
         }
+
 
 };
 

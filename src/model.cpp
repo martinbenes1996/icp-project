@@ -14,11 +14,11 @@ Model::~Model()
 void Model::slotCreateBlock(long& key)
 {
     key = GenerateBlockKey(key);
-    //std::string gtype = Config::getGType();
 
     std::shared_ptr<IBlock> b;
+    BlockType type = Config::decodeBlockType(key);
 
-    std::cerr << "Give me " << key << ", so " << (key&0xFF) << "\n"; 
+    std::cerr << "Give me " << key << "\n";
     switch(type)
     {
         // two inputs, one output

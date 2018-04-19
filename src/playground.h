@@ -50,7 +50,7 @@ class PlayGround: public QWidget
          * @param type      Type of created block.
          * @param key       Reference for passing a key (backwards).
          */
-        void sigCreateBlock(BlockType type, long& key);
+        void sigCreateBlock(long& key);
         /**
          * @brief   Graphic's signal to the model, that block is deleted.
          * @param key       Key of deleted block.
