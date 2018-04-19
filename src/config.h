@@ -24,12 +24,7 @@ namespace Config
     std::vector<std::string> getInput(long);
     std::vector<std::string> getOutput(long);
 
-    std::string getGType();
-
     std::map<std::string, long>& getBlockNames();
-    std::string getDefaultBlockName();
-    std::string getPressedMode();
-    void setPressedMode(std::string);
 
 }
 

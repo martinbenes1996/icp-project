@@ -29,15 +29,21 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     if(mchoice != -1)
     {
         // poslat zadost o id modelu
+        long id; /**< Tady budes mit to id z modelu */
+        emit sigCreateBlock(mchoice, id);
+        std::cerr << "blockid: " << id << "\n";
 
         //QGraphicsRectItem * rect;
         // pozadat guiblock o block
-        GuiBlock * newBlock = new GuiBlock(event->pos());
-        mscene->addItem(newBlock);
+        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
+        mscene->addItem(newBlock.get());
         //rect = mscene->addRect(newBlock);
         //rect->setFlag(QGraphicsItem::ItemIsMovable);
 
         // hodit to do sceny + kolize
+
+        // a ulozis si to sem:
+        mBlocks.insert( std::make_pair(id,newBlock) );
     }
     //std::cout << "PG: Accepted signal left click\n";
 }

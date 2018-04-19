@@ -41,7 +41,10 @@ Menu::Menu(QWidget* parent): QWidget(parent)
 void Menu::slotChoicePressed(QString name)
 {
     auto m = Config::getBlockNames();
-    emit sigChoiceMode( m.at(name.toStdString()) );
+    #warning wtf logic?
+    long key = (!mButtons.at(name)->isChecked()) ?
+                    m.at(name.toStdString()) : -1;
+    emit sigChoiceMode(key);
 
     for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
     // std::cout << name.toStdString() << "\n";
@@ -50,5 +53,4 @@ void Menu::slotChoicePressed(QString name)
 void Menu::slotChoiceRejected()
 {
     for(auto& it: mButtons) { it.second->setChecked(false); }
-
 }

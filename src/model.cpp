@@ -13,38 +13,36 @@ Model::~Model()
 
 void Model::slotCreateBlock(long type, long& key)
 {
-    std::cerr << "type " << type << "\n";
-    key = GenerateBlockKey(key);
+    key = GenerateBlockKey();
 
     std::shared_ptr<IBlock> b;
     BlockType bt = Config::decodeBlockType(type);
 
-    std::cerr << "Give me " << key << "\n";
     switch(bt)
     {
         // two inputs, one output
         case BlockType::TwoIn_OneOut:
-            try {
+            //try {
                 b = std::make_shared<IBlock>(
                     Block<std::function<double(double,double)>> (
                         Config::getFunc_2I1O(type),
                         Config::getInput(type),
                         Config::getOutput(type))
                 );
-            } catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
+            //} catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
             
             break;
         
         // one input, one output
         case BlockType::OneIn_OneOut:
-            try {
+            //try {
                 b = std::make_shared<IBlock>(
                     Block<std::function<double(double)>> (
-                        Config::getFunc_1I1O(key & 0xFF),
+                        Config::getFunc_1I1O(type),
                         Config::getInput(type),
                         Config::getOutput(type))
                 );
-            } catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
+            //} catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
             break;
 
         // unknown block   
@@ -52,7 +50,6 @@ void Model::slotCreateBlock(long type, long& key)
             throw MyError("Unknown block type", ErrorType::BlockError);
     }
     mBlocks.insert( std::make_pair(key, b) );
-    std::cerr << "model: " << key << "\n";
 }
 
 void Model::slotDeleteBlock(long key)
@@ -75,7 +72,7 @@ void Model::slotDeleteBlock(long key)
 
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key)
 {
-    key = GenerateWireKey(key);
+    key = GenerateWireKey();
     std::shared_ptr<Wire> w = std::make_shared<Wire>(
         Wire(key, *mBlocks.at(startkey.key), startkey.port,
                   *mBlocks.at(endkey.key), endkey.port)

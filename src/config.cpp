@@ -13,7 +13,6 @@ namespace
     std::map<long, std::vector<std::string>> mOut;
 
     std::map<std::string, long> mBlockNames;
-    std::string mPressedMode;
 }
 
 void Config::initConfig()
@@ -24,12 +23,18 @@ void Config::initConfig()
 
     mBlockNames.insert( std::make_pair("scitacka", 0) );
     mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
+    mIn.insert( std::make_pair(0, std::vector<std::string>{"general", "general"}) );
+    mOut.insert( std::make_pair(0, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("nasobicka", 1) );
     mf_2I1O.insert( std::make_pair(1, [](double a,double b){return a*b;}) );
+    mIn.insert( std::make_pair(1, std::vector<std::string>{"general", "general"}) );
+    mOut.insert( std::make_pair(1, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("odmocnovac", 2) );
     mf_1I1O.insert( std::make_pair(2, [](double x){return sqrt(x);}) );
+    mIn.insert( std::make_pair(2, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(2, std::vector<std::string>{"general"}) );
 }
 
 BlockType Config::decodeBlockType(long key) {
@@ -40,13 +45,13 @@ BlockType Config::decodeBlockType(long key) {
 
 std::function<double(double,double)> Config::getFunc_2I1O(long key)
 {
-    try { return mf_2I1O.at((key>>8) & 0xFF); }
+    try { return mf_2I1O.at(key); }
     catch(std::out_of_range& e) { throw MyError("Unknown block key", ErrorType::BlockError); }
 }
 
 std::function<double(double)> Config::getFunc_1I1O(long key)
 {
-    try { return mf_1I1O.at((key>>8) & 0xFF); }
+    try { return mf_1I1O.at(key); }
     catch(std::out_of_range& e) { throw MyError("Unknown block key", ErrorType::BlockError); }
 }
 
@@ -61,9 +66,4 @@ std::vector<std::string> Config::getOutput(long key)
     catch(std::out_of_range& e) { throw MyError("Unknown block type", ErrorType::BlockError); }
 }
 
-std::string Config::getGType() { return "general"; }
-
 std::map<std::string, long>& Config::getBlockNames() { return mBlockNames; }
-
-std::string Config::getPressedMode() { return mPressedMode; }
-void Config::setPressedMode(std::string mode) { mPressedMode = mode; }
