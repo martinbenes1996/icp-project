@@ -8,20 +8,43 @@
 PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
-  mview = new QGraphicsView(this);
+  mview = new PlayGroundView(this);
+  mview->mview->setScene(mscene);
+  //mview = new QGraphicsView(this);
+  layout = new QVBoxLayout();
 
   //mview->setSceneRect(10, 10, 300, 300);
-  mview->setScene(mscene);
+  //mview->setScene(mscene);
+
+  //mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  //mview->setDragMode(QGraphicsView::ScrollHandDrag);
+  mscene->addEllipse(10, 10, 100, 100);
+
+  //QVBoxLayout *layout = new QVBoxLayout();
+  //layout->addWidget(mview);
+
+}
+
+PlayGroundView::PlayGroundView(QWidget* parent): QWidget(parent)
+{
+  //mscene = new QGraphicsScene(this);
+  //par = parent;
+  mview = new QGraphicsView(this);
+  layout = new QVBoxLayout();
+
+
+  //mview->setSceneRect(10, 10, 300, 300);
+  //mview->setScene(par->mscene);
 
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   //mview->setDragMode(QGraphicsView::ScrollHandDrag);
   //mscene->addEllipse(10, 10, 100, 100);
 
-  QVBoxLayout *layout = new QVBoxLayout();
+  //QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
 
 }
-
+/*
 void PlayGround::mouseMoveEvent(QMouseEvent *event)
 {
     (void)event;
@@ -71,4 +94,14 @@ void PlayGround::paintEvent(QPaintEvent *event)
     //p.setBrush(Qt::SolidPattern);
     //for(auto& it: mpoints)
     //    p.drawEllipse(it, 5, 5);
+}
+*/
+
+void PlayGroundView::mousePressEvent(QMouseEvent *event, PlayGround *par)
+{
+    (void)event;
+    std::cout << "PlayGround::mousePressEvent()\n";
+
+    //GuiBlock *b = new GuiBlock(event->pos());
+    par->mscene->addRect(event->x(), event->y(), 10, 10);
 }

@@ -16,7 +16,7 @@ Window::Window(QWidget *parent): QWidget(parent)
 
     QSplitter *splitter = new QSplitter(this);
     splitter->addWidget(mmenu);
-    splitter->addWidget(mplayground);
+    splitter->addWidget(mplayground->mview);
     splitter->setChildrenCollapsible(false);
 
     //layout->addWidget(mmenu);
