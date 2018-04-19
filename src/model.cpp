@@ -22,27 +22,22 @@ void Model::slotCreateBlock(long type, long& key)
     {
         // two inputs, one output
         case BlockType::TwoIn_OneOut:
-            //try {
-                b = std::make_shared<IBlock>(
-                    Block<std::function<double(double,double)>> (
-                        Config::getFunc_2I1O(type),
-                        Config::getInput(type),
-                        Config::getOutput(type))
-                );
-            //} catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
-            
+            b = std::make_shared<IBlock>(
+                Block<std::function<double(double,double)>> (
+                    Config::getFunc_2I1O(type),
+                    Config::getInput(type),
+                    Config::getOutput(type))
+            );
             break;
         
         // one input, one output
         case BlockType::OneIn_OneOut:
-            //try {
-                b = std::make_shared<IBlock>(
-                    Block<std::function<double(double)>> (
-                        Config::getFunc_1I1O(type),
-                        Config::getInput(type),
-                        Config::getOutput(type))
-                );
-            //} catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
+            b = std::make_shared<IBlock>(
+                Block<std::function<double(double)>> (
+                    Config::getFunc_1I1O(type),
+                    Config::getInput(type),
+                    Config::getOutput(type))
+            );
             break;
 
         // unknown block   

@@ -19,6 +19,8 @@ class GuiBlock: public QWidget//QGraphicsItem
     void paintEvent(/*QPaintEvent**/);
     void mousePressEvent(QMouseEvent *event);
 
+    void contains(QPointF);
+
   private:
     QRect rectangle;
     QBrush brush;

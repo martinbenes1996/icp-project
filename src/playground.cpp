@@ -29,6 +29,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     // pro kazdy button doplnit reakci
     if(mchoice != -1)
     {
+
         // poslat zadost o id modelu
         long id; /**< Tady budes mit to id z modelu */
         emit sigCreateBlock(mchoice, id);
@@ -36,14 +37,14 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 
         //QGraphicsRectItem * rect;
         // pozadat guiblock o block
-        mscene->addEllipse(event->x(), event->y(), 50, 50);   // <<<---- test
+        //mscene->addEllipse(event->x(), event->y(), 50, 50);   // <<<---- test
 
         //GuiBlock * newBlock = new GuiBlock(event->x(), event->y());
         //mscene->addWidget(newBlock);
 
         // pozadat guiblock o block
-        //std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
-        //mscene->addItem(newBlock.get());
+        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
+        mscene->addItem(newBlock.get());
         
         //rect = mscene->addRect(newBlock);
         //rect->setFlag(QGraphicsItem::ItemIsMovable);
@@ -51,7 +52,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         // hodit to do sceny + kolize
 
         // a ulozis si to sem:
-        //mBlocks.insert( std::make_pair(id,newBlock) );
+        mBlocks.insert( std::make_pair(id,newBlock) );
     }
     //std::cout << "PG: Accepted signal left click\n";
 }
