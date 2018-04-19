@@ -32,12 +32,16 @@ class PlayGround: public QWidget
 
         //void paintEvent(QPaintEvent*);
 
+        bool hasChoice() { return mchoice != -1; }
+
     public slots:
         /**
-         * @brief   Slot for menu's signal, that choice was set/unset.
-         * @param choice    New choice status.
+         * @brief   Slot for menu's signal, which type of box is chosen.
+         * @param box       Type of the box.
          */
-        void slotChoiceMode(bool choice) { mchoice = choice; }
+        void slotTypeChoice(long choice) { mchoice = choice; }
+
+        void slotDeleteWire(long) {}
     signals:
         /**
          * @brief   Signal (to the menu), that choice is rejected.
@@ -50,7 +54,7 @@ class PlayGround: public QWidget
          * @param type      Type of created block.
          * @param key       Reference for passing a key (backwards).
          */
-        void sigCreateBlock(long& key);
+        void sigCreateBlock(long type, long& key);
         /**
          * @brief   Graphic's signal to the model, that block is deleted.
          * @param key       Key of deleted block.
@@ -71,7 +75,7 @@ class PlayGround: public QWidget
         void sigDeleteWire(long key);
 
     private:
-        bool mchoice = false; /**< Weather the block is being placed. */
+        long mchoice = -1; /**< Weather the block is being placed. */
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
 

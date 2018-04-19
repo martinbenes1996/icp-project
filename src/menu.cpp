@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <map>
 #include <vector>
 
 #include <QVBoxLayout>
@@ -11,13 +12,13 @@
 
 Menu::Menu(QWidget* parent): QWidget(parent)
 {
-    std::vector<std::string> names = Config::getBlockNames();
     QVBoxLayout * layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignTop);
 
+    auto& names = Config::getBlockNames();
     for(auto& it: names)
     {
-        QString s = QString::fromStdString(it);
+        QString s = QString::fromStdString(it.first);
 
         // create button
         QPushButton* btn = new QPushButton(this);
@@ -39,7 +40,9 @@ Menu::Menu(QWidget* parent): QWidget(parent)
 
 void Menu::slotChoicePressed(QString name)
 {
-    emit sigChoiceMode(mButtons.at(name)->isChecked());
+    auto m = Config::getBlockNames();
+    emit sigChoiceMode( m.at(name.toStdString()) );
+
     for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
     // std::cout << name.toStdString() << "\n";
 }

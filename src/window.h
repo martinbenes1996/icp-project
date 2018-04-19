@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <iostream>
+#include <memory>
 
 #include <QWidget>
 
@@ -13,10 +14,10 @@ class Window: public QWidget
     public:
         Window(QWidget *parent = 0);
 
-        PlayGround* getPlayGround() const { return mplayground; }
+        const PlayGround* getPG() const { return mplayground.get(); }
     private:
-        PlayGround* mplayground = nullptr;
-        Menu* mmenu = nullptr;
+        std::shared_ptr<PlayGround> mplayground;
+        std::shared_ptr<Menu> mmenu;
 };
 
 #endif // WINDOW_H

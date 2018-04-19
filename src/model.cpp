@@ -11,22 +11,23 @@ Model::~Model()
     //for(auto& it: mBlocks) delete it.second;
 }
 
-void Model::slotCreateBlock(long& key)
+void Model::slotCreateBlock(long type, long& key)
 {
+    std::cerr << "type " << type << "\n";
     key = GenerateBlockKey(key);
 
     std::shared_ptr<IBlock> b;
-    BlockType type = Config::decodeBlockType(key);
+    BlockType bt = Config::decodeBlockType(type);
 
     std::cerr << "Give me " << key << "\n";
-    switch(type)
+    switch(bt)
     {
         // two inputs, one output
         case BlockType::TwoIn_OneOut:
             try {
                 b = std::make_shared<IBlock>(
                     Block<std::function<double(double,double)>> (
-                        Config::getFunc_2I1O(key & 0xFF),
+                        Config::getFunc_2I1O(type),
                         Config::getInput(type),
                         Config::getOutput(type))
                 );

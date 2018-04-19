@@ -13,23 +13,24 @@ namespace
     std::map<long, std::vector<std::string>> mOut;
 
     std::map<std::string, long> mBlockNames;
+    std::string mPressedMode;
 }
-
-#define BTYPE_EMPTY 0x00
-#define BTYPE_2I1O  0x01
-#define BTYPE_1I1O  0x02
 
 void Config::initConfig()
 {
-    mf_2I1O.insert( std::make_pair(0x0000, [](double a,double b){return a+b;}) );
-    mf_2I1O.insert( std::make_pair(0x0100, [](double a,double b){return a*b;}) );
+    mBlockNames.insert( std::make_pair("scitacka", 0) );
+    mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
 
-    mf_1I1O.insert( std::make_pair(0x0001, [](double x){return sqrt(x);}) );
+    mBlockNames.insert( std::make_pair("nasobicka", 1) );
+    mf_2I1O.insert( std::make_pair(1, [](double a,double b){return a*b;}) );
+
+    mBlockNames.insert( std::make_pair("odmocnovac", 2) );
+    mf_1I1O.insert( std::make_pair(2, [](double x){return sqrt(x);}) );
 }
 
 BlockType Config::decodeBlockType(long key) {
-    if(key & BTYPE_2I1O) return BlockType::TwoIn_OneOut;
-    else if(key & BTYPE_1I1O) return BlockType::OneIn_OneOut;
+    if(mf_2I1O.count(key) > 0) return BlockType::TwoIn_OneOut;
+    else if(mf_1I1O.count(key) > 0) return BlockType::OneIn_OneOut;
     else throw MyError("Unknown block key", ErrorType::BlockError);
 }
 
@@ -58,4 +59,7 @@ std::vector<std::string> Config::getOutput(long key)
 
 std::string Config::getGType() { return "general"; }
 
-std::map<std::string, long> Config::getBlockNames() { return mBlockNames; }
+std::map<std::string, long>& Config::getBlockNames() { return mBlockNames; }
+
+std::string Config::getPressedMode() { return mPressedMode; }
+void Config::setPressedMode(std::string mode) { mPressedMode = mode; }

@@ -2,7 +2,7 @@
 #define CONTROLLER_H
 
 #include "model.h"
-#include "view.h"
+#include "window.h"
 
 class Controller
 {
@@ -12,9 +12,7 @@ class Controller
     
     private:
         Model m;
-        View v;
-
-
+        Window w;
 };
 
 #endif // CONTROLLER_H

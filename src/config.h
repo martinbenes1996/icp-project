@@ -16,7 +16,7 @@ enum BlockType
 namespace Config
 {
     void initConfig();
-    BlockType decodeBlockType(long key);
+    BlockType decodeBlockType(long type);
 
     std::function<double(double,double)> getFunc_2I1O(long);
     std::function<double(double)> getFunc_1I1O(long);
@@ -26,8 +26,10 @@ namespace Config
 
     std::string getGType();
 
-    std::map<std::string, long> getBlockNames();
+    std::map<std::string, long>& getBlockNames();
     std::string getDefaultBlockName();
+    std::string getPressedMode();
+    void setPressedMode(std::string);
 
 }
 

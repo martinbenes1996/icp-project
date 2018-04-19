@@ -27,7 +27,7 @@ class Model: public QObject
          * @param type      Type, first octet includes type.
          * @param key       Reference to return generated key.
          */
-        void slotCreateBlock(long& key);
+        void slotCreateBlock(long type, long& key);
         /**
          * @brief Invocated, when block is deleted (in GUI).
          * @param key       Key of deleted block.

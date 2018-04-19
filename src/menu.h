@@ -19,7 +19,7 @@ class Menu: public QWidget
         void slotChoicePressed(QString);
         void slotChoiceRejected();
     signals:
-        void sigChoiceMode(bool);
+        void sigChoiceMode(long);
     private:
         QSignalMapper mmapper;
         std::map<QString, QPushButton*> mButtons;
