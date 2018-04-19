@@ -11,6 +11,9 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   mview = new PlayGroundView(this);
   mview->setScene(mscene);
 
+  mview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  mview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
   // (0;0) coordinates are in the top left corner (hopefully)
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   //mview->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
