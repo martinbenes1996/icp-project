@@ -5,24 +5,21 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
-//#include <QPointF>
-//#include <QRectF>
+#include <QPointF>
+#include <QRectF>
 
-class GuiBlock: public QWidget//QGraphicsItem
+class GuiBlock: public QGraphicsRectItem
 {
   public:
-    GuiBlock(int x, int y/*, QGraphicsItem* g = 0*/);
+    GuiBlock(QPointF, QGraphicsItem* g = 0);
 
-    //QRectF boundingRect() const override;
-    void paint(/*QPainter *, const QStyleOptionGraphicsItem *, QWidget **/);
-
-    void paintEvent(/*QPaintEvent**/);
-    void mousePressEvent(QMouseEvent *event);
+    QRectF boundingRect() const override;
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
   private:
-    QRect rectangle;
+    /*QRect rectangle;
     QBrush brush;
-    QPen pen;
+    QPen pen;*/
     double mwidth = 30;
     double mheight = 30;
 };

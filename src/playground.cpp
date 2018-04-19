@@ -36,15 +36,15 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 
         //QGraphicsRectItem * rect;
         // pozadat guiblock o block
-        mscene->addEllipse(event->x(), event->y(), 50, 50);   // <<<---- test
+        //mscene->addEllipse(event->x(), event->y(), 50, 50);   // <<<---- test
 
-        //GuiBlock * newBlock = new GuiBlock(event->x(), event->y());
-        //mscene->addWidget(newBlock);
+        GuiBlock * newBlock = new GuiBlock(event->pos());
+        mscene->addItem(newBlock);
 
         // pozadat guiblock o block
         //std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
         //mscene->addItem(newBlock.get());
-        
+
         //rect = mscene->addRect(newBlock);
         //rect->setFlag(QGraphicsItem::ItemIsMovable);
 
