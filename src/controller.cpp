@@ -16,4 +16,5 @@ Controller::Controller()
 
     QObject::connect(&m, SIGNAL(sigDeleteWire(long)), w.getPG(), SLOT(slotDeleteWire(long)));
 
+    w.show();
 }
