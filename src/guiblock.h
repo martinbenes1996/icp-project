@@ -1,6 +1,7 @@
 #ifndef GUIBLOCK_H
 #define GUIBLOCK_H
 
+#include <QWidget>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QPointF>
@@ -13,7 +14,7 @@ class GuiBlock: public QGraphicsRectItem
 
     QRectF boundingRect() const override;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
-  
+
   private:
     double mwidth = 10;
     double mheight = 10;

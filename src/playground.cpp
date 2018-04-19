@@ -23,6 +23,30 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 
 }
 
+void PlayGround::slotViewLeftClick(QMouseEvent *event)
+{
+    // pro kazdy button doplnit reakci
+    if(mchoice != -1)
+    {
+        // poslat zadost o id modelu
+
+        //QGraphicsRectItem * rect;
+        // pozadat guiblock o block
+        GuiBlock * newBlock = new GuiBlock(event->pos());
+        mscene->addItem(newBlock);
+        //rect = mscene->addRect(newBlock);
+        //rect->setFlag(QGraphicsItem::ItemIsMovable);
+
+        // hodit to do sceny + kolize
+    }
+    //std::cout << "PG: Accepted signal left click\n";
+}
+void PlayGround::slotViewRightClick(QMouseEvent *event)
+{
+    (void *)event;
+    //std::cout << "PG: Accepted signal right click\n";
+}
+
 // All of these functions, if needed, will have to be moved to PlayGrounView
 /*
 void PlayGround::mouseMoveEvent(QMouseEvent *event)
@@ -79,8 +103,19 @@ void PlayGround::paintEvent(QPaintEvent *event)
 
 void PlayGroundView::mousePressEvent(QMouseEvent *event)
 {
-    (void)event;
-    std::cout << "PlayGround::mousePressEvent()\n";
+    //(void)event;
+    //std::cout << "PlayGroundView::mousePressEvent()\n";
+
+    if(event->button() == Qt::LeftButton)
+    {
+        std::cout << "PlayGroundView: sends signal left click\n";
+        emit sigViewLeftClick(event);
+    }
+    else if(event->button() == Qt::RightButton)
+    {
+        std::cout << "PlayGroundView: sends signal right click\n";
+        emit sigViewRightClick(event);
+    }
 
     //GuiBlock *b = new GuiBlock(event->pos());
     //par->mscene->addRect(event->x(), event->y(), 10, 10);

@@ -15,6 +15,9 @@ Window::Window(QWidget *parent): QWidget(parent)
     QObject::connect(mplayground.get(), SIGNAL(sigChoiceRejected()), mmenu.get(), SLOT(slotChoiceRejected()));
     QObject::connect(mmenu.get(), SIGNAL(sigChoiceMode(long)), mplayground.get(), SLOT(slotTypeChoice(long)));
 
+    // my very own signals between view and scene
+    QObject::connect(mplayground->getPlayGroundView(), SIGNAL(sigViewLeftClick(QMouseEvent *)), mplayground.get(), SLOT(slotViewLeftClick(QMouseEvent *)));
+    QObject::connect(mplayground->getPlayGroundView(), SIGNAL(sigViewRightClick(QMouseEvent *)), mplayground.get(), SLOT(slotViewRightClick(QMouseEvent *)));
 
     // splits the menu part and the playground (view!) part
     QSplitter *splitter = new QSplitter(this);

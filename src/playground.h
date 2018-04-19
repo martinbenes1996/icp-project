@@ -43,6 +43,16 @@ class PlayGround: public QWidget
          */
         void slotTypeChoice(long choice) { mchoice = choice; }
 
+        /**
+         * @brief   Slot for PlayGroundView's signal, left mouse press.
+         */
+        void slotViewLeftClick(QMouseEvent *event);
+
+        /**
+         * @brief   Slot for PlayGroundView's signal, right mouse press.
+         */
+        void slotViewRightClick(QMouseEvent *event);
+
         void slotDeleteWire(long) {}
     signals:
         /**
@@ -103,6 +113,15 @@ class PlayGroundView: public QGraphicsView
         //void mouseReleaseEvent(QMouseEvent *event);
         //void paintEvent(QPaintEvent*);
 
+    signals:
+        /**
+         * @brief   Signal to the PlayGround, left click.
+         */
+        void sigViewLeftClick(QMouseEvent *event);
+        /**
+         * @brief   Signal to the PlayGround, right click.
+         */
+        void sigViewRightClick(QMouseEvent *event);
 };
 
 #endif // PLAYGROUND_H

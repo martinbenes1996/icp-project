@@ -17,9 +17,9 @@ GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
 }
 
 QRectF GuiBlock::boundingRect() const { return rect(); }
-  
+
 void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
   QGraphicsRectItem::paint(p,s,w);
 }
-  
+

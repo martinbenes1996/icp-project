@@ -18,6 +18,10 @@ namespace
 
 void Config::initConfig()
 {
+    // sem je potřeba dodat případ, kdy není zmáčklý žádný čudlík (zmáčknu čudlík a pak volbu zruším musí poslat -1)
+    //mBlockNames.insert( std::make_pair("nic", -1) );
+    //mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
+
     mBlockNames.insert( std::make_pair("scitacka", 0) );
     mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
 
