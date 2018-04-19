@@ -2,22 +2,29 @@
 #define GUIBLOCK_H
 
 #include <QWidget>
+#include <QPainter>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
-#include <QPointF>
-#include <QRectF>
+//#include <QPointF>
+//#include <QRectF>
 
-class GuiBlock: public QGraphicsRectItem
+class GuiBlock: public QWidget//QGraphicsItem
 {
   public:
-    GuiBlock(QPointF, QGraphicsItem* g = 0);
+    GuiBlock(int x, int y/*, QGraphicsItem* g = 0*/);
 
-    QRectF boundingRect() const override;
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
+    //QRectF boundingRect() const override;
+    void paint(/*QPainter *, const QStyleOptionGraphicsItem *, QWidget **/);
+
+    void paintEvent(/*QPaintEvent**/);
+    void mousePressEvent(QMouseEvent *event);
 
   private:
-    double mwidth = 10;
-    double mheight = 10;
+    QRect rectangle;
+    QBrush brush;
+    QPen pen;
+    double mwidth = 30;
+    double mheight = 30;
 };
 
 #endif // GUIBLOCK_H

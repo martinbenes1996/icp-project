@@ -13,10 +13,11 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 
   // (0;0) coordinates are in the top left corner (hopefully)
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  //mview->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
   //mview->setDragMode(QGraphicsView::ScrollHandDrag);
 
-  mscene->addEllipse(10, 10, 100, 100);     // testing elipse, will be removed
+  mscene->addEllipse(0, 0, 100, 100);     // testing elipse, will be removed
 
   QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
@@ -32,8 +33,13 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 
         //QGraphicsRectItem * rect;
         // pozadat guiblock o block
-        GuiBlock * newBlock = new GuiBlock(event->pos());
-        mscene->addItem(newBlock);
+        mscene->addEllipse(event->x(), event->y(), 50, 50);   // <<<---- test
+
+        //GuiBlock * newBlock = new GuiBlock(event->x(), event->y());
+        //mscene->addWidget(newBlock);
+
+        //GuiBlock * newBlock = new GuiBlock(event->pos());
+        //mscene->addItem(newBlock);
         //rect = mscene->addRect(newBlock);
         //rect->setFlag(QGraphicsItem::ItemIsMovable);
 
