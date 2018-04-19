@@ -61,18 +61,19 @@ class Model: public QObject
          * @brief Generator of the block key.
          * @returns         The generated key
          */
-        long GenerateBlockKey() 
+        long GenerateBlockKey(long key) 
         { 
-            static long key = 0;
-            return key++; }
+            static long gkey = 0;
+            return ((gkey++) << 8) | key;
+        }
         /**
          * @brief Generator of the wire key.
          * @returns         The generated key.
          */
-        long GenerateWireKey() 
+        long GenerateWireKey(long key) 
         { 
-            static long key = 0;
-            return key++;
+            static long gkey = 0;
+            return ((gkey++) << 8) | key;
         }
 
 };
