@@ -19,7 +19,7 @@ Window::Window(QWidget *parent): QWidget(parent)
     // splits the menu part and the playground (view!) part
     QSplitter *splitter = new QSplitter(this);
     splitter->addWidget(mmenu.get());
-    splitter->addWidget(mplayground.get()->getPlayGroundView()/*mplayground->mview*/);
+    splitter->addWidget(mplayground->getPlayGroundView()/*mplayground->mview*/);
     splitter->setChildrenCollapsible(false);        // individual parts cannot disappear
 
     // Sets starting proportions of splitted parts. Menu should be smaller.
