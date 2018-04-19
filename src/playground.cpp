@@ -46,10 +46,10 @@ void PlayGround::mouseReleaseEvent(QMouseEvent *event)
     else
     {
 
-        long x = 0;
+        long x = 1;
         // tady to odesle signal do modelu a nahraje to do x
         // id, ktere vygeneruje model ;)
-        emit sigCreateBlock(BlockType::OneIn_OneOut, x);
+        emit sigCreateBlock(x);
         std::cerr << "playground: " << x << std::endl;
 
         std::shared_ptr<GuiBlock> b = std::make_shared<GuiBlock>(event->windowPos());

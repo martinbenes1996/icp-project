@@ -9,8 +9,7 @@ Controller::Controller()
 {
     Config::initConfig();
     
-    qRegisterMetaType<BlockType>("BlockType"); 
-    QObject::connect(&v, SIGNAL(sigCreateBlock(BlockType, long&)), &m, SLOT(slotCreateBlock(BlockType, long&)), Qt::DirectConnection);
+    QObject::connect(&v, SIGNAL(sigCreateBlock(long&)), &m, SLOT(slotCreateBlock(long&)), Qt::DirectConnection);
     QObject::connect(&v, SIGNAL(sigDeleteBlock(long)), &m, SLOT(slotDeleteBlock(long)));
     qRegisterMetaType<PortID>("PortID");    
     QObject::connect(&v, SIGNAL(sigCreateWire(PortID, PortID, long&)), &m, SLOT(slotCreateWire(PortID, PortID, long&)), Qt::DirectConnection);

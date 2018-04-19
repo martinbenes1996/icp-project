@@ -11,12 +11,14 @@ Model::~Model()
     //for(auto& it: mBlocks) delete it.second;
 }
 
-void Model::slotCreateBlock(BlockType type, long& key)
+void Model::slotCreateBlock(long& key)
 {
-    key |= GenerateBlockKey() << 8;
-    std::string gtype = Config::getGType();
+    key = GenerateBlockKey(key);
 
     std::shared_ptr<IBlock> b;
+    BlockType type = Config::decodeBlockType(key);
+
+    std::cerr << "Give me " << key << "\n";
     switch(type)
     {
         // two inputs, one output
@@ -28,7 +30,7 @@ void Model::slotCreateBlock(BlockType type, long& key)
                         Config::getInput(type),
                         Config::getOutput(type))
                 );
-            } catch(MyError e) { std::cerr << e.getMessage() << "\n"; }
+            } catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
             
             break;
         
@@ -41,7 +43,7 @@ void Model::slotCreateBlock(BlockType type, long& key)
                         Config::getInput(type),
                         Config::getOutput(type))
                 );
-            } catch(MyError e) { std::cerr << e.getMessage() << "\n"; }
+            } catch(MyError e) { std::cerr << e.getMessage() << "\n"; throw e; }
             break;
 
         // unknown block   
@@ -72,7 +74,7 @@ void Model::slotDeleteBlock(long key)
 
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key)
 {
-    key |= GenerateWireKey() << 8;
+    key = GenerateWireKey(key);
     std::shared_ptr<Wire> w = std::make_shared<Wire>(
         Wire(key, *mBlocks.at(startkey.key), startkey.port,
                   *mBlocks.at(endkey.key), endkey.port)
