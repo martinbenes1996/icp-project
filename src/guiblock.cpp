@@ -11,13 +11,14 @@
 GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
   QGraphicsRectItem(g)
 {
-  QRectF rectangle = QRectF(pos.x(),pos.y(),mwidth,mheight);
+  QRectF rectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
   QBrush brush = QBrush(Qt::darkGray, Qt::SolidPattern);
   QPen pen = QPen(brush, 5);
 
   setRect(rectangle);
   setBrush(brush);
   setPen(pen);
+  setAcceptDrops(true);
 }
 
 
@@ -27,6 +28,11 @@ void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
   QGraphicsRectItem::paint(p,s,w);
 
+}
+
+void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+  std::cerr << "Block clicked!\n";
 }
 #endif
 

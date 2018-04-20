@@ -16,6 +16,8 @@ class GuiBlock: public QGraphicsRectItem
     QRectF boundingRect() const override;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
+
     void contains(QPointF);
 
   private:/*
