@@ -57,6 +57,10 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         // a ulozis si to sem:
         mBlocks.insert( std::make_pair(id,newBlock) );
     }
+    else
+    {
+        //QGraphicsView::mousePressEvent(event);
+    }
     //std::cout << "PG: Accepted signal left click\n";
 }
 void PlayGround::slotViewRightClick(QMouseEvent *event)
@@ -134,6 +138,8 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
         std::cout << "PlayGroundView: sends signal right click\n";
         emit sigViewRightClick(event);
     }
+
+    QGraphicsView::mousePressEvent(event);
 
     //GuiBlock *b = new GuiBlock(event->pos());
     //par->mscene->addRect(event->x(), event->y(), 10, 10);

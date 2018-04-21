@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QObject>
 #include <QPaintEvent>
