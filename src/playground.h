@@ -98,6 +98,8 @@ class PlayGround: public QWidget
         PlayGroundView *mview = nullptr;
         QGraphicsScene *mscene = nullptr;
 
+        QPointF drawLinePoint = QPointF();
+
 };
 
 // class for displaying playground and processing mouse interactions

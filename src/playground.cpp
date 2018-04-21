@@ -93,6 +93,15 @@ void PlayGround::slotBlockClick(int i)
         QPointF tempPoint;
         // zmena...
         if(mchoice == -1) block->getPoint_2I1O(&tempPoint);
+        if(drawLinePoint.isNull())
+        {
+            drawLinePoint = tempPoint;
+        }
+        else
+        {
+            mscene->addLine(drawLinePoint.x(), drawLinePoint.y(), tempPoint.x(), tempPoint.y(), QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 1));
+            drawLinePoint = QPointF();
+        }
     }
     else if(event->button() == Qt::RightButton) // delete block
     {
