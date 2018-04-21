@@ -90,17 +90,22 @@ void PlayGround::slotBlockClick(int i)
     if(event->button() == Qt::LeftButton)
     {
         std::cout << "PlayGround: received left click from block: " << i << std::endl;
-        QPointF tempPoint;
-        // zmena...
-        if(mchoice == -1) block->getPoint_2I1O(&tempPoint);
-        if(drawLinePoint.isNull())
+
+        // zmena na drat ...
+        if(mchoice == -1)
         {
-            drawLinePoint = tempPoint;
-        }
-        else
-        {
-            mscene->addLine(drawLinePoint.x(), drawLinePoint.y(), tempPoint.x(), tempPoint.y(), QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 1));
-            drawLinePoint = QPointF();
+            QPointF tempPoint;
+
+            block->getPoint_2I1O(&tempPoint);
+            if(drawLinePoint.isNull())
+            {
+                drawLinePoint = tempPoint;
+            }
+            else
+            {
+                mscene->addLine(drawLinePoint.x(), drawLinePoint.y(), tempPoint.x(), tempPoint.y(), QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 1));
+                drawLinePoint = QPointF();
+            }
         }
     }
     else if(event->button() == Qt::RightButton) // delete block
