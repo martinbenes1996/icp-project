@@ -36,6 +36,49 @@ void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
     MPEvent = event;
     emit sigBlockClick();
 }
+
+// block methods ---------------------------------------------
+void GuiBlock::getPoint_2I1O(QPointF *point)
+{
+    std::cout << "getPoint_2I1O: im here!\n";
+    QPointF itemPoint = mrectangle.center();
+    QRectF tempRect1 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
+    QRectF tempRect2 = QRectF(itemPoint.x(), itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
+    QRectF tempRect3 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y(), mwidth/2.0, mheight/2.0);
+    QRectF tempRect4 = QRectF(itemPoint.x(), itemPoint.y(), mwidth/2.0, mheight/2.0);
+
+    //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
+    if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+    {
+        point->setX(itemPoint.x() - mwidth/2);
+        point->setY(itemPoint.y() - mheight/4);
+        std::cout << "levy horni roh itemu!\n";
+        return;
+    }
+    else if(tempRect2.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+    {
+        point->setX(itemPoint.x() + mwidth/2);
+        point->setY(itemPoint.y() - mheight/4);
+        std::cout << "pravy horni roh itemu!\n";
+        return;
+    }
+    else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+    {
+        point->setX(itemPoint.x() - mwidth/2);
+        point->setY(itemPoint.y() + mheight/4);
+        std::cout << "levy dolni roh itemu!\n";
+        return;
+    }
+    else if(tempRect4.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+    {
+        point->setX(itemPoint.x() + mwidth/4);
+        point->setY(itemPoint.y() + mheight/4);
+        std::cout << "pravy dolni roh itemu!\n";
+        return;
+    }
+}
+
+
 #endif
 
 #ifdef sklad
