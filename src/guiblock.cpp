@@ -4,6 +4,7 @@
 #include <QPen>
 
 #include "guiblock.h"
+#include "window.h"
 
 //#define sklad
 
@@ -21,8 +22,8 @@ GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
   setAcceptDrops(true);
 }
 
-
-QRectF GuiBlock::boundingRect() const { return rect(); }
+// hopefully this will do it
+QRectF GuiBlock::boundingRect() const { return rect(rectangle.topLeft().x(), rectangle.topLeft().y(), mwidth, mheight); }
 
 void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
@@ -32,7 +33,18 @@ void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 
 void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-  std::cerr << "Block clicked!\n";
+    //std::cerr << "Block clicked!\n";
+
+    if(event->button() == Qt::LeftButton)
+    {
+        std::cout << "GuiBlock: sends signal left click\n";
+        emit sigBlockLeftClick(event);
+    }
+    else if(event->button() == Qt::RightButton)
+    {
+        std::cout << "GuiBlock: sends signal right click\n";
+        emit sigBlockRightClick(event);
+    }
 }
 #endif
 

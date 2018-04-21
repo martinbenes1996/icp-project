@@ -20,6 +20,16 @@ class GuiBlock: public QGraphicsRectItem
 
     void contains(QPointF);
 
+    signals:
+        /**
+         * @brief   Signal to the PlayGround, left click.
+         */
+        void sigBlockLeftClick(QGraphicsSceneMouseEvent *event);
+        /**
+         * @brief   Signal to the PlayGround, right click.
+         */
+        void sigBlockRightClick(QGraphicsSceneMouseEvent *event);
+
   private:/*
     QRect rectangle;
     QBrush brush;

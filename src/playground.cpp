@@ -49,6 +49,12 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
         mscene->addItem(newBlock.get());
 
+// connects each block to playground
+    QObject::connect(newBlock.get(), SIGNAL(sigBlockLeftClick(QGraphicsSceneMouseEvent *)),
+                     this, SLOT(slotBlockLeftClick(QGraphicsSceneMouseEvent *)));
+    QObject::connect(newBlock.get(), SIGNAL(sigBlockRightClick(QGraphicsSceneMouseEvent *)),
+                     this, SLOT(slotBlockRightClick(QGraphicsSceneMouseEvent *)));
+
         //rect = mscene->addRect(newBlock);
         //rect->setFlag(QGraphicsItem::ItemIsMovable);
 
@@ -67,6 +73,16 @@ void PlayGround::slotViewRightClick(QMouseEvent *event)
 {
     (void *)event;
     //std::cout << "PG: Accepted signal right click\n";
+}
+
+void PlayGround::slotBlockLeftClick(QGraphicsSceneMouseEvent *event)
+{
+    std::cout << "PlayGround: received left click from block\n";
+}
+
+void PlayGround::slotBlockRightClick(QGraphicsSceneMouseEvent *event)
+{
+    std::cout << "PlayGround: received right click from block\n";
 }
 
 // All of these functions, if needed, will have to be moved to PlayGrounView
@@ -128,6 +144,9 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
     //(void)event;
     //std::cout << "PlayGroundView::mousePressEvent()\n";
 
+    //std::cout << event->x() << std::endl;
+    //std::cout << (QGraphicsSceneMouseEvent *)event->x() << std::endl;
+
     if(event->button() == Qt::LeftButton)
     {
         std::cout << "PlayGroundView: sends signal left click\n";
@@ -141,6 +160,4 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
 
     QGraphicsView::mousePressEvent(event);
 
-    //GuiBlock *b = new GuiBlock(event->pos());
-    //par->mscene->addRect(event->x(), event->y(), 10, 10);
 }

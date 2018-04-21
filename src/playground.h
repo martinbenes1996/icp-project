@@ -22,16 +22,8 @@ class PlayGround: public QWidget
 {
     Q_OBJECT
     public:
-        //PlayGroundView *mview = nullptr;
-        //QGraphicsScene *mscene = nullptr;
-        //QGraphicsView *mview = nullptr;
+
         PlayGround(QWidget* parent = 0);
-
-        //void mouseMoveEvent(QMouseEvent *event);
-        //void mousePressEvent(QMouseEvent *event);
-        //void mouseReleaseEvent(QMouseEvent *event);
-
-        //void paintEvent(QPaintEvent*);
 
 	PlayGroundView *getPlayGroundView() { return mview; }
         bool hasChoice() { return mchoice != -1; }
@@ -53,6 +45,16 @@ class PlayGround: public QWidget
          * @brief   Slot for PlayGroundView's signal, right mouse press.
          */
         void slotViewRightClick(QMouseEvent *event);
+
+        /**
+         * @brief   Slot for Blocks's signal, left mouse press.
+         */
+        void slotBlockLeftClick(QGraphicsSceneMouseEvent *event);
+
+        /**
+         * @brief   Slot for Block's signal, right mouse press.
+         */
+        void slotBlockRightClick(QGraphicsSceneMouseEvent *event);
 
         void slotDeleteWire(long) {}
     signals:
