@@ -12,18 +12,17 @@
 GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
   QGraphicsRectItem(g)
 {
-  QRectF rectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
+  mrectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
   QBrush brush = QBrush(Qt::darkGray, Qt::SolidPattern);
   QPen pen = QPen(brush, 5);
 
-  setRect(rectangle);
+  setRect(mrectangle);
   setBrush(brush);
   setPen(pen);
   setAcceptDrops(true);
 }
 
-// hopefully this will do it
-QRectF GuiBlock::boundingRect() const { return rect(rectangle.topLeft().x(), rectangle.topLeft().y(), mwidth, mheight); }
+//QRectF GuiBlock::boundingRect() const { return rect(mrectangle.topLeft().x(), mrectangle.topLeft().y(), mwidth, mheight); }
 
 void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
@@ -34,17 +33,7 @@ void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     //std::cerr << "Block clicked!\n";
-
-    if(event->button() == Qt::LeftButton)
-    {
-        std::cout << "GuiBlock: sends signal left click\n";
-        emit sigBlockLeftClick(event);
-    }
-    else if(event->button() == Qt::RightButton)
-    {
-        std::cout << "GuiBlock: sends signal right click\n";
-        emit sigBlockRightClick(event);
-    }
+    emit sigBlockClick(event);
 }
 #endif
 

@@ -10,28 +10,25 @@
 
 class GuiBlock: public QObject, public QGraphicsRectItem
 {
+    Q_OBJECT
   public:
     GuiBlock(QPointF pos, QGraphicsItem* g = 0);
 
-    QRectF boundingRect() const override;
+    //QRectF boundingRect() const override;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
     void mousePressEvent(QGraphicsSceneMouseEvent*);
 
     void contains(QPointF);
 
-    signals:
-        /**
-         * @brief   Signal to the PlayGround, left click.
+  signals:
+         /**
+         * @brief   Signal to the PlayGround, mouse click.
          */
-        void sigBlockLeftClick(QGraphicsSceneMouseEvent *event);
-        /**
-         * @brief   Signal to the PlayGround, right click.
-         */
-        void sigBlockRightClick(QGraphicsSceneMouseEvent *event);
+        void sigBlockClick(QGraphicsSceneMouseEvent *event);
 
-  private:/*
-    QRect rectangle;
+  private:
+    QRectF mrectangle;/*
     QBrush brush;
     QPen pen;*/
     double mwidth = 30;

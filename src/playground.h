@@ -47,14 +47,9 @@ class PlayGround: public QWidget
         void slotViewRightClick(QMouseEvent *event);
 
         /**
-         * @brief   Slot for Blocks's signal, left mouse press.
+         * @brief   Slot for Blocks's signal, mouse press.
          */
-        void slotBlockLeftClick(QGraphicsSceneMouseEvent *event);
-
-        /**
-         * @brief   Slot for Block's signal, right mouse press.
-         */
-        void slotBlockRightClick(QGraphicsSceneMouseEvent *event);
+        void slotBlockClick(QGraphicsSceneMouseEvent *event);
 
         void slotDeleteWire(long) {}
     signals:
