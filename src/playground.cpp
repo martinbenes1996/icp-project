@@ -15,6 +15,8 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   mview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
   // (0;0) coordinates are in the top left corner (hopefully)
+  // scene is 3000*3000 pixels big. Hopefully it is enough.
+  mscene->setSceneRect(0, 0, 3000, 3000);
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   //mview->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
@@ -31,6 +33,8 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {
+    //std::cout << event->x() << " PG " << event->y() << std::endl;
+
     // pro kazdy button doplnit reakci
     if(mchoice != -1)
     {
@@ -46,8 +50,8 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         {
             mscene->removeItem(newBlock.get());
             return;
-        }
-*/
+        }*/
+
         // poslat zadost o id modelu
         long id; /**< Tady budes mit to id z modelu */
         emit sigCreateBlock(mchoice, id);
@@ -153,7 +157,7 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
 
     //std::cout << event->x() << std::endl;
     //std::cout << (QGraphicsSceneMouseEvent *)event->x() << std::endl;
-
+//std::cout << event->x() << " PGV " << event->y() << std::endl;
     if(event->button() == Qt::LeftButton)
     {
         std::cout << "PlayGroundView: sends signal left click\n";
