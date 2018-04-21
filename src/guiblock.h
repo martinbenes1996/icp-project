@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <QRectF>
 
-class GuiBlock: public QGraphicsRectItem
+class GuiBlock: public QObject, public QGraphicsRectItem
 {
   public:
     GuiBlock(QPointF pos, QGraphicsItem* g = 0);
