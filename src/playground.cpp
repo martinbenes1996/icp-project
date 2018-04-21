@@ -20,11 +20,13 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 
   //mview->setDragMode(QGraphicsView::ScrollHandDrag);
 
-  mscene->addEllipse(0, 0, 100, 100);     // testing elipse, will be removed
-
   QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
 
+
+  // connects mapper to playground: block -> playground communication
+  QObject::connect(&mmapper, SIGNAL(mapped(int)),
+                   this, SLOT(slotBlockClick(int)));
 }
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
@@ -33,37 +35,34 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     if(mchoice != -1)
     {
 
+        // pozadat guiblock o block
+        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
+        mscene->addItem(newBlock.get());
+/*
+        // kolize
+        QList<QGraphicsItem *> tempList;
+        tempList = newBlock->collidingItems();
+        if(tempList.empty() != true)
+        {
+            mscene->removeItem(newBlock.get());
+            return;
+        }
+*/
         // poslat zadost o id modelu
         long id; /**< Tady budes mit to id z modelu */
         emit sigCreateBlock(mchoice, id);
         std::cerr << "blockid: " << id << "\n";
 
-        //QGraphicsRectItem * rect;
-        // pozadat guiblock o block
-        //mscene->addEllipse(event->x(), event->y(), 50, 50);   // <<<---- test
-
-        //GuiBlock * newBlock = new GuiBlock(event->x(),event->y());
-        //mscene->addWidget(newBlock);
-
-        // pozadat guiblock o block
-        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
-        mscene->addItem(newBlock.get());
-
-        // connects each block to playground
-        QObject::connect(newBlock.get(), SIGNAL(sigBlockClick(QGraphicsSceneMouseEvent *)),
-                         this, SLOT(slotBlockClick(QGraphicsSceneMouseEvent *)));
+        // map signals
+        mmapper.setMapping(newBlock.get(), id);
+        QObject::connect(newBlock.get(), SIGNAL(sigBlockClick()),
+                         &mmapper, SLOT(map()));
 
         //rect = mscene->addRect(newBlock);
         //rect->setFlag(QGraphicsItem::ItemIsMovable);
 
-        // hodit to do sceny + kolize
-
         // a ulozis si to sem:
         mBlocks.insert( std::make_pair(id,newBlock) );
-    }
-    else
-    {
-        //QGraphicsView::mousePressEvent(event);
     }
     //std::cout << "PG: Accepted signal left click\n";
 }
@@ -73,16 +72,22 @@ void PlayGround::slotViewRightClick(QMouseEvent *event)
     //std::cout << "PG: Accepted signal right click\n";
 }
 
-void PlayGround::slotBlockClick(QGraphicsSceneMouseEvent *event)
+void PlayGround::slotBlockClick(int i)
 {
-    //std::cout << "PlayGround: received left click from block\n";
+    QGraphicsSceneMouseEvent * event;
+    std::shared_ptr<GuiBlock> block = mBlocks[i];
+    event = block->getMouseEvent();
+
     if(event->button() == Qt::LeftButton)
     {
-        std::cout << "PlayGround: received left click from block\n";
+        std::cout << "PlayGround: received left click from block: " << i << std::endl;
     }
-    else if(event->button() == Qt::RightButton)
+    else if(event->button() == Qt::RightButton) // delete block
     {
-        std::cout << "PlayGround: received right click from block\n";
+        std::cout << "PlayGround: received right click from block -> deleting block: " << i << std::endl;
+        emit sigDeleteBlock(i);     // mapper mi neumoznuje posilat long, jen int
+        mscene->removeItem(block.get());
+        mBlocks.erase(i);
     }
 }
 

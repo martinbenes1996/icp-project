@@ -21,11 +21,13 @@ class GuiBlock: public QObject, public QGraphicsRectItem
 
     void contains(QPointF);
 
+    QGraphicsSceneMouseEvent * getMouseEvent() { return MPEvent; }
+
   signals:
          /**
          * @brief   Signal to the PlayGround, mouse click.
          */
-        void sigBlockClick(QGraphicsSceneMouseEvent *event);
+        void sigBlockClick();
 
   private:
     QRectF mrectangle;/*
@@ -33,6 +35,8 @@ class GuiBlock: public QObject, public QGraphicsRectItem
     QPen pen;*/
     double mwidth = 30;
     double mheight = 30;
+
+    QGraphicsSceneMouseEvent * MPEvent = nullptr;
 };
 
 #endif // GUIBLOCK_H

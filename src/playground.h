@@ -11,6 +11,8 @@
 #include <QObject>
 #include <QPaintEvent>
 #include <QVBoxLayout>
+#include <QSignalMapper>        // map block signals
+#include <QList>
 
 #include "config.h"
 #include "defs.h"
@@ -49,7 +51,7 @@ class PlayGround: public QWidget
         /**
          * @brief   Slot for Blocks's signal, mouse press.
          */
-        void slotBlockClick(QGraphicsSceneMouseEvent *event);
+        void slotBlockClick(int);
 
         void slotDeleteWire(long) {}
     signals:
@@ -88,6 +90,8 @@ class PlayGround: public QWidget
         long mchoice = -1; /**< Weather the block is being placed. */
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
+
+        QSignalMapper mmapper;
 
         QVBoxLayout *layout = nullptr;
 
