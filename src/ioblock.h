@@ -14,7 +14,8 @@ class Input: public IBlock
          * @brief Input constructor
          * @param value     Initial value of constructor.
          */
-        Input(double value = 0, std::string type) 
+        Input(long id double value = 0, std::string type):
+            IBlock(id)
         { 
             setValue(value); 
             mO.type = type;

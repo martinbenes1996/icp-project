@@ -22,6 +22,7 @@ struct Value {
 class IBlock
 {
     public:
+        IBlock(long id): mid(id) {}
         virtual ~IBlock() {}
 
         /**
@@ -55,7 +56,7 @@ class IBlock
          * @brief Propagates level towards.
          * @param level     Propagated level.
          */
-        virtual void propagateLevel(int) {}
+        virtual void propagateLevel(int, std::set<int>) {}
 
 
         /**
@@ -79,8 +80,12 @@ class IBlock
             mkeys.insert(key);
             (void)port; // avoid warning
         }
+
+        long getId() const { return mid; }
     
     private:
+        long mid;
+
         Value mvalue; /**< Value, that a block counted/has. */
         int mlevel = -1; /**< Level of the block in the scheme. */
 

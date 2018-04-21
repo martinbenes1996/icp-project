@@ -78,12 +78,18 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 void PlayGround::slotViewRightClick(QMouseEvent *event)
 {
     (void *)event;
+
+    // for testing a loop detection
+    //long id;
+    //emit sigCreateWire({0,-1}, {1,0}, id);
+    //emit sigCreateWire({1,-1}, {0,0}, id);
+
     //std::cout << "PG: Accepted signal right click\n";
 }
 
 void PlayGround::slotBlockClick(int i)
 {
-    QGraphicsSceneMouseEvent * event;
+    QGraphicsSceneMouseEvent * event;z
     std::shared_ptr<GuiBlock> block = mBlocks[i];
     event = block->getMouseEvent();
 

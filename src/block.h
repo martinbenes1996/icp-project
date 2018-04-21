@@ -26,8 +26,8 @@ class Block: public IBlock
          * @param outtypes  Types of input.
          * @param type_o    Type of the output.
          */
-        Block(T func, std::vector<std::string> intypes, std::vector<std::string> outtypes):
-            mfunc(func)
+        Block(long id, T func, std::vector<std::string> intypes, std::vector<std::string> outtypes):
+            IBlock(id), mfunc(func)
         {
             for(auto& it: intypes) { mIn.push_back(it); }
             for(auto& it: outtypes) { mOut.push_back(it); }
@@ -45,7 +45,7 @@ class Block: public IBlock
          * @brief Propagates level towards.
          * @param level     Propagated level.
          */
-        inline void propagateLevel(int) override;
+        inline void propagateLevel(int, std::set<int>) override;
 
         /**
          * @brief Level setter. 
@@ -97,13 +97,30 @@ void Block<T>::addWire(Wire *w, long key, int port)
     catch(std::exception& ex) { throw MyError("Not an existing port", ErrorType::BlockError); }
 
     // input port && prev has lvl && my lvl is greater than lvl of prev
+    if(port < 0)
+    {
+        for(auto& it: v)
+        {
+            std::set<int> prop;
+            prop.insert(getId());
+            try {
+                it.propagateLevel(getLevel(), prop);
+            } catch(MyError& e) {
+                std::cerr << e.getMessage() << "\n";
+                exit(e.getCode());
+            }
+            
+        }
+    }
     if(port >= 0 && w->getLevel() > 0 && getLevel() > w->getLevel())
     {
         setLevel( w->getLevel() );
         // propagate lvl to the followers
         for(auto& it: v)
         {
-            it.propagateLevel(getLevel());
+            std::set<int> prop;
+            prop.insert(getId());
+            it.propagateLevel(getLevel(), prop);
         }
     }
     
@@ -111,14 +128,13 @@ void Block<T>::addWire(Wire *w, long key, int port)
 
 
 template <class T>
-void Block<T>::propagateLevel(int level)
+void Block<T>::propagateLevel(int level, std::set<int> prop)
 {
     Debug::Block("Block::propagateLEvel");
-    if(level < getLevel())
-    {
-        setLevel(level);
-        for(auto& it: mOut) { it.propagateLevel(level); }
-    }
+    if( prop.count(getId()) > 0) throw MyError("Cycle detected!", ErrorType::BlockError); 
+    if(level < getLevel()) { setLevel(level); }
+    prop.insert(getId());
+    for(auto& it: mOut) { it.propagateLevel(level, prop); }
 }
 
 //template <class T>

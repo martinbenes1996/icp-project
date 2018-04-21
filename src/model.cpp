@@ -23,18 +23,20 @@ void Model::slotCreateBlock(long type, long& key)
         // two inputs, one output
         case BlockType::TwoIn_OneOut:
             b = std::make_shared< Block<std::function<double(double,double)>> >(
-                    Config::getFunc_2I1O(type),
-                    Config::getInput(type),
-                    Config::getOutput(type)
+                key,
+                Config::getFunc_2I1O(type),
+                Config::getInput(type),
+                Config::getOutput(type)
             );
             break;
         
         // one input, one output
         case BlockType::OneIn_OneOut:
             b = std::make_shared< Block<std::function<double(double)>> >(
-                    Config::getFunc_1I1O(type),
-                    Config::getInput(type),
-                    Config::getOutput(type)
+                key,
+                Config::getFunc_1I1O(type),
+                Config::getInput(type),
+                Config::getOutput(type)
             );
             break;
 
