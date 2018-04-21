@@ -5,6 +5,9 @@
 
 #include "playground.h"
 
+// prehodit mosepressevent do sceny -> oprava view
+// guiblock subclasses podle poctu vstupu a vystupu
+
 PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
@@ -42,15 +45,17 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         // pozadat guiblock o block
         std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
         mscene->addItem(newBlock.get());
-/*
+
         // kolize
+        // nejdrive se vlozi blok do sceny a pak se zkontroluje, jestli neni kolize
+        // moc se mi to reseni nelibi, mozno udelat bez vkladani?
         QList<QGraphicsItem *> tempList;
         tempList = newBlock->collidingItems();
         if(tempList.empty() != true)
         {
             mscene->removeItem(newBlock.get());
             return;
-        }*/
+        }
 
         // poslat zadost o id modelu
         long id; /**< Tady budes mit to id z modelu */
