@@ -89,7 +89,7 @@ void PlayGround::slotViewRightClick(QMouseEvent *event)
 
 void PlayGround::slotBlockClick(int i)
 {
-    QGraphicsSceneMouseEvent * event;z
+    QGraphicsSceneMouseEvent * event;
     std::shared_ptr<GuiBlock> block = mBlocks[i];
     event = block->getMouseEvent();
 
