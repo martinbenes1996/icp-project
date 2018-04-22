@@ -81,14 +81,14 @@ void GuiBlock::getPoint_2I1O(QPointF *point)
 
 void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
-    std::cerr << "enter\n";
+    //std::cerr << "enter\n";
     QBrush b = brush();
     b.setColor(Qt::gray);
     setBrush(b);
 }
 void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
-    std::cerr << "leave\n";
+    //std::cerr << "leave\n";
     QBrush b = brush();
     b.setColor(Qt::darkGray);
     setBrush(b);
