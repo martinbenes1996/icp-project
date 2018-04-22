@@ -37,6 +37,7 @@ class PlayGround: public QWidget
          * @param choice    New choice status.
          */
         void slotTypeChoice(long choice) { mchoice = choice; }
+        void slotWireMode() { std::cerr << "Wire!\n"; }
 
         /**
          * @brief   Slot for PlayGroundView's signal, left mouse press.
