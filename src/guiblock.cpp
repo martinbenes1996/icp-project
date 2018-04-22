@@ -14,12 +14,13 @@ GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
 {
   mrectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
   QBrush brush = QBrush(Qt::darkGray, Qt::SolidPattern);
-  QPen pen = QPen(brush, 5);
+  QPen pen = QPen(brush, 1);
 
   setRect(mrectangle);
   setBrush(brush);
   setPen(pen);
   setAcceptDrops(true);
+  setAcceptHoverEvents(true);
 }
 
 //QRectF GuiBlock::boundingRect() const { return rect(mrectangle.topLeft().x(), mrectangle.topLeft().y(), mwidth, mheight); }
@@ -78,6 +79,20 @@ void GuiBlock::getPoint_2I1O(QPointF *point)
     }
 }
 
+void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
+{
+    std::cerr << "enter\n";
+    QBrush b = brush();
+    b.setColor(Qt::gray);
+    setBrush(b);
+}
+void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
+{
+    std::cerr << "leave\n";
+    QBrush b = brush();
+    b.setColor(Qt::darkGray);
+    setBrush(b);
+}
 
 #endif
 

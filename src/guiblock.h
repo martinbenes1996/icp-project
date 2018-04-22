@@ -20,6 +20,8 @@ class GuiBlock: public QObject, public QGraphicsRectItem
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
     void mousePressEvent(QGraphicsSceneMouseEvent*);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent*);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
 
     void contains(QPointF);
 
