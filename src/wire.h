@@ -19,10 +19,17 @@ class Wire
          * @param oport Output block port.
          */
         Wire(long key, IBlock& i, int iport, IBlock& o, int oport):
-            mi(i), mo(o) 
+            mi(i), mo(o), mkey(key)
         {
-            mo.addWire(this, key, oport);
-            mi.addWire(this, key, iport);
+            mo.addWire(this, mkey, oport);
+            mi.addWire(this, mkey, iport);
+        }
+
+        ~Wire()
+        {
+            mstatus = true;
+            mo.removeWireKey(mkey);
+            mi.removeWireKey(mkey);
         }
 
         /** @brief Value getter (ask input). */
@@ -37,9 +44,14 @@ class Wire
             mo.propagateLevel(level+1, prop);
         }
 
+        bool deleted() { return mstatus; }
+
     private:
         IBlock& mi; /**< Input block reference. */
         IBlock& mo; /**< Output block reference. */
+
+        long mkey;
+        bool mstatus = false;
 
 };
 
@@ -58,11 +70,13 @@ struct Port
     int getLevel() { check(); return wire->getLevel(); }
     /** @brief Value getter. */
     Value getValue() { check(); return wire->getValue(); }
+    /** @brief Wire deleted. */
+    bool deleted() { return wire->deleted(); }
+    void disconnect() { wire = nullptr; }
     /** @brief Propagate level towards. */
     void propagateLevel(int level, std::set<int> prop) 
     { 
-        check(); 
-        wire->propagateLevel(level, prop);
+        if(wire != nullptr) wire->propagateLevel(level, prop);
     }
     
     /**
@@ -71,7 +85,7 @@ struct Port
     void check()
     { 
         if(wire == nullptr) 
-            throw MyError("Port not assigned yet", ErrorType::WireError);
+            throw MyError("Port not assigned", ErrorType::WireError);
     }
 };
 

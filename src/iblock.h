@@ -58,17 +58,6 @@ class IBlock
          */
         virtual void propagateLevel(int, std::set<int>) {}
 
-
-        /**
-         * @brief Getter of keys of associated wires.
-         * @returns Set of keys.
-         */
-        std::set<long> getWireKeys() const { return mkeys; }
-        /**
-         * @brief Removes a single wire key.
-         * @param key       Key of wire to remove.
-         */
-        void removeWireKey(long key) { mkeys.erase(key); }
         /**
          * @brief Assigns wire to the port.
          * @param w         Wire to assign.
@@ -81,7 +70,25 @@ class IBlock
             (void)port; // avoid warning
         }
 
+        /**
+         * @brief Removes a single wire key.
+         * @param key       Key of wire to remove.
+         */
+        virtual void removeWireKey(long key) { mkeys.erase(key); }
+
+        /**
+         * @brief Getter of keys of associated wires.
+         * @returns Set of keys.
+         */
+        std::set<long> getWireKeys() const { return mkeys; }
+
+
+    protected:
+
         long getId() const { return mid; }
+
+        static bool isInputPort(int p) { return p >= 0; }
+        static bool isOutputPort(int p) { return p < 0; }
     
     private:
         long mid;

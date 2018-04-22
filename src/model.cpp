@@ -68,6 +68,10 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key)
     );
     
     mWires.insert( std::make_pair(key, w) );
+
+    //mBlocks.at(endkey.key)->addWire(w.get(), key, endkey.port);
+    //mBlocks.at(startkey.key)->addWire(w.get(), key, startkey.port);
+
 }
 
 void Model::slotDeleteWire(long key)
