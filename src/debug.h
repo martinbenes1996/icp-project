@@ -4,7 +4,10 @@
 #include <iostream>
 
 #ifdef DEBUG_MODE
-    #define BLOCK_DEBUG
+    //#define BLOCK_DEBUG
+    #define MODEL_DEBUG
+    //#define EVENTS_DEBUG
+    //#define GUI_DEBUG
     //...
 #endif // DEBUG_MODE
 
@@ -14,6 +17,28 @@ namespace Debug
         #ifdef BLOCK_DEBUG
             std::cerr << str << "\n";
         #endif
+        (void)str;
+    }
+
+    inline void Model(std::string str) {
+        #ifdef MODEL_DEBUG
+            std::cerr << str << "\n";
+        #endif
+        (void)str;
+    }
+
+    inline void Events(std::string str) {
+        #ifdef EVENTS_DEBUG
+            std::cerr << str << "\n";
+        #endif
+        (void)str;
+    }
+
+    inline void Gui(std::string str) {
+        #ifdef GUI_DEBUG
+            std::cerr << str << "\n";
+        #endif
+        (void)str;
     }
 }
 

@@ -27,7 +27,6 @@ class Wire
 
         ~Wire()
         {
-            mstatus = true;
             mo.removeWireKey(mkey);
             mi.removeWireKey(mkey);
         }
@@ -43,8 +42,6 @@ class Wire
         { 
             mo.propagateLevel(level+1, prop);
         }
-
-        bool deleted() { return mstatus; }
 
     private:
         IBlock& mi; /**< Input block reference. */
@@ -70,8 +67,6 @@ struct Port
     int getLevel() { check(); return wire->getLevel(); }
     /** @brief Value getter. */
     Value getValue() { check(); return wire->getValue(); }
-    /** @brief Wire deleted. */
-    bool deleted() { return wire->deleted(); }
     void disconnect() { wire = nullptr; }
     /** @brief Propagate level towards. */
     void propagateLevel(int level, std::set<int> prop) 

@@ -1,6 +1,7 @@
 
 #include <iostream>
 
+#include "debug.h"
 #include "guiblock.h"
 #include "window.h"
 
@@ -136,31 +137,27 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
     //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
     if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
+        Debug::Gui("levy horni roh itemu");
         *wireFree = !input1;
         *connector = 0;
-        std::cout << "levy horni roh itemu!\n";
-        return;
     }
     else if(tempRect2.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
+        Debug::Gui("pravy horni roh itemu");
         *wireFree = !output1;
         *connector = -1;
-        std::cout << "pravy horni roh itemu!\n";
-        return;
     }
     else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
+        Debug::Gui("levy dolni roh itemu");
         *wireFree = !input2;
         *connector = 1;
-        std::cout << "levy dolni roh itemu!\n";
-        return;
     }
     else if(tempRect4.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
+        Debug::Gui("pravy dolni roh itemu");
         *wireFree = !output2;
         *connector = -2;
-        std::cout << "pravy dolni roh itemu!\n";
-        return;
     }
 }
 
@@ -214,8 +211,12 @@ MyLine::mousePressEvent(QGraphicsSceneMousePressEvent *event)
 
 MyWire::MyWire(QPointF point1, QPointF point2)
 {
-    line = new QGraphicsLineItem(point1.x(), point1.y(), point2.x(), point2.y());
+    line = new MyLine(point1, point2);
     line->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+    QObject::connect(line, SIGNAL(sigForkWire(QPointF)), 
+                     this, SIGNAL(sigForkWire(QPointF)));
+    QObject::connect(line, SIGNAL(sigDeleteWire()),
+                     this, SIGNAL(sigDeleteWire()));
 
     text = new QGraphicsTextItem;
     text->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );

@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include "debug.h"
 #include "playground.h"
 
 // prehodit mosepressevent do sceny -> oprava view
@@ -40,8 +41,8 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   QObject::connect(&mmapper, SIGNAL(mapped(int)),
                    this, SLOT(slotBlockClick(int)));
   // connects wire to playground
-  //QObject::connect(&mmapperWire, SIGNAL(mapped(int)),
-  //                 this, SLOT(slotWireClick(int)));
+  QObject::connect(&mmapperWire, SIGNAL(mapped(int)),
+                   this, SLOT(slotWireClick(int)));
 }
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
@@ -70,7 +71,6 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         // poslat zadost o id modelu
         long id; /**< Tady budes mit to id z modelu */
         emit sigCreateBlock(mchoice, id);
-        std::cerr << "blockid: " << id << "\n";
 
         // map signals
         mmapper.setMapping(newBlock.get(), id);
@@ -99,10 +99,7 @@ void PlayGround::slotViewRightClick(QMouseEvent *event)
 
 long PlayGround::getIDFromBlock(std::shared_ptr<GuiBlock> block)
 {
-    for(auto i: mBlocks)
-    {
-        if(i.second == block) return i.first;
-    }
+    for(auto i: mBlocks) { if(i.second == block) return i.first; }
     return -1;
 }
 
@@ -115,8 +112,8 @@ bool PlayGround::createWireFunction()
     if(!success) return false;
 
     // put wire into map
-    QPointF point1 = block1.get()->getConnectorPoint(connector1);
-    QPointF point2 = block2.get()->getConnectorPoint(connector2);
+    QPointF point1 = block1->getConnectorPoint(connector1);
+    QPointF point2 = block2->getConnectorPoint(connector2);
     std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(point1, point2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
@@ -124,21 +121,23 @@ bool PlayGround::createWireFunction()
     mscene->addItem(newWire->getText());
 
     // connectiong wire (line) to playground
-    //mmapperWire.setMapping(newWire.get(), id);
-    //QObject::connect(newWire.get(), SIGNAL(sigWireClick()),
-    //                 &mmapperWire, SLOT(map()));
+    mmapperWire.setMapping(newWire.get(), id);
+    QObject::connect(newWire.get(), SIGNAL(sigForkWire()),
+                     &mmapperWire, SLOT(map()));
+    QObject::connect(newWire.get())
 
     return true;
 }
 
 void PlayGround::deleteWireFunction(long i)
 {
-    std::cout << "PlayGround: deleting wire: " << i << std::endl;
+    
+    Debug::Gui( "PlayGround: delete wire: "+std::to_string(i) );
     emit sigDeleteWire(i);     // mapper mi neumoznuje posilat long, jen int
     std::shared_ptr<MyWire> wire = mWires[i];
 
-    mscene->removeItem(wire.get()->getLine());
-    mscene->removeItem(wire.get()->getText());
+    mscene->removeItem(wire->getLine());
+    mscene->removeItem(wire->getText());
     mWires.erase(i);
 }
 
@@ -155,8 +154,8 @@ void PlayGround::slotBlockClick(int i)
 
     if(event->button() == Qt::LeftButton)
     {
-        std::cout << "PlayGround: received left click from block: " << i << std::endl;
-
+        Debug::Events("PlayGround: Left click from block "+std::to_string(i));
+        
         // wire selected ...
         if(mchoice == 3)
         {
@@ -192,18 +191,18 @@ void PlayGround::slotBlockClick(int i)
     }
     else if(event->button() == Qt::RightButton) // delete block
     {
-        std::cout << "PlayGround: received right click from block -> deleting block: " << i << std::endl;
+        Debug::Events("PlayGround: Right click, deleting block "+std::to_string(i));
         emit sigDeleteBlock(i);     // mapper mi neumoznuje posilat long, jen int
         mscene->removeItem(block.get());
         mBlocks.erase(i);
     }
 }
-/*
+
 void PlayGround::slotWireClick(int i)
 {
-    std::cout << "wire clicked\n";
+    std::cout << "clicked wire " << i << "\n";
 }
-*/
+
 
 // All of these functions, if needed, will have to be moved to PlayGrounView
 /*
@@ -269,12 +268,12 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
 //std::cout << event->x() << " PGV " << event->y() << std::endl;
     if(event->button() == Qt::LeftButton)
     {
-        std::cout << "PlayGroundView: sends signal left click\n";
+        Debug::Events("PlayGroundView: left click");
         emit sigViewLeftClick(event);
     }
     else if(event->button() == Qt::RightButton)
     {
-        std::cout << "PlayGroundView: sends signal right click\n";
+        Debug::Events("PlayGroundView: right click");
         emit sigViewRightClick(event);
     }
 

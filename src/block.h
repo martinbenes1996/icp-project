@@ -67,20 +67,10 @@ class Block: public IBlock
 template <class T>
 void Block<T>::removeWireKey(long id)
 {
-    for(auto& it: mIn) {
-        if(it.deleted()) { 
-            it.disconnect(); 
-            IBlock::removeWireKey(id);
-            return;
-        }
-    }
-    for(auto& it: mOut) {
-        if(it.deleted()) { 
-            it.disconnect(); 
-            IBlock::removeWireKey(id);
-            return;
-        }
-    }
+    if(getWireKeys().at(id) < 0) mOut[id].disconnect();
+    else mIn[id].disconnect();
+
+    IBlock::removeWireKey(id);
 }
 
 template <class T>

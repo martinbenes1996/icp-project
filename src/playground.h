@@ -58,7 +58,7 @@ class PlayGround: public QWidget
         /**
          * @brief   Slot for Wire's signal, mouse press.
          */
-        //void slotWireClick(int);
+        void slotWireClick(int);
 
         void slotDeleteWire(long);
     signals:
@@ -104,7 +104,7 @@ class PlayGround: public QWidget
         std::map<long, std::shared_ptr<MyWire>> mWires; /**< Placed wires. */
 
         QSignalMapper mmapper;
-        //QSignalMapper mmapperWire;
+        QSignalMapper mmapperWire;
 
         QVBoxLayout *layout = nullptr;
 

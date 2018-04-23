@@ -70,21 +70,22 @@ class GuiBlock: public QObject, public QGraphicsRectItem
 
 
 /* Wire is here for now */
-class MyLine: public QGraphicsLineItem//, public QObject
+class MyLine: public QObject, public QGraphicsLineItem
 {
-    //Q_OBJECT
+    Q_OBJECT
 
-    using QGraphicsLineItem::QGraphicsLineItem;
+    public:
+        MyLine(QPointF s, QPointF f, QGraphicsItem* parent = 0):
+            QGraphicsLineItem(s.x(), s.y(), f.x(), f.y(), parent) {}
 
-    //public:
-        //void mousePressEvent(QGraphicsSceneMouseEvent*) { std::cout << "MOUSE EVENT!\n"; }
-    //signals:
-        /**
-         * @brief   Signal to the PlayGround, mouse click.
-         */
-        //void sigWireClick();
-    private:
-        //QGraphicsSceneMouseEvent * MPEvent = nullptr;
+        void mousePressEvent(QGraphicsSceneMouseEvent* event) 
+        {
+            if(event->button() == Qt::LeftButton) emit sigForkWire(event->pos());
+            else if(event->button == Qt::RightButton) emit sigDeleteWire();
+        }
+    signals:
+        void sigForkWire(QPointF);
+        void sigDeleteWire();
 };
 
 class MyWire: public QObject
@@ -96,8 +97,11 @@ class MyWire: public QObject
 
         QGraphicsLineItem *getLine() { return line; }
         QGraphicsTextItem *getText() { return text; }
+    signals:
+        void sigForkWire(QPointF);
+        void sigDeleteWire();
     private:
-        QGraphicsLineItem *line;
+        MyLine *line;
         QGraphicsTextItem *text;
         // text <- depends on value from module (connect with signal)
 };

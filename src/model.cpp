@@ -14,6 +14,7 @@ Model::~Model()
 void Model::slotCreateBlock(long type, long& key)
 {
     key = GenerateBlockKey();
+    Debug::Model( "Create block "+std::to_string(key) );
 
     std::shared_ptr<IBlock> b;
     BlockType bt = Config::decodeBlockType(type);
@@ -49,11 +50,12 @@ void Model::slotCreateBlock(long type, long& key)
 
 void Model::slotDeleteBlock(long key)
 {
+    Debug::Model( "Delete block "+std::to_string(key) );
     // get connected wires
-    std::set<long> wkeys = mBlocks.at(key)->getWireKeys();
+    std::map<long,int> wkeys = mBlocks.at(key)->getWireKeys();
 
     // erase connected wires
-    for(auto& it: wkeys) { emit sigDeleteWire(it); }
+    for(auto& it: wkeys) { emit sigDeleteWire(it.first); }
 
     // erase the block
     mBlocks.erase(key);
@@ -62,6 +64,7 @@ void Model::slotDeleteBlock(long key)
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& success)
 {
     key = GenerateWireKey();
+    Debug::Model( "Create wire "+std::to_string(key) );
 
     std::shared_ptr<Wire> w = std::make_shared<Wire>(
         key,*mBlocks.at(startkey.key), startkey.port,
@@ -78,5 +81,6 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
 
 void Model::slotDeleteWire(long key)
 {
+    Debug::Model( "Delete wire "+std::to_string(key) );
     mWires.erase(key);
 }

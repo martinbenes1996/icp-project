@@ -1,6 +1,7 @@
 #ifndef IBLOCK_H
 #define IBLOCK_H
 
+#include <map>
 #include <set>
 
 #include "defs.h"
@@ -66,8 +67,7 @@ class IBlock
          */
         virtual void addWire(Wire*, long key, int port = 0) 
         { 
-            mkeys.insert(key);
-            (void)port; // avoid warning
+            mkeys.insert( std::make_pair(key,port) );
         }
 
         /**
@@ -80,7 +80,7 @@ class IBlock
          * @brief Getter of keys of associated wires.
          * @returns Set of keys.
          */
-        std::set<long> getWireKeys() const { return mkeys; }
+        std::map<long,int> getWireKeys() const { return mkeys; }
 
 
     protected:
@@ -96,7 +96,7 @@ class IBlock
         Value mvalue; /**< Value, that a block counted/has. */
         int mlevel = -1; /**< Level of the block in the scheme. */
 
-        std::set<long> mkeys; /**< Keys of the wires connected () */
+        std::map<long,int> mkeys; /**< Keys of the wires connected () */
 };
 
 #endif // IBLOCK_H
