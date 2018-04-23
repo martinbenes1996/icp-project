@@ -214,6 +214,11 @@ MyLine::mousePressEvent(QGraphicsSceneMousePressEvent *event)
 
 MyWire::MyWire(QPointF point1, QPointF point2)
 {
-    line = QLineF(point1, point2);
+    line = new QGraphicsLineItem(point1.x(), point1.y(), point2.x(), point2.y());
+    line->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+}
+MyWire::~MyWire()
+{
+    delete line;
 }
 

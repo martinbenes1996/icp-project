@@ -125,13 +125,28 @@ bool PlayGround::createWireFunction()
     std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(point1, point2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
-    mscene->addLine(newWire->getLine(), QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+    mscene->addItem(newWire->getLine());
     // connectiong wire (line) to playground
     //mmapperWire.setMapping(newWire.get(), id);
     //QObject::connect(newWire.get(), SIGNAL(sigWireClick()),
     //                 &mmapperWire, SLOT(map()));
 
     return true;
+}
+
+void PlayGround::deleteWireFunction(long i)
+{
+    std::cout << "PlayGround: deleting wire: " << i << std::endl;
+    emit sigDeleteWire(i);     // mapper mi neumoznuje posilat long, jen int
+    std::shared_ptr<MyWire> wire = mWires[i];
+
+    mscene->removeItem(wire.get()->getLine());
+    mWires.erase(i);
+}
+
+void PlayGround::slotDeleteWire(long i)
+{
+    deleteWireFunction(i);
 }
 
 void PlayGround::slotBlockClick(int i)

@@ -69,15 +69,15 @@ class GuiBlock: public QObject, public QGraphicsRectItem
 
 
 /* Wire is here for now */
-class MyLine: public QLineF//, public QObject
+class MyLine: public QGraphicsLineItem//, public QObject
 {
     //Q_OBJECT
 
-    using QLineF::QLineF;
+    using QGraphicsLineItem::QGraphicsLineItem;
 
-    /*public:
-        void mousePressEvent(QGraphicsSceneMouseEvent*);
-    signals:*/
+    //public:
+        //void mousePressEvent(QGraphicsSceneMouseEvent*) { std::cout << "MOUSE EVENT!\n"; }
+    //signals:
         /**
          * @brief   Signal to the PlayGround, mouse click.
          */
@@ -91,10 +91,11 @@ class MyWire: public QObject
     Q_OBJECT
     public:
         MyWire(QPointF point1, QPointF point2);
+        ~MyWire();
 
-        QLineF getLine() { return line; }
+        QGraphicsLineItem *getLine() { return line; }
     private:
-        QLineF line;
+        QGraphicsLineItem *line;
         // text <- depends on value from module (connect with signal)
 };
 

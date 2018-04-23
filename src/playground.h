@@ -59,7 +59,7 @@ class PlayGround: public QWidget
          */
         //void slotWireClick(int);
 
-        void slotDeleteWire(long) {}
+        void slotDeleteWire(long);
     signals:
         /**
          * @brief   Signal (to the menu), that choice is rejected.
@@ -95,6 +95,7 @@ class PlayGround: public QWidget
     private:
         long getIDFromBlock(std::shared_ptr<GuiBlock> block);
         bool createWireFunction();
+        void deleteWireFunction(long i);
 
         long mchoice = -1; /**< Weather the block is being placed. */
 
