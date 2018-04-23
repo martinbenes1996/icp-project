@@ -2,6 +2,7 @@
 #define GUIBLOCK_H
 
 #include <iostream>
+#include <string>
 
 #include <QWidget>
 #include <QPainter>
@@ -94,8 +95,10 @@ class MyWire: public QObject
         ~MyWire();
 
         QGraphicsLineItem *getLine() { return line; }
+        QGraphicsTextItem *getText() { return text; }
     private:
         QGraphicsLineItem *line;
+        QGraphicsTextItem *text;
         // text <- depends on value from module (connect with signal)
 };
 

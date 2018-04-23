@@ -216,9 +216,20 @@ MyWire::MyWire(QPointF point1, QPointF point2)
 {
     line = new QGraphicsLineItem(point1.x(), point1.y(), point2.x(), point2.y());
     line->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+
+    text = new QGraphicsTextItem;
+    text->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    text->setPlainText("0");
+    text->setDefaultTextColor(Qt::cyan);
+
+    QFont font = QFont();
+    font.setPixelSize(12);
+    text->setFont(font);
+
 }
 MyWire::~MyWire()
 {
     delete line;
+    delete text;
 }
 

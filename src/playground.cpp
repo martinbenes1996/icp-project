@@ -121,6 +121,8 @@ bool PlayGround::createWireFunction()
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
     mscene->addItem(newWire->getLine());
+    mscene->addItem(newWire->getText());
+
     // connectiong wire (line) to playground
     //mmapperWire.setMapping(newWire.get(), id);
     //QObject::connect(newWire.get(), SIGNAL(sigWireClick()),
@@ -136,6 +138,7 @@ void PlayGround::deleteWireFunction(long i)
     std::shared_ptr<MyWire> wire = mWires[i];
 
     mscene->removeItem(wire.get()->getLine());
+    mscene->removeItem(wire.get()->getText());
     mWires.erase(i);
 }
 
