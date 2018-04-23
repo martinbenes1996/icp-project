@@ -40,9 +40,6 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   // connects mapper to playground: block -> playground communication
   QObject::connect(&mmapper, SIGNAL(mapped(int)),
                    this, SLOT(slotBlockClick(int)));
-  // connects wire to playground
-  QObject::connect(&mmapperWire, SIGNAL(mapped(int)),
-                   this, SLOT(slotWireClick(int)));
 }
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
@@ -114,17 +111,16 @@ bool PlayGround::createWireFunction()
     // put wire into map
     QPointF point1 = block1->getConnectorPoint(connector1);
     QPointF point2 = block2->getConnectorPoint(connector2);
-    std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(point1, point2);
+    std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(id,point1, point2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
     mscene->addItem(newWire->getLine());
     mscene->addItem(newWire->getText());
 
-    // connectiong wire (line) to playground
-    mmapperWire.setMapping(newWire.get(), id);
-    QObject::connect(newWire.get(), SIGNAL(sigForkWire()),
-                     &mmapperWire, SLOT(map()));
-    QObject::connect(newWire.get())
+    QObject::connect(newWire.get(), SIGNAL(sigForkWire(long, QPointF)),
+                     this, SLOT(slotForkWire(long, QPointF)));
+    QObject::connect(newWire.get(), SIGNAL(sigDeleteWire(long)),
+                     this, SLOT(slotDeleteWire(long)));
 
     return true;
 }
@@ -141,9 +137,16 @@ void PlayGround::deleteWireFunction(long i)
     mWires.erase(i);
 }
 
-void PlayGround::slotDeleteWire(long i)
+void PlayGround::slotDeleteWire(long id)
 {
-    deleteWireFunction(i);
+    Debug::Events("Deleting wire "+std::to_string(id));
+    deleteWireFunction(id);
+    emit sigDeleteWire(id);
+}
+
+void PlayGround::slotForkWire(long id, QPointF)
+{
+    Debug::Events("Forking wire "+std::to_string(id));
 }
 
 void PlayGround::slotBlockClick(int i)
@@ -196,11 +199,6 @@ void PlayGround::slotBlockClick(int i)
         mscene->removeItem(block.get());
         mBlocks.erase(i);
     }
-}
-
-void PlayGround::slotWireClick(int i)
-{
-    std::cout << "clicked wire " << i << "\n";
 }
 
 

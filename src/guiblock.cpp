@@ -209,14 +209,14 @@ MyLine::mousePressEvent(QGraphicsSceneMousePressEvent *event)
     emit sigWireClick();
 }*/
 
-MyWire::MyWire(QPointF point1, QPointF point2)
+MyWire::MyWire(long id, QPointF point1, QPointF point2): mid(id)
 {
     line = new MyLine(point1, point2);
     line->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
     QObject::connect(line, SIGNAL(sigForkWire(QPointF)), 
-                     this, SIGNAL(sigForkWire(QPointF)));
+                     this, SLOT(slotForkWire(QPointF)));
     QObject::connect(line, SIGNAL(sigDeleteWire()),
-                     this, SIGNAL(sigDeleteWire()));
+                     this, SLOT(slotDeleteWire()));
 
     text = new QGraphicsTextItem;
     text->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );

@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
+#include <QGraphicsSceneMouseEvent>
 #include <QPointF>
 #include <QRectF>
 #include <QBrush>
@@ -80,8 +81,8 @@ class MyLine: public QObject, public QGraphicsLineItem
 
         void mousePressEvent(QGraphicsSceneMouseEvent* event) 
         {
-            if(event->button() == Qt::LeftButton) emit sigForkWire(event->pos());
-            else if(event->button == Qt::RightButton) emit sigDeleteWire();
+            if(event->button() == Qt::LeftButton) { emit sigForkWire(event->pos()); }
+            else if(event->button() == Qt::RightButton) { emit sigDeleteWire(); }
         }
     signals:
         void sigForkWire(QPointF);
@@ -92,15 +93,19 @@ class MyWire: public QObject
 {
     Q_OBJECT
     public:
-        MyWire(QPointF point1, QPointF point2);
+        MyWire(long, QPointF point1, QPointF point2);
         ~MyWire();
 
         QGraphicsLineItem *getLine() { return line; }
         QGraphicsTextItem *getText() { return text; }
+    public slots:
+        void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
+        void slotDeleteWire() { emit sigDeleteWire(mid); } 
     signals:
-        void sigForkWire(QPointF);
-        void sigDeleteWire();
+        void sigForkWire(long, QPointF);
+        void sigDeleteWire(long);
     private:
+        long mid;
         MyLine *line;
         QGraphicsTextItem *text;
         // text <- depends on value from module (connect with signal)
