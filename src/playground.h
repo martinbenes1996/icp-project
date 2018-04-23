@@ -1,6 +1,7 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
+#include <iostream>
 #include <map>
 #include <memory>
 #include <vector>
@@ -37,7 +38,7 @@ class PlayGround: public QWidget
          * @param choice    New choice status.
          */
         void slotTypeChoice(long choice) { mchoice = choice; }
-        void slotWireMode() { std::cerr << "Wire!\n"; }
+        void slotWireMode() { mchoice = 3; }    // wire choice
 
         /**
          * @brief   Slot for PlayGroundView's signal, left mouse press.
@@ -53,6 +54,10 @@ class PlayGround: public QWidget
          * @brief   Slot for Blocks's signal, mouse press.
          */
         void slotBlockClick(int);
+        /**
+         * @brief   Slot for Wire's signal, mouse press.
+         */
+        //void slotWireClick(int);
 
         void slotDeleteWire(long) {}
     signals:
@@ -88,18 +93,28 @@ class PlayGround: public QWidget
         void sigDeleteWire(long key);
 
     private:
+        long getIDFromBlock(std::shared_ptr<GuiBlock> block);
+        bool createWireFunction();
+
         long mchoice = -1; /**< Weather the block is being placed. */
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
+        std::map<long, std::shared_ptr<MyWire>> mWires; /**< Placed wires. */
 
         QSignalMapper mmapper;
+        //QSignalMapper mmapperWire;
 
         QVBoxLayout *layout = nullptr;
 
         PlayGroundView *mview = nullptr;
         QGraphicsScene *mscene = nullptr;
 
-        QPointF drawLinePoint = QPointF();
+        //QPointF drawLinePoint = QPointF();
+        bool createWire = false;
+        int connector1;
+        int connector2;
+        std::shared_ptr<GuiBlock> block1 = nullptr;
+        std::shared_ptr<GuiBlock> block2 = nullptr;
 
 };
 

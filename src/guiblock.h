@@ -9,12 +9,15 @@
 #include <QGraphicsRectItem>
 #include <QPointF>
 #include <QRectF>
+#include <QBrush>
+#include <QPen>
+#include <QLineF>
 
 class GuiBlock: public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
   public:
-    GuiBlock(QPointF pos, QGraphicsItem* g = 0);
+    GuiBlock(QPointF pos, int typeOfBlock, QGraphicsItem* g = 0);
 
     // QRectF boundingRect() const override;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
@@ -28,7 +31,12 @@ class GuiBlock: public QObject, public QGraphicsRectItem
     QGraphicsSceneMouseEvent * getMouseEvent() { return MPEvent; }
 
     // methods for different blocks
-    void getPoint_2I1O(QPointF *point);
+    void getPointFromBlock(int *connector, bool *wireFree);
+    QPointF getConnectorPoint(int connector);
+    //QPointF getInput_2Point();
+    //QPointF getOutput_1Point();
+    //QPointF getOutput_2Point();
+    void setConnectorAvailability(int connector, bool addWire);
     // ----------------------------
 
   signals:
@@ -47,10 +55,48 @@ class GuiBlock: public QObject, public QGraphicsRectItem
     QGraphicsSceneMouseEvent * MPEvent = nullptr;
 
     // different blocks variables - I/O
+    int type;
+
+    QBrush blockBrush;
+    QPen blockPen;
+
     bool input1 = false;
     bool input2 = false;
     bool output1 = false;
     bool output2 = false;
 };
+
+
+
+/* Wire is here for now */
+class MyLine: public QLineF//, public QObject
+{
+    //Q_OBJECT
+
+    using QLineF::QLineF;
+
+    /*public:
+        void mousePressEvent(QGraphicsSceneMouseEvent*);
+    signals:*/
+        /**
+         * @brief   Signal to the PlayGround, mouse click.
+         */
+        //void sigWireClick();
+    private:
+        //QGraphicsSceneMouseEvent * MPEvent = nullptr;
+};
+
+class MyWire: public QObject
+{
+    Q_OBJECT
+    public:
+        MyWire(QPointF point1, QPointF point2);
+
+        QLineF getLine() { return line; }
+    private:
+        QLineF line;
+        // text <- depends on value from module (connect with signal)
+};
+
 
 #endif // GUIBLOCK_H

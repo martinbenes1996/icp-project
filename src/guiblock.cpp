@@ -1,24 +1,49 @@
 
 #include <iostream>
-#include <QBrush>
-#include <QPen>
 
 #include "guiblock.h"
 #include "window.h"
 
-//#define sklad
 
-#ifndef sklad
-GuiBlock::GuiBlock(QPointF pos, QGraphicsItem *g):
+GuiBlock::GuiBlock(QPointF pos, int typeOfBlock, QGraphicsItem *g):
   QGraphicsRectItem(g)
 {
   mrectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
-  QBrush brush = QBrush(Qt::darkGray, Qt::SolidPattern);
-  QPen pen = QPen(brush, 1);
+  type = typeOfBlock;
+
+  // different types of blocks
+  if(type == 0)         // scitacka -> 2I1O
+  {
+    blockBrush = QBrush(Qt::red, Qt::SolidPattern);
+    blockPen = QPen(blockBrush, 1);
+
+    output2 = true;     // blocks second output
+  }
+  else if(type == 1)    // nasobicka -> 2I1O
+  {
+    blockBrush = QBrush(Qt::green, Qt::SolidPattern);
+    blockPen = QPen(blockBrush, 1);
+
+    output2 = true;
+  }
+  else if(type == 2)    // odmocnovacka -> 1I1O
+  {
+    blockBrush = QBrush(Qt::blue, Qt::SolidPattern);
+    blockPen = QPen(blockBrush, 1);
+
+    input2 = true;
+    output2 = true;
+  }
+  else
+  {
+    blockBrush = QBrush(Qt::darkGray, Qt::SolidPattern);
+    blockPen = QPen(blockBrush, 1);
+  }
+
 
   setRect(mrectangle);
-  setBrush(brush);
-  setPen(pen);
+  setBrush(blockBrush);
+  setPen(blockPen);
   setAcceptDrops(true);
   setAcceptHoverEvents(true);
 }
@@ -39,9 +64,69 @@ void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
 }
 
 // block methods ---------------------------------------------
-void GuiBlock::getPoint_2I1O(QPointF *point)
+
+QPointF GuiBlock::getConnectorPoint(int connector)
 {
-    std::cout << "getPoint_2I1O: im here!\n";
+    QPointF itemPoint = mrectangle.center();
+    QPointF connectorPoint;
+
+    if(connector == 0)
+    {
+        connectorPoint.setX(itemPoint.x() - mwidth/2);
+        connectorPoint.setY(itemPoint.y() - mheight/4);
+    }
+    else if(connector == 1)
+    {
+        connectorPoint.setX(itemPoint.x() - mwidth/2);
+        connectorPoint.setY(itemPoint.y() + mheight/4);
+    }
+    else if(connector == -1)
+    {
+        connectorPoint.setX(itemPoint.x() + mwidth/2);
+        connectorPoint.setY(itemPoint.y() - mheight/4);
+    }
+    else if(connector == -2)
+    {
+        connectorPoint.setX(itemPoint.x() + mwidth/2);
+        connectorPoint.setY(itemPoint.y() + mheight/4);
+    }
+
+    return connectorPoint;
+}/*
+QPointF GuiBlock::getInput_2Point()
+{
+    QPointF itemPoint = mrectangle.center();
+    QPointF input2;
+
+    input2.setX(itemPoint.x() - mwidth/2);
+    input2.setY(itemPoint.y() + mheight/4);
+
+    return input2;
+}
+QPointF GuiBlock::getOutput_1Point()
+{
+    QPointF itemPoint = mrectangle.center();
+    QPointF output1;
+
+    output1.setX(itemPoint.x() + mwidth/2);
+    output1.setY(itemPoint.y() - mheight/4);
+
+    return output1;
+}
+QPointF GuiBlock::getOutput_2Point()
+{
+    QPointF itemPoint = mrectangle.center();
+    QPointF output2;
+
+    output2.setX(itemPoint.x() + mwidth/2);
+    output2.setY(itemPoint.y() + mheight/4);
+
+    return output2;
+}*/
+
+void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
+{
+    //std::cout << "getPoint_2I1O: im here!\n";
     QPointF itemPoint = mrectangle.center();
     QRectF tempRect1 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
     QRectF tempRect2 = QRectF(itemPoint.x(), itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
@@ -51,31 +136,55 @@ void GuiBlock::getPoint_2I1O(QPointF *point)
     //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
     if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
-        point->setX(itemPoint.x() - mwidth/2);
-        point->setY(itemPoint.y() - mheight/4);
+        *wireFree = !input1;
+        *connector = 0;
         std::cout << "levy horni roh itemu!\n";
         return;
     }
     else if(tempRect2.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
-        point->setX(itemPoint.x() + mwidth/2);
-        point->setY(itemPoint.y() - mheight/4);
+        *wireFree = !output1;
+        *connector = -1;
         std::cout << "pravy horni roh itemu!\n";
         return;
     }
     else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
-        point->setX(itemPoint.x() - mwidth/2);
-        point->setY(itemPoint.y() + mheight/4);
+        *wireFree = !input2;
+        *connector = 1;
         std::cout << "levy dolni roh itemu!\n";
         return;
     }
     else if(tempRect4.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
-        point->setX(itemPoint.x() + mwidth/4);
-        point->setY(itemPoint.y() + mheight/4);
+        *wireFree = !output2;
+        *connector = -2;
         std::cout << "pravy dolni roh itemu!\n";
         return;
+    }
+}
+
+void GuiBlock::setConnectorAvailability(int connector, bool addWire)
+{
+    if(connector == 0)
+    {
+        if(addWire) input1 = true;
+        else input1 = false;
+    }
+    else if(connector == 1)
+    {
+        if(addWire) input2 = true;
+        else input2 = false;
+    }
+    else if(connector == -1)
+    {
+        if(addWire) output1 = true;
+        else output1 = false;
+    }
+    else if(connector == -2)
+    {
+        if(addWire) output2 = true;
+        else output2 = false;
     }
 }
 
@@ -89,53 +198,22 @@ void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
     //std::cerr << "leave\n";
-    QBrush b = brush();
-    b.setColor(Qt::darkGray);
-    setBrush(b);
+    //QBrush b = brush();
+    //b.setColor(Qt::darkGray);
+    setBrush(blockBrush);
 }
 
-#endif
 
-#ifdef sklad
 
-GuiBlock::GuiBlock(int x, int y/*, QGraphicsItem *g*/)//:
-  //QGraphicsRectItem(g)
+/* wire is here for now *//*
+MyLine::mousePressEvent(QGraphicsSceneMousePressEvent *event)
 {
-  QRect rectangle(x, y, mwidth, mheight); /*= QRectF(pos.x(),pos.y(),mwidth,mheight);*/
-  QBrush brush = QBrush(Qt::darkGray, Qt::SolidPattern);
-  QPen pen = QPen(brush, 5);
+    MPEvent = event;
+    emit sigWireClick();
+}*/
 
-  resize(mwidth, mheight);
-  move(x, y);
-  repaint();
-/*
-  setRect(r);
-  setBrush(b);
-  setPen(p);*/
+MyWire::MyWire(QPointF point1, QPointF point2)
+{
+    line = QLineF(point1, point2);
 }
 
-void GuiBlock::paintEvent(/*QPaintEvent**/)
-{
-    QPainter painter(this);
-std::cout << "kreslim\n";
-    painter.setPen(pen);
-    painter.drawRect(rectangle);
-}
-void GuiBlock::mousePressEvent(QMouseEvent *event)
-{
-    (void *)event;
-    std::cout << "click on widget\n";
-}
-
-/*
-QRectF GuiBlock::boundingRect() const { return rect(); }
-*/
-void GuiBlock::paint(/*QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w*/)
-{
-  //QGraphicsRectItem::paint(p,s,w);
-    QPainter painter(this);
-std::cout << "kreslim\n";
-    painter.setPen(pen);
-    painter.drawRect(rectangle);
-}
-#endif

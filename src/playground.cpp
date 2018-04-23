@@ -7,6 +7,16 @@
 
 // prehodit mosepressevent do sceny -> oprava view
 // guiblock subclasses podle poctu vstupu a vystupu
+template<class T>
+void printNOISOMap(T a)
+{
+    for(auto i:a)
+    {
+        std::cout << "map: " << i.first << " " << i.second << std::endl;
+    }
+}
+
+
 
 PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
@@ -21,9 +31,6 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   // scene is 3000*3000 pixels big. Hopefully it is enough.
   mscene->setSceneRect(0, 0, 3000, 3000);
   mview->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  //mview->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-
-  //mview->setDragMode(QGraphicsView::ScrollHandDrag);
 
   QVBoxLayout *layout = new QVBoxLayout();
   layout->addWidget(mview);
@@ -32,6 +39,9 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   // connects mapper to playground: block -> playground communication
   QObject::connect(&mmapper, SIGNAL(mapped(int)),
                    this, SLOT(slotBlockClick(int)));
+  // connects wire to playground
+  //QObject::connect(&mmapperWire, SIGNAL(mapped(int)),
+  //                 this, SLOT(slotWireClick(int)));
 }
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
@@ -39,11 +49,11 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     //std::cout << event->x() << " PG " << event->y() << std::endl;
 
     // pro kazdy button doplnit reakci
-    if(mchoice != -1)
+    if(mchoice >= 0 || mchoice <= 2)
     {
 
         // pozadat guiblock o block
-        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos());
+        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos(), mchoice);
         mscene->addItem(newBlock.get());
 
         // kolize
@@ -87,6 +97,43 @@ void PlayGround::slotViewRightClick(QMouseEvent *event)
     //std::cout << "PG: Accepted signal right click\n";
 }
 
+long PlayGround::getIDFromBlock(std::shared_ptr<GuiBlock> block)
+{
+    for(auto i: mBlocks)
+    {
+        if(i.second == block) return i.first;
+    }
+    return -1;
+}
+
+bool PlayGround::createWireFunction()
+{
+    // wire request
+    long id;
+    try
+    {
+        emit sigCreateWire({getIDFromBlock(block1),connector1}, {getIDFromBlock(block2),connector2}, id);
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    // put wire into map
+    QPointF point1 = block1.get()->getConnectorPoint(connector1);
+    QPointF point2 = block2.get()->getConnectorPoint(connector2);
+    std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(point1, point2);
+    mWires.insert( std::make_pair(id,newWire) );
+    // draw wire
+    mscene->addLine(newWire->getLine(), QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+    // connectiong wire (line) to playground
+    //mmapperWire.setMapping(newWire.get(), id);
+    //QObject::connect(newWire.get(), SIGNAL(sigWireClick()),
+    //                 &mmapperWire, SLOT(map()));
+
+    return true;
+}
+
 void PlayGround::slotBlockClick(int i)
 {
     QGraphicsSceneMouseEvent * event;
@@ -97,20 +144,36 @@ void PlayGround::slotBlockClick(int i)
     {
         std::cout << "PlayGround: received left click from block: " << i << std::endl;
 
-        // zmena na drat ...
-        if(mchoice == -1)
+        // wire selected ...
+        if(mchoice == 3)
         {
-            QPointF tempPoint;
+            bool wireFree;
+            int connector;
 
-            block->getPoint_2I1O(&tempPoint);
-            if(drawLinePoint.isNull())
+            block->getPointFromBlock(&connector, &wireFree);
+            if(block1.get() == nullptr)
             {
-                drawLinePoint = tempPoint;
+                block1 = block;
+                connector1 = connector;
+                createWire = createWire || wireFree;
             }
             else
             {
-                mscene->addLine(drawLinePoint.x(), drawLinePoint.y(), tempPoint.x(), tempPoint.y(), QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 1));
-                drawLinePoint = QPointF();
+                block2 = block;
+                connector2 = connector;
+                createWire = createWire && wireFree;
+                if(createWire)
+                {
+                    if(createWireFunction())
+                    {
+                        block1->setConnectorAvailability(connector1, true);
+                        block2->setConnectorAvailability(connector2, true);
+                    }
+                }
+                block1 = nullptr;
+                block2 = nullptr;
+                createWire = false;
+                //printNOISOMap(mWires);
             }
         }
     }
@@ -122,7 +185,12 @@ void PlayGround::slotBlockClick(int i)
         mBlocks.erase(i);
     }
 }
-
+/*
+void PlayGround::slotWireClick(int i)
+{
+    std::cout << "wire clicked\n";
+}
+*/
 
 // All of these functions, if needed, will have to be moved to PlayGrounView
 /*
