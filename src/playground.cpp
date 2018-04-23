@@ -110,14 +110,9 @@ bool PlayGround::createWireFunction()
 {
     // wire request
     long id;
-    try
-    {
-        emit sigCreateWire({getIDFromBlock(block1),connector1}, {getIDFromBlock(block2),connector2}, id);
-    }
-    catch(...)
-    {
-        return false;
-    }
+    bool success = true;
+    emit sigCreateWire({getIDFromBlock(block1),connector1}, {getIDFromBlock(block2),connector2}, id, success);
+    if(!success) return false;
 
     // put wire into map
     QPointF point1 = block1.get()->getConnectorPoint(connector1);

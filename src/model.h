@@ -20,7 +20,7 @@ class Model: public QObject
 
     public:
         ~Model();
-    
+
     public slots:
         /**
          * @brief Invocated, when block is created (in GUI).
@@ -38,14 +38,14 @@ class Model: public QObject
          * @param startkey  Key of the start block.
          * @param endkey    Key of the end block.
          * @param key       Reference to return generated key.
-         */ 
-        void slotCreateWire(PortID startkey, PortID endkey, long& key);
+         */
+        void slotCreateWire(PortID startkey, PortID endkey, long& key, bool& success);
         /**
          * @brief Invocated, when wire is deleted (in GUI).
          * @param key       Key of deleted wire.
          */
         void slotDeleteWire(long key);
-    
+
     signals:
         /**
          * @brief Emitted to the wire, connected to the block being deleted.
@@ -61,8 +61,8 @@ class Model: public QObject
          * @brief Generator of the block key.
          * @returns         The generated key
          */
-        long GenerateBlockKey() 
-        { 
+        long GenerateBlockKey()
+        {
             static long gkey = 0;
             return gkey++;
         }
@@ -70,8 +70,8 @@ class Model: public QObject
          * @brief Generator of the wire key.
          * @returns         The generated key.
          */
-        long GenerateWireKey() 
-        { 
+        long GenerateWireKey()
+        {
             static long gkey = 0;
             return gkey++;
         }

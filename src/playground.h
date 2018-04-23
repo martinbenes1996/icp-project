@@ -85,7 +85,7 @@ class PlayGround: public QWidget
          * @param endkey    End key (port id)
          * @param key       Reference for passing a key (backwards).
          */
-        void sigCreateWire(PortID startkey, PortID endkey, long& id);
+        void sigCreateWire(PortID startkey, PortID endkey, long& id, bool& success);
         /**
          * @brief   Graphic's signal to the model, that wire is deleted.
          * @param key       Key of deleted wire.
