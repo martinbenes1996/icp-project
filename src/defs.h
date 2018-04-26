@@ -42,6 +42,21 @@ struct MyError {
         ErrorType mcode = ErrorType::Ok; /**< Error code. */
 };
 
+/**
+ * @brief Value in the block or on the wire,
+ */
+struct Value {
+    std::string type; /**< Type of the value. */
+    double value = 0; /**< Value itself. */
+    bool valid = false;
+};
+
+struct Computation
+{
+    long key;
+    Value result;
+};
+
 
 
 

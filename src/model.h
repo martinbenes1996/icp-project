@@ -3,11 +3,13 @@
 
 #include <map>
 #include <memory>
+#include <queue>
 #include <string>
 
 #include <QObject>
 
 #include "config.h"
+#include "defs.h"
 #include "iblock.h"
 #include "wire.h"
 
@@ -20,6 +22,9 @@ class Model: public QObject
 
     public:
         ~Model();
+
+        void startComputation();
+        Computation computeBlock();
 
     public slots:
         /**
@@ -46,6 +51,8 @@ class Model: public QObject
          */
         void slotDeleteWire(long key);
 
+        void slotReset();
+
     signals:
         /**
          * @brief Emitted to the wire, connected to the block being deleted.
@@ -56,6 +63,8 @@ class Model: public QObject
     private:
         std::map<long, std::shared_ptr<IBlock>> mBlocks; /**< Map of blocks. */
         std::map<long, std::shared_ptr<Wire>> mWires;    /**< Map of wires. */
+
+        std::queue<long> blockComputeQueue;
 
         /**
          * @brief Generator of the block key.
@@ -75,7 +84,6 @@ class Model: public QObject
             static long gkey = 0;
             return gkey++;
         }
-
 
 };
 

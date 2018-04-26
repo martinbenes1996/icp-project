@@ -80,23 +80,13 @@ void Block<T>::addWire(Wire *w, long key, int port)
     std::vector<Port>& v = (port < 0)?mOut:mIn;
     int index = (port < 0) ? (-port-1):(port);
     
-    try {
-        // connect wire
-        if(v[index].wire == nullptr) v[index].wire = w;
-        // already connected port
-        else throw MyError("Adding wire to connected port", ErrorType::WireError);
-        
-        // add to keys
-        IBlock::addWire(w, key, port);
+    // connect wire
+    if(v[index].wire == nullptr) v[index].wire = w;
+    // already connected port
+    else throw MyError("Adding wire to connected port", ErrorType::WireError);
     
-    } catch(MyError& e) {
-        std::cerr << e.getMessage() << "\n";
-        exit(e.getCode());
-    
-    } catch(std::exception& ex) { 
-        std::cerr << ex.what() << "\n";
-        exit(1);
-    }
+    // add to keys
+    IBlock::addWire(w, key, port);
 
       // input     // level is less than propagated
     if(isInputPort(port) && getLevel() < w->getLevel()) 
@@ -112,13 +102,7 @@ void Block<T>::addWire(Wire *w, long key, int port)
         {
             std::set<int> prop;
             prop.insert(getId());
-            try {
-                it.propagateLevel(getLevel(), prop);
-            } catch(MyError& e) {
-                std::cerr << e.getMessage() << "\n";
-                exit(e.getCode());
-            }
-            
+            it.propagateLevel(getLevel(), prop);
         }
     }
 

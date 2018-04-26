@@ -13,6 +13,13 @@ enum BlockType
     TwoIn_OneOut,
 };
 
+const std::string PathSep =
+#if defined _WIN32 || defined __CYGWIN__
+    "\\";
+#else
+    "/";
+#endif
+
 namespace Config
 {
     void initConfig();
@@ -25,6 +32,8 @@ namespace Config
     std::vector<std::string> getOutput(long);
 
     std::map<std::string, long>& getBlockNames();
+    std::string getImagePath(std::string);
+    std::string getBlockName(long);
 
 }
 

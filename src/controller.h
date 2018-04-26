@@ -8,7 +8,8 @@ class Controller
 {
     public:
         Controller();
-        //~Controller() {}
+
+        void startComputation();
     
     private:
         Model m;

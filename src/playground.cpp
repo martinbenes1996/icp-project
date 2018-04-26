@@ -17,8 +17,6 @@ void printNOISOMap(T a)
     }
 }
 
-
-
 PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 {
   mscene = new QGraphicsScene(this);
@@ -42,6 +40,17 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
                    this, SLOT(slotBlockClick(int)));
 }
 
+void PlayGround::reinit()
+{
+    for(auto& it: mBlocks) { mscene->removeItem(it.second.get()); }
+    for(auto& it: mWires) { 
+        for(auto& i: it.second->getLine()) { mscene->removeItem(i.get()); }
+        mscene->removeItem(it.second->getText());
+    }    
+    mBlocks = std::map<long, std::shared_ptr<GuiBlock>>();
+    mWires = std::map<long, std::shared_ptr<MyWire>>();
+}
+
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {
     //std::cout << event->x() << " PG " << event->y() << std::endl;
@@ -49,7 +58,6 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     // pro kazdy button doplnit reakci
     if(mchoice >= 0 || mchoice <= 2)
     {
-
         // pozadat guiblock o block
         std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos(), mchoice);
         mscene->addItem(newBlock.get());
@@ -114,7 +122,7 @@ bool PlayGround::createWireFunction()
     std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(id,point1, point2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
-    mscene->addItem(newWire->getLine());
+    for(auto& it: newWire->getLine()) { mscene->addItem(it.get()); }
     mscene->addItem(newWire->getText());
 
     QObject::connect(newWire.get(), SIGNAL(sigForkWire(long, QPointF)),
@@ -132,7 +140,7 @@ void PlayGround::deleteWireFunction(long i)
     emit sigDeleteWire(i);     // mapper mi neumoznuje posilat long, jen int
     std::shared_ptr<MyWire> wire = mWires[i];
 
-    mscene->removeItem(wire->getLine());
+    for(auto& it: wire->getLine()) { mscene->removeItem(it.get()); }
     mscene->removeItem(wire->getText());
     mWires.erase(i);
 }
@@ -187,7 +195,7 @@ void PlayGround::slotBlockClick(int i)
                 }
                 block1 = nullptr;
                 block2 = nullptr;
-                createWire = false;
+                //createWire = false;
                 //printNOISOMap(mWires);
             }
         }

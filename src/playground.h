@@ -32,6 +32,8 @@ class PlayGround: public QWidget
 	PlayGroundView *getPlayGroundView() { return mview; }
         bool hasChoice() { return mchoice != -1; }
 
+        void reinit();
+
         // slots and signals will have to be reworked
     public slots:
         /**

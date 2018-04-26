@@ -1,5 +1,6 @@
 
 #include <QHBoxLayout>
+#include <QMenuBar>
 #include <QSplitter>
 #include <QList>        // list of sizes for splitter
 
@@ -34,8 +35,42 @@ Window::Window(QWidget *parent): QWidget(parent)
     QList<int> splitterList = QList<int>() << 10 << 400;
     splitter->setSizes(splitterList);
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->addWidget(splitter);
-    setLayout(layout);
+    QVBoxLayout *vlayout = new QVBoxLayout(this);
+    QMenuBar *menubar = new QMenuBar(this);
+    vlayout->addWidget(menubar);
+    setLayout(vlayout);
+
+    // create file
+    QMenu *menu1 = new QMenu(QString("Soubor"), this);
+    // new
+    QAction *newAction = menu1->addAction(QString("Nový"));
+    newAction->setShortcuts(QKeySequence::New);
+    newAction->setStatusTip( QString("Obnoví program do stavu po spuštění.") );
+    QObject::connect(newAction, SIGNAL(triggered()), this, SLOT(slotNew()) );
+    // load
+    QAction *loadAction = menu1->addAction(QString("Načíst"));
+    // save
+    QAction *saveAction = menu1->addAction(QString("Uložit"));
+    // export
+    QAction *exportAction = menu1->addAction(QString("Exportovat"));
+    // exit
+    QAction *exitAction = menu1->addAction(QString("Ukončit"));
+    exitAction->setShortcuts(QKeySequence::Quit);
+    exitAction->setShortcuts(QKeySequence::Close);
+    exitAction->setStatusTip( QString("Ukončí program a zavře okno.") );
+    QObject::connect(exitAction, SIGNAL(triggered()), this, SLOT(slotExit()) );
+
+    menubar->addMenu(menu1);
+
+    // create help
+    QMenu *menu2 = new QMenu(QString("Nápověda"), this);
+    QAction *helpAction = menu2->addAction(QString("Pomoc"));
+    menubar->addMenu(menu2);
+
+    QWidget *content = new QWidget(this);
+    vlayout->addWidget(content);
+
+    QHBoxLayout *hlayout = new QHBoxLayout(content);
+    hlayout->addWidget(splitter);
 
 }

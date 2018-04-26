@@ -6,13 +6,19 @@
 #include "window.h"
 
 
-GuiBlock::GuiBlock(QPointF pos, int typeOfBlock, QGraphicsItem *g):
-  QGraphicsRectItem(g)
+GuiBlock::GuiBlock(QPointF pos, long key, QGraphicsItem *g):
+  QGraphicsPixmapItem(g)
 {
   mrectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
-  type = typeOfBlock;
+  QPixmap i( QString::fromStdString(Config::getImagePath(
+        Config::getBlockName(key)
+    )));
+  i = i.scaledToHeight(mheight);
+  setPixmap(i);
+  setPos(pos.x()-mwidth/2,pos.y()-mheight/2);
 
   // different types of blocks
+  /*
   if(type == 0)         // scitacka -> 2I1O
   {
     blockBrush = QBrush(Qt::red, Qt::SolidPattern);
@@ -41,10 +47,10 @@ GuiBlock::GuiBlock(QPointF pos, int typeOfBlock, QGraphicsItem *g):
     blockPen = QPen(blockBrush, 1);
   }
 
-
-  setRect(mrectangle);
-  setBrush(blockBrush);
-  setPen(blockPen);
+**/
+  //setRect(mrectangle);
+  //setBrush(blockBrush);
+  //setPen(blockPen);
   setAcceptDrops(true);
   setAcceptHoverEvents(true);
 }
@@ -53,7 +59,7 @@ GuiBlock::GuiBlock(QPointF pos, int typeOfBlock, QGraphicsItem *g):
 
 void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
-  QGraphicsRectItem::paint(p,s,w);
+  QGraphicsPixmapItem::paint(p,s,w);
 
 }
 
@@ -63,6 +69,7 @@ void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
     MPEvent = event;
     emit sigBlockClick();
 }
+
 
 // block methods ---------------------------------------------
 
@@ -188,49 +195,56 @@ void GuiBlock::setConnectorAvailability(int connector, bool addWire)
 void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
     //std::cerr << "enter\n";
-    QBrush b = brush();
-    b.setColor(Qt::gray);
-    setBrush(b);
+    //QBrush b = brush();
+    //b.setColor(Qt::gray);
+    //setBrush(b);
 }
 void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
     //std::cerr << "leave\n";
     //QBrush b = brush();
     //b.setColor(Qt::darkGray);
-    setBrush(blockBrush);
+    //setBrush(blockBrush);
 }
 
 
-
-/* wire is here for now *//*
-MyLine::mousePressEvent(QGraphicsSceneMousePressEvent *event)
-{
-    MPEvent = event;
-    emit sigWireClick();
-}*/
 
 MyWire::MyWire(long id, QPointF point1, QPointF point2): mid(id)
 {
-    line = new MyLine(point1, point2);
-    line->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
-    QObject::connect(line, SIGNAL(sigForkWire(QPointF)), 
-                     this, SLOT(slotForkWire(QPointF)));
-    QObject::connect(line, SIGNAL(sigDeleteWire()),
-                     this, SLOT(slotDeleteWire()));
+    for(auto& it: MyWire::splitLine(point1, point2))
+    {
+        std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)), 
+                        this, SLOT(slotForkWire(QPointF)));
+        QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
+                        this, SLOT(slotDeleteWire()));
+        mLines.push_back(l);
+    }
 
-    text = new QGraphicsTextItem;
-    text->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
-    text->setPlainText("0");
-    text->setDefaultTextColor(Qt::cyan);
+    mtext = std::make_shared<QGraphicsTextItem>();
+    mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    mtext->setPlainText("0");
+    mtext->setDefaultTextColor(Qt::cyan);
 
     QFont font = QFont();
     font.setPixelSize(12);
-    text->setFont(font);
+    mtext->setFont(font);
 
 }
-MyWire::~MyWire()
+
+std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
 {
-    delete line;
-    delete text;
+    std::vector<std::pair<QPointF,QPointF>> v;
+    double dx = (f.x()-s.x())/2.0;
+    double dy = (f.y()-s.y());
+    QPointF p1(s.x()+dx, s.y());
+    QPointF p2(s.x()+dx, s.y()+dy);
+    std::cout << s.x() << " " << s.y() << ", " << f.x() << " " << f.y() << "\n";
+    std::cout << dx << " " << dy << "\n";
+    v.push_back( std::make_pair(s, p1) );
+    v.push_back( std::make_pair(p1, p2) );
+    v.push_back( std::make_pair(p2, f) );
+    return v;
 }
 

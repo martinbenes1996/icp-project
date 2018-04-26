@@ -2,6 +2,7 @@
 #define GUIBLOCK_H
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include <QWidget>
@@ -15,11 +16,11 @@
 #include <QPen>
 #include <QLineF>
 
-class GuiBlock: public QObject, public QGraphicsRectItem
+class GuiBlock: public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
   public:
-    GuiBlock(QPointF pos, int typeOfBlock, QGraphicsItem* g = 0);
+    GuiBlock(QPointF pos, long, QGraphicsItem* g = 0);
 
     // QRectF boundingRect() const override;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
@@ -94,10 +95,9 @@ class MyWire: public QObject
     Q_OBJECT
     public:
         MyWire(long, QPointF point1, QPointF point2);
-        ~MyWire();
 
-        QGraphicsLineItem *getLine() { return line; }
-        QGraphicsTextItem *getText() { return text; }
+        std::vector<std::shared_ptr<MyLine>> getLine() { return mLines; }
+        QGraphicsTextItem *getText() { return mtext.get(); }
     public slots:
         void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
         void slotDeleteWire() { emit sigDeleteWire(mid); } 
@@ -106,8 +106,9 @@ class MyWire: public QObject
         void sigDeleteWire(long);
     private:
         long mid;
-        MyLine *line;
-        QGraphicsTextItem *text;
+        std::vector<std::shared_ptr<MyLine>> mLines;
+        std::shared_ptr<QGraphicsTextItem> mtext;
+        static std::vector<std::pair<QPointF,QPointF>> splitLine(QPointF, QPointF);
         // text <- depends on value from module (connect with signal)
 };
 

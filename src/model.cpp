@@ -7,8 +7,7 @@
 
 Model::~Model()
 {
-    //for(auto& it: mWires) delete it.second;
-    //for(auto& it: mBlocks) delete it.second;
+    slotReset();
 }
 
 void Model::slotCreateBlock(long type, long& key)
@@ -66,16 +65,16 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
     key = GenerateWireKey();
     Debug::Model( "Create wire "+std::to_string(key) );
 
-    std::shared_ptr<Wire> w = std::make_shared<Wire>(
+    std::shared_ptr<Wire> w;
+    try {
+        w = std::make_shared<Wire>(
         key,*mBlocks.at(startkey.key), startkey.port,
             *mBlocks.at(endkey.key), endkey.port
-    );
-
-
+        );
+    } catch(MyError& e) { std::cerr << e.getMessage() << "\n"; success = false; }
+    
     mWires.insert( std::make_pair(key, w) );
-
-    //mBlocks.at(endkey.key)->addWire(w.get(), key, endkey.port);
-    //mBlocks.at(startkey.key)->addWire(w.get(), key, startkey.port);
+    success = true;
 
 }
 
@@ -83,4 +82,48 @@ void Model::slotDeleteWire(long key)
 {
     Debug::Model( "Delete wire "+std::to_string(key) );
     mWires.erase(key);
+}
+
+void Model::startComputation()
+{
+    blockComputeQueue = std::queue<long>();
+    int level = 0;
+    bool end = false;
+    while(!end)
+    {
+        bool found = false; 
+        for(auto& it: mBlocks) {
+            if(it.second->getLevel() == level) {
+                blockComputeQueue.push(it.first);
+                found = true;
+            }   
+            if(it.second->getLevel() == -1)
+            {
+                throw MyError("Not all blocks connected!", ErrorType::BlockError);
+            }
+        }
+
+        level++;
+        end = !found;
+    }
+}
+
+Computation Model::computeBlock()
+{
+    // get id
+    long id = blockComputeQueue.front();
+    blockComputeQueue.pop();
+    
+    // compute
+    Computation c;
+    c.key = id;
+    c.result = mBlocks.at(id)->getValue();
+    return c;
+}
+
+void Model::slotReset()
+{
+    mBlocks.clear();
+    mWires.clear();
+    blockComputeQueue = std::queue<long>();
 }
