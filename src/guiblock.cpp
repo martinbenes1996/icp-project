@@ -14,6 +14,7 @@ GuiBlock::GuiBlock(QPointF pos, long key, QGraphicsItem *g):
         Config::getBlockName(key)
     )));
   i = i.scaledToHeight(mheight);
+  mwidth = i.width();
   setPixmap(i);
   setPos(pos.x()-mwidth/2,pos.y()-mheight/2);
 
@@ -65,7 +66,7 @@ void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 
 void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    //std::cerr << "...!\n";
+    std::cerr << "Block clicked!\n";
     MPEvent = event;
     emit sigBlockClick();
 }

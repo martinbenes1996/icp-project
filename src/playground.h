@@ -40,8 +40,8 @@ class PlayGround: public QWidget
          * @brief   Slot for menu's signal, that choice was set/unset.
          * @param choice    New choice status.
          */
-        void slotTypeChoice(long choice) { mchoice = choice; }
-        void slotWireMode() { mchoice = 3; }    // wire choice
+        void slotTypeChoice(long choice) { mchoice = choice; mwire = false; }
+        void slotWireMode() { mchoice = -1; mwire = true; }    // wire choice
 
         /**
          * @brief   Slot for PlayGroundView's signal, left mouse press.
@@ -101,6 +101,7 @@ class PlayGround: public QWidget
         void deleteWireFunction(long i);
 
         long mchoice = -1; /**< Weather the block is being placed. */
+        bool mwire = false;
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
         std::map<long, std::shared_ptr<MyWire>> mWires; /**< Placed wires. */

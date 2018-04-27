@@ -22,6 +22,7 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   mscene = new QGraphicsScene(this);
   mview = new PlayGroundView(this);
   mview->setScene(mscene);
+  mscene->setBackgroundBrush(QColor(240,240,240));
 
   mview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   mview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -55,8 +56,13 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {
     //std::cout << event->x() << " PG " << event->y() << std::endl;
 
-    // pro kazdy button doplnit reakci
-    if(mchoice >= 0 || mchoice <= 2)
+    // umisteni dratu
+    if(mwire)
+    {
+
+    }
+    // umisteni krabicky
+    else if(mchoice >= 0)
     {
         // pozadat guiblock o block
         std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos(), mchoice);

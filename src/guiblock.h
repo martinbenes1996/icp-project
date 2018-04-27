@@ -53,7 +53,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
     QBrush brush;
     QPen pen;*/
     double mwidth = 30;
-    double mheight = 30;
+    double mheight = 60;
 
     QGraphicsSceneMouseEvent * MPEvent = nullptr;
 
