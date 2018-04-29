@@ -21,8 +21,12 @@ class Window: public QWidget
     public slots:
         void slotExit() { exit(0); }
         void slotNew() { mplayground->reinit(); emit sigReset(); }
+        void slotOpen() { emit sigOpen(); }
+        void slotSave() { emit sigSave(); }
     signals:
         void sigReset();
+        void sigOpen();
+        void sigSave(); 
     private:
         std::shared_ptr<PlayGround> mplayground;
         std::shared_ptr<Menu> mmenu;

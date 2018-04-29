@@ -12,6 +12,7 @@ Window::Window(QWidget *parent): QWidget(parent)
     mplayground = std::make_shared<PlayGround>(this);
 
     resize(800, 600);
+    setContentsMargins(0,0,0,0);
 
     QObject::connect(mplayground.get(), SIGNAL(sigChoiceRejected()), mmenu.get(), SLOT(slotChoiceRejected()));
     QObject::connect(mmenu.get(), SIGNAL(sigChoiceMode(long)), mplayground.get(), SLOT(slotTypeChoice(long)));
@@ -38,6 +39,8 @@ Window::Window(QWidget *parent): QWidget(parent)
     QVBoxLayout *vlayout = new QVBoxLayout(this);
     QMenuBar *menubar = new QMenuBar(this);
     vlayout->addWidget(menubar);
+    vlayout->setContentsMargins(0,0,0,0);
+    vlayout->setSpacing(0);
     setLayout(vlayout);
 
     // create file
@@ -48,11 +51,15 @@ Window::Window(QWidget *parent): QWidget(parent)
     newAction->setStatusTip( QString("Obnoví program do stavu po spuštění.") );
     QObject::connect(newAction, SIGNAL(triggered()), this, SLOT(slotNew()) );
     // load
-    QAction *loadAction = menu1->addAction(QString("Načíst"));
+    QAction *loadAction = menu1->addAction(QString("Otevřít"));
+    loadAction->setShortcuts(QKeySequence::Open);
+    loadAction->setStatusTip( QString("Otevře soubor.") );
+    QObject::connect(loadAction, SIGNAL(triggered()), this, SLOT(slotOpen()) );
     // save
     QAction *saveAction = menu1->addAction(QString("Uložit"));
-    // export
-    QAction *exportAction = menu1->addAction(QString("Exportovat"));
+    saveAction->setShortcuts(QKeySequence::Save);
+    saveAction->setStatusTip( QString("Uloží do souboru.") );
+    QObject::connect(saveAction, SIGNAL(triggered()), this, SLOT(slotSave()) );
     // exit
     QAction *exitAction = menu1->addAction(QString("Ukončit"));
     exitAction->setShortcuts(QKeySequence::Quit);
@@ -71,6 +78,8 @@ Window::Window(QWidget *parent): QWidget(parent)
     vlayout->addWidget(content);
 
     QHBoxLayout *hlayout = new QHBoxLayout(content);
+    //hlayout->setContentsMargins(0,0,0,0);
+    //hlayout->setSpacing(0);
     hlayout->addWidget(splitter);
 
 }

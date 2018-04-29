@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include <QObject>
 
 #include "config.h"
@@ -17,10 +19,22 @@ Controller::Controller()
     QObject::connect(&m, SIGNAL(sigDeleteWire(long)), w.getPG(), SLOT(slotDeleteWire(long)));
 
     QObject::connect(&w, SIGNAL(sigReset()), &m, SLOT(slotReset()));
+    QObject::connect(&w, SIGNAL(sigOpen()), this, SLOT(slotOpen()));
+    QObject::connect(&w, SIGNAL(sigSave()), this, SLOT(slotSave()));
     w.show();
 }
 
 void Controller::startComputation()
 {
     m.startComputation();
+}
+
+void Controller::slotOpen()
+{
+    std::cerr << "Open!\n";
+}
+
+void Controller::slotSave()
+{
+    std::cerr << "Save!\n";
 }

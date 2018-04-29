@@ -18,37 +18,11 @@ GuiBlock::GuiBlock(QPointF pos, long key, QGraphicsItem *g):
   setPixmap(i);
   setPos(pos.x()-mwidth/2,pos.y()-mheight/2);
 
-  // different types of blocks
-  /*
-  if(type == 0)         // scitacka -> 2I1O
-  {
-    blockBrush = QBrush(Qt::red, Qt::SolidPattern);
-    blockPen = QPen(blockBrush, 1);
+  QRectF port(pos.x()+mwidth/2, pos.y(), 100,100);
+  QPainter p;
+  p.setBrush( QBrush(Qt::black) );
+  p.drawRect(port);
 
-    output2 = true;     // blocks second output
-  }
-  else if(type == 1)    // nasobicka -> 2I1O
-  {
-    blockBrush = QBrush(Qt::green, Qt::SolidPattern);
-    blockPen = QPen(blockBrush, 1);
-
-    output2 = true;
-  }
-  else if(type == 2)    // odmocnovacka -> 1I1O
-  {
-    blockBrush = QBrush(Qt::blue, Qt::SolidPattern);
-    blockPen = QPen(blockBrush, 1);
-
-    input2 = true;
-    output2 = true;
-  }
-  else
-  {
-    blockBrush = QBrush(Qt::darkGray, Qt::SolidPattern);
-    blockPen = QPen(blockBrush, 1);
-  }
-
-**/
   //setRect(mrectangle);
   //setBrush(blockBrush);
   //setPen(blockPen);

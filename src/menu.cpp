@@ -25,7 +25,8 @@ void Menu::createImageButton(QString s)
     mButtons.insert( std::make_pair(s, btn) );
 
     // get to scene
-    mlayout->addWidget(btn);
+    mblocklayout->addWidget(btn,mblockiterator/2, mblockiterator%2);
+    mblockiterator++;
 
     // map signals
     mmapper.setMapping(btn, s);
@@ -60,21 +61,18 @@ Menu::Menu(QWidget* parent): QWidget(parent)
 {
     mlayout = new QVBoxLayout(this);
     mlayout->setAlignment(Qt::AlignTop);
+    mlayout->setContentsMargins(0,0,0,0);
+    mlayout->setSpacing(0);
+    
+    QWidget * blocksection = new QWidget();
+    blocksection->setContentsMargins(0,0,0,0);
+    blocksection->setLayout(mblocklayout);
+    
+    mblocklayout = new QGridLayout(blocksection);
+    mblocklayout->setSpacing(0);
+    mblocklayout->setContentsMargins(0,0,0,0);
+    mlayout->addWidget(blocksection);
 
-    // load & save
-    //createButton(loadBtn, false);
-    //createButton(saveBtn, false);
-    //createButton(exitBtn, false);
-
-    //QSpacerItem* s1 = new QSpacerItem(1,20);
-    //mlayout->addSpacerItem(s1);
-
-    //createButton(compBtn);
-    //createButton(stepBtn, false);
-    //mButtons.at(stepBtn)->setDisabled(true);
-
-    //QSpacerItem* s2 = new QSpacerItem(1,20);
-    //mlayout->addSpacerItem(s2);
 
     // blocks
     auto& names = Config::getBlockNames();
@@ -91,6 +89,7 @@ Menu::Menu(QWidget* parent): QWidget(parent)
     createTextButton(wireBtn);
 
     QObject::connect(&mmapper, SIGNAL(mapped(QString)), this, SLOT(slotChoicePressed(QString)));
+    setContentsMargins(0,0,0,0);
     setLayout(mlayout);
 }
 

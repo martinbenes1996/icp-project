@@ -22,7 +22,7 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
   mscene = new QGraphicsScene(this);
   mview = new PlayGroundView(this);
   mview->setScene(mscene);
-  mscene->setBackgroundBrush(QColor(240,240,240));
+  mscene->setBackgroundBrush(QColor(220,220,220));
 
   mview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   mview->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

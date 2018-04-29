@@ -20,21 +20,61 @@ void Config::initConfig()
     // sem je potřeba dodat případ, kdy není zmáčklý žádný čudlík (zmáčknu čudlík a pak volbu zruším musí poslat -1)
     //mBlockNames.insert( std::make_pair("nic", -1) );
     //mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
+    int id = 0;
+    mBlockNames.insert( std::make_pair("adder", id) );
+    mf_2I1O.insert( std::make_pair(id, [](double a,double b){return a+b;}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general", "general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
-    mBlockNames.insert( std::make_pair("adder", 0) );
-    mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
-    mIn.insert( std::make_pair(0, std::vector<std::string>{"general", "general"}) );
-    mOut.insert( std::make_pair(0, std::vector<std::string>{"general"}) );
+    mBlockNames.insert( std::make_pair("subtractor", id) );
+    mf_2I1O.insert( std::make_pair(id, [](double a,double b){return a*b;}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general", "general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
-    mBlockNames.insert( std::make_pair("subtractor", 1) );
-    mf_2I1O.insert( std::make_pair(1, [](double a,double b){return a*b;}) );
-    mIn.insert( std::make_pair(1, std::vector<std::string>{"general", "general"}) );
-    mOut.insert( std::make_pair(1, std::vector<std::string>{"general"}) );
+    mBlockNames.insert( std::make_pair("multiplier", id) );
+    mf_2I1O.insert( std::make_pair(id, [](double x,double y){return x*y;}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general", "general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
-    mBlockNames.insert( std::make_pair("multiplier", 2) );
-    mf_1I1O.insert( std::make_pair(2, [](double x){return sqrt(x);}) );
-    mIn.insert( std::make_pair(2, std::vector<std::string>{"general"}) );
-    mOut.insert( std::make_pair(2, std::vector<std::string>{"general"}) );
+    mBlockNames.insert( std::make_pair("divider", id) );
+    mf_2I1O.insert( std::make_pair(id, [](double x,double y){return x/y;}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general", "general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("ex", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return pow(2.718281,x);}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("abs", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return abs(x);}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("ln", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return log(x);}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("neg", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return -x;}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("sign", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return (x>0)?1:((x<0)?-1:0);}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("squared", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return x*x;}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
+    mBlockNames.insert( std::make_pair("sqrt", id) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return sqrt(x);}) );
+    mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
+    mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 }
 
 BlockType Config::decodeBlockType(long key) {

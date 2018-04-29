@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 
+#include <QGridLayout>
 #include <QPushButton>
 #include <QSignalMapper>
 #include <QString>
@@ -33,6 +34,8 @@ class Menu: public QWidget
         QSignalMapper mmapper;
         std::map<QString, QPushButton*> mButtons;
         QVBoxLayout* mlayout;
+        QGridLayout* mblocklayout;
+        int mblockiterator = 0;
 };
 
 #endif // MENU_H
