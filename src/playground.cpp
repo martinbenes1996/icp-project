@@ -44,10 +44,10 @@ PlayGround::PlayGround(QWidget* parent): QWidget(parent)
 void PlayGround::reinit()
 {
     for(auto& it: mBlocks) { mscene->removeItem(it.second.get()); }
-    for(auto& it: mWires) { 
+    for(auto& it: mWires) {
         for(auto& i: it.second->getLine()) { mscene->removeItem(i.get()); }
         mscene->removeItem(it.second->getText());
-    }    
+    }
     mBlocks = std::map<long, std::shared_ptr<GuiBlock>>();
     mWires = std::map<long, std::shared_ptr<MyWire>>();
 
@@ -144,7 +144,7 @@ bool PlayGround::createWireFunction()
 
 void PlayGround::deleteWireFunction(long i)
 {
-    
+
     Debug::Gui( "PlayGround: delete wire: "+std::to_string(i) );
     emit sigDeleteWire(i);     // mapper mi neumoznuje posilat long, jen int
     std::shared_ptr<MyWire> wire = mWires[i];
@@ -175,10 +175,10 @@ void PlayGround::slotBlockClick(int i)
     if(event->button() == Qt::LeftButton)
     {
         Debug::Events("PlayGround: Left click from block "+std::to_string(i));
-        
+
         // wire selected ...
-        if(mchoice == 3)
-        {
+        if(mwire)
+        {std::cout << "kurva\n";
             bool wireFree;
             int connector;
 

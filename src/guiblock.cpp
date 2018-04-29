@@ -111,12 +111,13 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
 {
     //std::cout << "getPoint_2I1O: im here!\n";
     QPointF itemPoint = mrectangle.center();
-    QRectF tempRect1 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
+    QRectF tempRect1 = QRectF(/*itemPoint.x()-mwidth/2*/0, /*itemPoint.y()-mheight/2*/0, mwidth/2.0, mheight/2.0);
     QRectF tempRect2 = QRectF(itemPoint.x(), itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
     QRectF tempRect3 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y(), mwidth/2.0, mheight/2.0);
     QRectF tempRect4 = QRectF(itemPoint.x(), itemPoint.y(), mwidth/2.0, mheight/2.0);
 
-    //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
+    std::cout << itemPoint.x() << itemPoint.y() << std::endl;
+    std::cout << MPEvent->pos().x() << MPEvent->pos().y() << std::endl;
     if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
     {
         Debug::Gui("levy horni roh itemu");
@@ -190,7 +191,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2): mid(id)
     {
         std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
         l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
-        QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)), 
+        QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
                         this, SLOT(slotForkWire(QPointF)));
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
                         this, SLOT(slotDeleteWire()));
