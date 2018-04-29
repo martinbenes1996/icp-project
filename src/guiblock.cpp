@@ -23,8 +23,8 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   p.setBrush( QBrush(Qt::black) );
   p.drawRect(port);
 
-  if(Config::decodeBlockType(mtype) == BlockType::OneIn_OneOut) type = 1;
-  else if(Config::decodeBlockType(mtype) == BlockType::TwoIn_OneOut) type = 2;
+  if(Config::decodeBlockType(type) == BlockType::OneIn_OneOut) mtype = 1;
+  else if(Config::decodeBlockType(type) == BlockType::TwoIn_OneOut) mtype = 2;
 
   //setRect(mrectangle);
   //setBrush(blockBrush);
@@ -56,7 +56,7 @@ QPointF GuiBlock::getConnectorPoint(int connector)
     QPointF itemPoint = mrectangle.center();
     QPointF connectorPoint;
 
-    if(type == 2)       // two_in_one_out
+    if(mtype == 2)       // two_in_one_out
     {
         if(connector == 0)
         {
@@ -73,14 +73,8 @@ QPointF GuiBlock::getConnectorPoint(int connector)
             connectorPoint.setX(itemPoint.x() + mwidth/2);
             connectorPoint.setY(itemPoint.y());
         }
-        /*
-        else if(connector == -2)
-        {
-            connectorPoint.setX(itemPoint.x() + mwidth/2);
-            connectorPoint.setY(itemPoint.y() + mheight/4);
-        }*/
     }
-    else if(type == 1)
+    else if(mtype == 1)
     {
         if(connector == 0)
         {
@@ -99,37 +93,7 @@ QPointF GuiBlock::getConnectorPoint(int connector)
     }
 
     return connectorPoint;
-}/*
-QPointF GuiBlock::getInput_2Point()
-{
-    QPointF itemPoint = mrectangle.center();
-    QPointF input2;
-
-    input2.setX(itemPoint.x() - mwidth/2);
-    input2.setY(itemPoint.y() + mheight/4);
-
-    return input2;
 }
-QPointF GuiBlock::getOutput_1Point()
-{
-    QPointF itemPoint = mrectangle.center();
-    QPointF output1;
-
-    output1.setX(itemPoint.x() + mwidth/2);
-    output1.setY(itemPoint.y() - mheight/4);
-
-    return output1;
-}
-QPointF GuiBlock::getOutput_2Point()
-{
-    QPointF itemPoint = mrectangle.center();
-    QPointF output2;
-
-    output2.setX(itemPoint.x() + mwidth/2);
-    output2.setY(itemPoint.y() + mheight/4);
-
-    return output2;
-}*/
 
 void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
 {
@@ -144,7 +108,7 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
 
     //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
     //std::cout << MPEvent->pos().x() << MPEvent->pos().y() << std::endl;
-    if(type == 2)       // two_in_one_out
+    if(mtype == 2)       // two_in_one_out
     {
         QRectF tempRect1 = QRectF(0.0, 0.0+mheight/8.0, mwidth/2.0, mheight/4.0);
         QRectF tempRect2 = QRectF(0.0, 0.0+(mheight*5.0)/8.0, mwidth/2.0, mheight/4.0);
@@ -167,15 +131,9 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
             Debug::Gui("pravy roh itemu");
             *wireFree = !input2;
             *connector = -1;
-        }/*
-        else if(tempRect4.contains(MPEvent->pos().x(), MPEvent->pos().y()))
-        {
-            Debug::Gui("pravy dolni roh itemu");
-            *wireFree = !output2;
-            *connector = -2;
-        }*/
+        }
     }
-    else if(type == 1)      // one_in_one_out
+    else if(mtype == 1)      // one_in_one_out
     {
         QRectF tempRect1 = QRectF(0.0, 0.0+mheight/4.0, mwidth/2.0, mheight/2.0);
         QRectF tempRect3 = QRectF(0.0+mwidth/2.0, 0.0+mheight/4.0, mwidth/2.0, mheight/2.0);
@@ -195,7 +153,7 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
     }
     else
     {
-        std::cout << "error";
+        std::cout << "error getpointfromblock\n";
     }
 
 }
@@ -241,7 +199,7 @@ void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 
 
 
-MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2): mid(id)
+MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2): mid(id)
 {
     for(auto& it: MyWire::splitLine(point1, point2))
     {
@@ -256,6 +214,9 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
 
     gblock1 = gb1;
     gblock2 = gb2;
+
+    mconnector1 = connector1;
+    mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
     mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );

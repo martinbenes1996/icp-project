@@ -60,7 +60,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
     QGraphicsSceneMouseEvent * MPEvent = nullptr;
 
     // different blocks variables - I/O
-    int type;
+    //int type;
     long mtype;
 
     QBrush blockBrush;
@@ -97,12 +97,14 @@ class MyWire: public QObject
 {
     Q_OBJECT
     public:
-        MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2);
+        MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2);
 
         std::vector<std::shared_ptr<MyLine>> getLine() { return mLines; }
         QGraphicsTextItem *getText() { return mtext.get(); }
         std::shared_ptr<GuiBlock> getBlock1() { return gblock1; }
         std::shared_ptr<GuiBlock> getBlock2() { return gblock2; }
+        int getConnector1() { return mconnector1; }
+        int getConnector2() { return mconnector2; }
     public slots:
         void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
         void slotDeleteWire() { emit sigDeleteWire(mid); }
@@ -117,6 +119,8 @@ class MyWire: public QObject
         // text <- depends on value from module (connect with signal)
         std::shared_ptr<GuiBlock> gblock1;
         std::shared_ptr<GuiBlock> gblock2;
+        int mconnector1;
+        int mconnector2;
 };
 
 

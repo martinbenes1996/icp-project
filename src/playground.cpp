@@ -130,7 +130,7 @@ bool PlayGround::createWireFunction()
     // put wire into map
     QPointF point1 = block1->getConnectorPoint(connector1);
     QPointF point2 = block2->getConnectorPoint(connector2);
-    std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(id,point1, point2, block1, block2);
+    std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(id,point1, point2, block1, block2, connector1, connector2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
     for(auto& it: newWire->getLine()) { mscene->addItem(it.get()); }
@@ -151,7 +151,8 @@ void PlayGround::deleteWireFunction(long i)
     emit sigDeleteWire(i);     // mapper mi neumoznuje posilat long, jen int
     std::shared_ptr<MyWire> wire = mWires[i];
 
-    //wire->getBlock1()->setConnectorAvailability()
+    wire->getBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
+    wire->getBlock2()->setConnectorAvailability(wire->getConnector2(), 0);
 
     for(auto& it: wire->getLine()) { mscene->removeItem(it.get()); }
     mscene->removeItem(wire->getText());
