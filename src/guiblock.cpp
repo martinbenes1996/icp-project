@@ -241,7 +241,7 @@ void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 
 
 
-MyWire::MyWire(long id, QPointF point1, QPointF point2): mid(id)
+MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, ptr::shared_ptr<GuiBlock> gb2): mid(id)
 {
     for(auto& it: MyWire::splitLine(point1, point2))
     {
@@ -253,6 +253,9 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2): mid(id)
                         this, SLOT(slotDeleteWire()));
         mLines.push_back(l);
     }
+
+    gblock1 = gb1;
+    gblock2 = gb2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
     mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
