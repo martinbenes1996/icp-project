@@ -108,7 +108,7 @@ void Window::slotOpen()
 
 void Window::slotSave() 
 { 
-    QString filename = QFileDialog::getSaveFileName(this, "Save file", ".bcs", "Block scheme (*.bsc);;All Files (*)");
+    QString filename = QFileDialog::getSaveFileName(this, "Save file", ".bsc", "Block scheme (*.bsc);;All Files (*)");
     emit sigSave(filename.toStdString());
 }
 

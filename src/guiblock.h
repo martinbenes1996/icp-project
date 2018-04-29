@@ -83,7 +83,7 @@ class MyLine: public QObject, public QGraphicsLineItem
         MyLine(QPointF s, QPointF f, QGraphicsItem* parent = 0):
             QGraphicsLineItem(s.x(), s.y(), f.x(), f.y(), parent) {}
 
-        void mousePressEvent(QGraphicsSceneMouseEvent* event) 
+        void mousePressEvent(QGraphicsSceneMouseEvent* event)
         {
             if(event->button() == Qt::LeftButton) { emit sigForkWire(event->pos()); }
             else if(event->button() == Qt::RightButton) { emit sigDeleteWire(); }
@@ -103,7 +103,7 @@ class MyWire: public QObject
         QGraphicsTextItem *getText() { return mtext.get(); }
     public slots:
         void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
-        void slotDeleteWire() { emit sigDeleteWire(mid); } 
+        void slotDeleteWire() { emit sigDeleteWire(mid); }
     signals:
         void sigForkWire(long, QPointF);
         void sigDeleteWire(long);

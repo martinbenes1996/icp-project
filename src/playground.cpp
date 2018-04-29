@@ -60,7 +60,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {
     //std::cout << event->x() << " PG " << event->y() << std::endl;
 
-    // umisteni dratu
+    // umisteni dratu - K CEMU TO JE DOBRE??? Draty tvorim klikem na blok, ne na playground
     if(mwire)
     {
 
@@ -180,7 +180,7 @@ void PlayGround::slotBlockClick(int i)
 
         // wire selected ...
         if(mwire)
-        {std::cout << "kurva\n";
+        {
             bool wireFree;
             int connector;
 
@@ -206,7 +206,7 @@ void PlayGround::slotBlockClick(int i)
                 }
                 block1 = nullptr;
                 block2 = nullptr;
-                //createWire = false;
+                createWire = false;
                 //printNOISOMap(mWires);
             }
         }
@@ -220,60 +220,6 @@ void PlayGround::slotBlockClick(int i)
     }
 }
 
-
-// All of these functions, if needed, will have to be moved to PlayGrounView
-/*
-void PlayGround::mouseMoveEvent(QMouseEvent *event)
-{
-    (void)event;
-    std::cout << "PlayGround::mouseMoveEvent()\n";
-}
-
-void PlayGround::mousePressEvent(QMouseEvent *event)
-{
-    (void)event;
-    std::cout << "PlayGround::mousePressEvent()\n";
-
-    //GuiBlock *b = new GuiBlock(event->pos());
-    mscene->addRect(event->x(), event->y(), 10, 10);
-}
-
-void PlayGround::mouseReleaseEvent(QMouseEvent *event)
-{
-    if(event->button() == Qt::RightButton) { emit sigChoiceRejected(); }
-    else
-    {
-
-        long x = 1;
-        // tady to odesle signal do modelu a nahraje to do x
-        // id, ktere vygeneruje model ;)
-        emit sigCreateBlock(x);
-        std::cerr << "playground: " << x << std::endl;
-
-        std::shared_ptr<GuiBlock> b = std::make_shared<GuiBlock>(event->windowPos());
-        mscene->addItem(b.get());
-        mview->show();
-
-        update();
-        //QPointF pos = event->localPos();
-        //mpoints.push_back(pos);
-        //update();
-    }
-
-    //(void)event;
-    //std::cout << "PlayGround::mouseReleaseEvent()\n";
-}
-
-void PlayGround::paintEvent(QPaintEvent *event)
-{
-    //QPainter p(this);
-    //p.drawLine(10, 10, 1000, 1000);
-    //p.setPen(Qt::blue);
-    //p.setBrush(Qt::SolidPattern);
-    //for(auto& it: mpoints)
-    //    p.drawEllipse(it, 5, 5);
-}
-*/
 
 void PlayGroundView::mousePressEvent(QMouseEvent *event)
 {

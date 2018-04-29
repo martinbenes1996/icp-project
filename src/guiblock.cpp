@@ -23,6 +23,9 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   p.setBrush( QBrush(Qt::black) );
   p.drawRect(port);
 
+  if(Config::decodeBlockType(mtype) == BlockType::OneIn_OneOut) type = 1;
+  else if(Config::decodeBlockType(mtype) == BlockType::TwoIn_OneOut) type = 2;
+
   //setRect(mrectangle);
   //setBrush(blockBrush);
   //setPen(blockPen);
@@ -53,25 +56,46 @@ QPointF GuiBlock::getConnectorPoint(int connector)
     QPointF itemPoint = mrectangle.center();
     QPointF connectorPoint;
 
-    if(connector == 0)
+    if(type == 2)       // two_in_one_out
     {
-        connectorPoint.setX(itemPoint.x() - mwidth/2);
-        connectorPoint.setY(itemPoint.y() - mheight/4);
+        if(connector == 0)
+        {
+            connectorPoint.setX(itemPoint.x() - mwidth/2);
+            connectorPoint.setY(itemPoint.y() - mheight/4);
+        }
+        else if(connector == 1)
+        {
+            connectorPoint.setX(itemPoint.x() - mwidth/2);
+            connectorPoint.setY(itemPoint.y() + mheight/4);
+        }
+        else if(connector == -1)
+        {
+            connectorPoint.setX(itemPoint.x() + mwidth/2);
+            connectorPoint.setY(itemPoint.y());
+        }
+        /*
+        else if(connector == -2)
+        {
+            connectorPoint.setX(itemPoint.x() + mwidth/2);
+            connectorPoint.setY(itemPoint.y() + mheight/4);
+        }*/
     }
-    else if(connector == 1)
+    else if(type == 1)
     {
-        connectorPoint.setX(itemPoint.x() - mwidth/2);
-        connectorPoint.setY(itemPoint.y() + mheight/4);
+        if(connector == 0)
+        {
+            connectorPoint.setX(itemPoint.x() - mwidth/2);
+            connectorPoint.setY(itemPoint.y());
+        }
+        else if(connector == -1)
+        {
+            connectorPoint.setX(itemPoint.x() + mwidth/2);
+            connectorPoint.setY(itemPoint.y());
+        }
     }
-    else if(connector == -1)
+    else
     {
-        connectorPoint.setX(itemPoint.x() + mwidth/2);
-        connectorPoint.setY(itemPoint.y() - mheight/4);
-    }
-    else if(connector == -2)
-    {
-        connectorPoint.setX(itemPoint.x() + mwidth/2);
-        connectorPoint.setY(itemPoint.y() + mheight/4);
+        std::cout << "error getConnectorPoint\n";
     }
 
     return connectorPoint;
@@ -110,38 +134,70 @@ QPointF GuiBlock::getOutput_2Point()
 void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
 {
     //std::cout << "getPoint_2I1O: im here!\n";
-    QPointF itemPoint = mrectangle.center();
-    QRectF tempRect1 = QRectF(/*itemPoint.x()-mwidth/2*/0, /*itemPoint.y()-mheight/2*/0, mwidth/2.0, mheight/2.0);
-    QRectF tempRect2 = QRectF(itemPoint.x(), itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
-    QRectF tempRect3 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y(), mwidth/2.0, mheight/2.0);
-    QRectF tempRect4 = QRectF(itemPoint.x(), itemPoint.y(), mwidth/2.0, mheight/2.0);
+    //QPointF itemPoint = mrectangle.center();
+    //QRectF tempRect1 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
+    //QRectF tempRect2 = QRectF(itemPoint.x(), itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
+    //QRectF tempRect3 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y(), mwidth/2.0, mheight/2.0);
+    //QRectF tempRect4 = QRectF(itemPoint.x(), itemPoint.y(), mwidth/2.0, mheight/2.0);
 
-    std::cout << itemPoint.x() << itemPoint.y() << std::endl;
-    std::cout << MPEvent->pos().x() << MPEvent->pos().y() << std::endl;
-    if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+
+
+    //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
+    //std::cout << MPEvent->pos().x() << MPEvent->pos().y() << std::endl;
+    if(type == 2)       // two_in_one_out
     {
-        Debug::Gui("levy horni roh itemu");
-        *wireFree = !input1;
-        *connector = 0;
+        QRectF tempRect1 = QRectF(0.0, 0.0+mheight/8.0, mwidth/2.0, mheight/4.0);
+        QRectF tempRect2 = QRectF(0.0, 0.0+(mheight*5.0)/8.0, mwidth/2.0, mheight/4.0);
+        QRectF tempRect3 = QRectF(0.0+(mwidth)/2.0, 0.0+(mheight)/4.0, mwidth/2.0, mheight/2.0);
+
+        if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+        {
+            Debug::Gui("levy horni roh itemu");
+            *wireFree = !input1;
+            *connector = 0;
+        }
+        else if(tempRect2.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+        {
+            Debug::Gui("levy dolni roh itemu");
+            *wireFree = !output1;
+            *connector = 1;
+        }
+        else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+        {
+            Debug::Gui("pravy roh itemu");
+            *wireFree = !input2;
+            *connector = -1;
+        }/*
+        else if(tempRect4.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+        {
+            Debug::Gui("pravy dolni roh itemu");
+            *wireFree = !output2;
+            *connector = -2;
+        }*/
     }
-    else if(tempRect2.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+    else if(type == 1)      // one_in_one_out
     {
-        Debug::Gui("pravy horni roh itemu");
-        *wireFree = !output1;
-        *connector = -1;
+        QRectF tempRect1 = QRectF(0.0, 0.0+mheight/4.0, mwidth/2.0, mheight/2.0);
+        QRectF tempRect3 = QRectF(0.0+mwidth/2.0, 0.0+mheight/4.0, mwidth/2.0, mheight/2.0);
+
+        if(tempRect1.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+        {
+            Debug::Gui("levy roh itemu");
+            *wireFree = !input1;
+            *connector = 0;
+        }
+        else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+        {
+            Debug::Gui("pravy roh itemu");
+            *wireFree = !input2;
+            *connector = -1;
+        }
     }
-    else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
+    else
     {
-        Debug::Gui("levy dolni roh itemu");
-        *wireFree = !input2;
-        *connector = 1;
+        std::cout << "error";
     }
-    else if(tempRect4.contains(MPEvent->pos().x(), MPEvent->pos().y()))
-    {
-        Debug::Gui("pravy dolni roh itemu");
-        *wireFree = !output2;
-        *connector = -2;
-    }
+
 }
 
 void GuiBlock::setConnectorAvailability(int connector, bool addWire)
