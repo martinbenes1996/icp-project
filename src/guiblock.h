@@ -101,8 +101,8 @@ class MyWire: public QObject
 
         std::vector<std::shared_ptr<MyLine>> getLine() { return mLines; }
         QGraphicsTextItem *getText() { return mtext.get(); }
-        GuiBlock *getBlock1() { return gblock1; }
-        GuiBlock *getBlock2() { return gblock2; }
+        std::shared_ptr<GuiBlock> getBlock1() { return gblock1; }
+        std::shared_ptr<GuiBlock> getBlock2() { return gblock2; }
     public slots:
         void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
         void slotDeleteWire() { emit sigDeleteWire(mid); }
@@ -115,8 +115,8 @@ class MyWire: public QObject
         std::shared_ptr<QGraphicsTextItem> mtext;
         static std::vector<std::pair<QPointF,QPointF>> splitLine(QPointF, QPointF);
         // text <- depends on value from module (connect with signal)
-        GuiBlock *gblock1 = nullptr;
-        GuiBlock *gblock2 = nullptr;
+        std::shared_ptr<GuiBlock> gblock1;
+        std::shared_ptr<GuiBlock> gblock2;
 };
 
 

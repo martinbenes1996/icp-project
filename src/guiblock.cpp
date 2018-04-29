@@ -241,7 +241,7 @@ void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 
 
 
-MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, ptr::shared_ptr<GuiBlock> gb2): mid(id)
+MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2): mid(id)
 {
     for(auto& it: MyWire::splitLine(point1, point2))
     {
