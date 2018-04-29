@@ -15,8 +15,8 @@ class Controller: public QObject
         void startComputation();
 
     public slots:
-        void slotOpen();
-        void slotSave();
+        void slotOpen(std::string);
+        void slotSave(std::string);
 
     private:
         Model m;

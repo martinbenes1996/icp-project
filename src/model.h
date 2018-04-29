@@ -33,6 +33,8 @@ class Model: public QObject
         Computation computeBlock();
 
         ModelState getState();
+        void setState(ModelState);
+        void reinit() { slotReset(); }
 
     public slots:
         /**

@@ -33,7 +33,8 @@ class PlayGround: public QWidget
         bool hasChoice() { return mchoice != -1; }
 
         void reinit();
-        std::map<long,std::pair<double,double>> getBlockState();
+        std::map<long,GuiBlockDescriptor> getBlockState();
+        void setBlockState(std::map<long,GuiBlockDescriptor>);
 
         // slots and signals will have to be reworked
     public slots:

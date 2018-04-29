@@ -128,6 +128,8 @@ void Model::slotReset()
     mBlocks.clear();
     mWires.clear();
     blockComputeQueue = std::queue<long>();
+    mblockkey = 0;
+    mwirekey = 0;
 }
 
 ModelState Model::getState()
@@ -138,4 +140,15 @@ ModelState Model::getState()
         s.blocks.insert( std::make_pair(it.first, it.second->getType()) );
     }
     return s;
+}
+
+void Model::setState(ModelState s)
+{
+    for(auto& it: s.blocks)
+    {
+        mblockkey = it.first;
+        long key;
+        slotCreateBlock(it.second, key);
+    }
+    // wires
 }

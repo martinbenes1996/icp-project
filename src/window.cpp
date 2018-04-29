@@ -1,4 +1,5 @@
 
+#include <QFileDialog>
 #include <QHBoxLayout>
 #include <QMenuBar>
 #include <QSplitter>
@@ -90,4 +91,25 @@ GuiState Window::getState()
     s.blocks = mplayground->getBlockState();
     return s;
 }
+
+void Window::setState(GuiState s)
+{
+    // blocks
+    mplayground->setBlockState(s.blocks);
+
+    // wires
+}
+
+void Window::slotOpen() 
+{ 
+    QString filename = QFileDialog::getOpenFileName(this, "Open file", "", "Block scheme (*.bsc);;All Files (*)");
+    emit sigOpen(filename.toStdString());
+}
+
+void Window::slotSave() 
+{ 
+    QString filename = QFileDialog::getSaveFileName(this, "Save file", ".bcs", "Block scheme (*.bsc);;All Files (*)");
+    emit sigSave(filename.toStdString());
+}
+
 

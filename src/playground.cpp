@@ -55,6 +55,7 @@ void PlayGround::reinit()
     mwire = false;
 }
 
+
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {
     //std::cout << event->x() << " PG " << event->y() << std::endl;
@@ -67,6 +68,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     // umisteni krabicky
     else if(mchoice >= 0)
     {
+
         // pozadat guiblock o block
         std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos(), mchoice);
         mscene->addItem(newBlock.get());
@@ -296,14 +298,35 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
 
 }
 
-std::map<long,std::pair<double,double>> PlayGround::getBlockState()
+std::map<long,GuiBlockDescriptor> PlayGround::getBlockState()
 {
-    std::map<long,std::pair<double,double>> m;
+    std::map<long,GuiBlockDescriptor> m;
     for(auto& it: mBlocks)
     {
-        m.insert( std::make_pair(it.first,
-                    std::make_pair(it.second->x(), it.second->y()) )
-        );
+        GuiBlockDescriptor d;
+        d.type = it.second->getType();
+        d.pos.first = it.second->x();
+        d.pos.second = it.second->y();
+        m.insert( std::make_pair(it.first,d) );
     }
     return m;
+}
+
+void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
+{
+    for(auto& it: m)
+    {
+        QPointF pos(it.second.pos.first, it.second.pos.second);
+        long id = it.first;
+        long type = it.second.type;
+
+        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(pos, type);
+        mscene->addItem(newBlock.get());
+
+        mmapper.setMapping(newBlock.get(), id);
+        QObject::connect(newBlock.get(), SIGNAL(sigBlockClick()),
+                         &mmapper, SLOT(map()));
+
+        mBlocks.insert( std::make_pair(id,newBlock) );
+    }
 }

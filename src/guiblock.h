@@ -22,6 +22,8 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
   public:
     GuiBlock(QPointF pos, long, QGraphicsItem* g = 0);
 
+    long getType() { return mtype; }
+
     // QRectF boundingRect() const override;
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
@@ -59,6 +61,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
 
     // different blocks variables - I/O
     int type;
+    long mtype;
 
     QBrush blockBrush;
     QPen blockPen;

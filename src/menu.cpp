@@ -95,21 +95,6 @@ Menu::Menu(QWidget* parent): QWidget(parent)
 
 void Menu::slotChoicePressed(QString name)
 {
-
-    if(name == loadBtn) { slotLoad(); return; }
-    else if(name == saveBtn) { slotSave(); return; }
-    else if(name == exitBtn) { slotExit(); return; }
-
-    else if(name == compBtn)
-    {
-        if(!mButtons.at(name)->isChecked()) { mButtons.at(stepBtn)->setDisabled(false); }
-        else { mButtons.at(stepBtn)->setDisabled(true); }
-        return;
-    }
-    else if(name == stepBtn)
-    {
-        return;
-    }
     
     for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
     if(name == wireBtn) { emit sigWireMode(); return; }

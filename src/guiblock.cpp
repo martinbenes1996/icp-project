@@ -6,12 +6,12 @@
 #include "window.h"
 
 
-GuiBlock::GuiBlock(QPointF pos, long key, QGraphicsItem *g):
-  QGraphicsPixmapItem(g)
+GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
+  QGraphicsPixmapItem(g), mtype(type)
 {
   mrectangle = QRectF(pos.x()-mwidth/2,pos.y()-mheight/2,mwidth,mheight);
   QPixmap i( QString::fromStdString(Config::getImagePath(
-        Config::getBlockName(key)
+        Config::getBlockName(mtype)
     )));
   i = i.scaledToHeight(mheight);
   mwidth = i.width();

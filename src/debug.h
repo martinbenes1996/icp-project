@@ -6,8 +6,9 @@
 #ifdef DEBUG_MODE
     //#define BLOCK_DEBUG
     //#define MODEL_DEBUG
-    #define EVENTS_DEBUG
+    //#define EVENTS_DEBUG
     //#define GUI_DEBUG
+    #define CONTROLLER_DEBUG
     //...
 #endif // DEBUG_MODE
 
@@ -36,6 +37,13 @@ namespace Debug
 
     inline void Gui(std::string str) {
         #ifdef GUI_DEBUG
+            std::cerr << str << "\n";
+        #endif
+        (void)str;
+    }
+
+    inline void Controller(std::string str) {
+        #ifdef CONTROLLER_DEBUG
             std::cerr << str << "\n";
         #endif
         (void)str;

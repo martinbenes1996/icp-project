@@ -57,6 +57,10 @@ struct Computation
     Value result;
 };
 
+struct GuiBlockDescriptor {
+    std::pair<double, double> pos;
+    long type;
+};
 
 
 

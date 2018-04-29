@@ -26,9 +26,6 @@ class Menu: public QWidget
         void slotChoicePressed(QString);
         void slotChoiceRejected();
 
-        void slotLoad() { std::cerr << "Load a scheme.\n"; }
-        void slotSave() { std::cerr << "Save the scheme.\n"; }
-        void slotExit() { exit(0); }
     signals:
         void sigChoiceMode(long);
         void sigWireMode();
