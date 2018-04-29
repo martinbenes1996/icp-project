@@ -35,7 +35,15 @@ class PlayGround: public QWidget
 
         PlayGround(QWidget* parent = 0);
 
+        /**
+         * @brief   Getter for play ground view.
+         * @returns pointer to playGroundView
+         */
 	    PlayGroundView *getPlayGroundView() { return mview; }
+	    /**
+         * @brief   Button is clicked in menu.
+         * @returns true -> choice made, false -> choice not made
+         */
         bool hasChoice() { return mchoice != -1; }
 
         void reinit();
@@ -46,9 +54,12 @@ class PlayGround: public QWidget
     public slots:
         /**
          * @brief   Slot for menu's signal, that choice was set/unset.
-         * @param choice    New choice status.
+         * @param   choice    New choice status.
          */
         void slotTypeChoice(long choice) { mchoice = choice; mwire = false; }
+        /**
+         * @brief   Slot for menu's signal, that wire was chosen.
+         */
         void slotWireMode() { mchoice = -1; mwire = true; }    // wire choice
 
         /**
@@ -69,7 +80,10 @@ class PlayGround: public QWidget
          * @brief   Slot for Wire's signal, mouse press.
          */
         void slotForkWire(long, QPointF);
-
+        /**
+         * @brief   Slot for signal, that wire should be deleted.
+         * @param   index    Index of a wire.
+         */
         void slotDeleteWire(long);
     signals:
         /**
@@ -104,12 +118,25 @@ class PlayGround: public QWidget
         void sigDeleteWire(long key);
 
     private:
+        /**
+         * @brief   Gets ID from block pointer.
+         * @param   block   pointer to a block
+         * @returns ID of the block
+         */
         long getIDFromBlock(std::shared_ptr<GuiBlock> block);
+        /**
+         * @brief   Creates a wire.
+         * @returns true -> success, false -> failure
+         */
         bool createWireFunction();
+        /**
+         * @brief   Deletes a wire.
+         * @param   i   index of the block
+         */
         void deleteWireFunction(long i);
 
         long mchoice = -1; /**< Weather the block is being placed. */
-        bool mwire = false;
+        bool mwire = false;/**< Weather the wire is being placed. */
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
         std::map<long, std::shared_ptr<MyWire>> mWires; /**< Placed wires. */
@@ -122,11 +149,11 @@ class PlayGround: public QWidget
         QGraphicsScene *mscene = nullptr;
 
         //QPointF drawLinePoint = QPointF();
-        bool createWire = false;
-        int connector1;
-        int connector2;
-        std::shared_ptr<GuiBlock> block1 = nullptr;
-        std::shared_ptr<GuiBlock> block2 = nullptr;
+        bool createWire = false;    /**< True when two points are selected -> create wire. */
+        int connector1;             /**< Connector of the first block. */
+        int connector2;             /**< Connector of the second block. */
+        std::shared_ptr<GuiBlock> block1 = nullptr; /**< First block. */
+        std::shared_ptr<GuiBlock> block2 = nullptr; /**< Second block. */
 
 };
 
