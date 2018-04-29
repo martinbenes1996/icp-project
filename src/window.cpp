@@ -1,3 +1,8 @@
+// window.cpp
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
 
 #include <QFileDialog>
 #include <QHBoxLayout>
@@ -100,14 +105,14 @@ void Window::setState(GuiState s)
     // wires
 }
 
-void Window::slotOpen() 
-{ 
+void Window::slotOpen()
+{
     QString filename = QFileDialog::getOpenFileName(this, "Open file", "", "Block scheme (*.bsc);;All Files (*)");
     emit sigOpen(filename.toStdString());
 }
 
-void Window::slotSave() 
-{ 
+void Window::slotSave()
+{
     QString filename = QFileDialog::getSaveFileName(this, "Save file", ".bsc", "Block scheme (*.bsc);;All Files (*)");
     emit sigSave(filename.toStdString());
 }

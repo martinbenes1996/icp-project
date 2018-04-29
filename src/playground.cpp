@@ -1,3 +1,9 @@
+// playground.cpp
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #include <iostream>
 
 #include <QMouseEvent>

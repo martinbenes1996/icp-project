@@ -1,3 +1,8 @@
+// controller.cpp
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
 
 #include <iostream>
 #include <fstream>
@@ -32,7 +37,7 @@ void Controller::startComputation()
 }
 
 std::vector<std::string> split(std::string s)
-{   
+{
     std::string delimiter = ",";
     size_t pos = 0;
     std::vector<std::string> v;
@@ -106,7 +111,7 @@ void Controller::slotSave(std::string path)
     {
         os << it.first << ","
            << ms.blocks.at(it.first) << ","
-           << it.second.pos.first << "," 
+           << it.second.pos.first << ","
            << it.second.pos.second << "\n";
     }
     // save wires

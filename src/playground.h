@@ -1,3 +1,9 @@
+// playground.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 

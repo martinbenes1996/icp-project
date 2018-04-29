@@ -1,3 +1,9 @@
+// controller.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 

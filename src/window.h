@@ -1,3 +1,9 @@
+// window.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef WINDOW_H
 #define WINDOW_H
 
@@ -11,7 +17,7 @@
 
 struct GuiState {
    std::map<long, GuiBlockDescriptor> blocks;
-   // wires  
+   // wires
 };
 
 class Window: public QWidget
@@ -35,7 +41,7 @@ class Window: public QWidget
     signals:
         void sigReset();
         void sigOpen(std::string);
-        void sigSave(std::string); 
+        void sigSave(std::string);
     private:
         std::shared_ptr<PlayGround> mplayground;
         std::shared_ptr<Menu> mmenu;
