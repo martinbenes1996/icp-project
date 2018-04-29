@@ -70,14 +70,14 @@ Menu::Menu(QWidget* parent): QWidget(parent)
     mlayout->setSpacing(0);
 
     QWidget * blocksection = new QWidget();
-    blocksection->setContentsMargins(0,0,0,0);
-    blocksection->setLayout(mblocklayout);
-
+    
     mblocklayout = new QGridLayout(blocksection);
     mblocklayout->setSpacing(0);
     mblocklayout->setContentsMargins(0,0,0,0);
     mlayout->addWidget(blocksection);
 
+    blocksection->setContentsMargins(0,0,0,0);
+    blocksection->setLayout(mblocklayout);
 
     // blocks
     auto& names = Config::getBlockNames();

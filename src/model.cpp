@@ -56,21 +56,35 @@ void Model::slotCreateBlock(long type, long& key)
 
 void Model::slotDeleteBlock(long key)
 {
-    Debug::Model( "Delete block "+std::to_string(key) );
+    Debug::Model( "Model::slotDeleteBlock("+std::to_string(key)+")" );
     // get connected wires
     std::map<long,int> wkeys = mBlocks.at(key)->getWireKeys();
 
     // erase connected wires
-    for(auto& it: wkeys) { emit sigDeleteWire(it.first); }
+    for(auto& it: wkeys) 
+    { 
+        std::cerr << "deleting " << it.first << "\n";
+        slotDeleteWire(it.first);
+        emit sigDeleteWire(it.first);
+    }
 
     // erase the block
     mBlocks.erase(key);
+    
 }
 // nejak zarid, at se success nastavi na false, pokud se to nepovede. Nechci ti pokazit ten tvuj sablonovy skvost.
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& success)
 {
+    if((startkey.port < 0 && endkey.port < 0)
+    || (startkey.port >= 0 && endkey.port >= 0))
+    {
+        std::cerr << "Must be output to input!\n";
+        success = false;
+        return;
+    }
+
     key = GenerateWireKey();
-    Debug::Model( "Create wire "+std::to_string(key) );
+    Debug::Model( "Model::slotCreateWire "+std::to_string(key) );
 
     std::shared_ptr<Wire> w;
     try {
@@ -78,17 +92,23 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
         key,*mBlocks.at(startkey.key), startkey.port,
             *mBlocks.at(endkey.key), endkey.port
         );
-    } catch(MyError& e) { std::cerr << e.getMessage() << "\n"; success = false; }
+    } catch(MyError& e) { 
+        std::cerr << e.getMessage() << "\n";
+        success = false; 
+        return;
+    }
 
     mWires.insert( std::make_pair(key, w) );
+    
     success = true;
 
 }
 
 void Model::slotDeleteWire(long key)
 {
-    Debug::Model( "Delete wire "+std::to_string(key) );
-    mWires.erase(key);
+    Debug::Model("Model::slotDeleteWire("+std::to_string(key)+")");
+    if(mWires.count(key) > 0)
+        mWires.erase(key);
 }
 
 void Model::startComputation()

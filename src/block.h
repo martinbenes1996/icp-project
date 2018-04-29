@@ -8,6 +8,7 @@
 #define BLOCK_H
 
 #include <functional>
+#include <memory>
 #include <set>
 #include <string>
 #include <vector>
@@ -35,8 +36,8 @@ class Block: public IBlock
         Block(long id, T func, std::vector<std::string> intypes, std::vector<std::string> outtypes, long type):
             IBlock(id, type), mfunc(func)
         {
-            for(auto& it: intypes) { mIn.push_back(it); }
-            for(auto& it: outtypes) { mOut.push_back(it); }
+            for(auto& it: intypes) { mIn.push_back(std::make_shared<Port>(it)); }
+            for(auto& it: outtypes) { mOut.push_back(std::make_shared<Port>(it)); }
         }
 
         /**
@@ -58,9 +59,9 @@ class Block: public IBlock
     private:
         T mfunc; /**< Represents the functionality. */
 
-        std::vector<Port> mIn;
-        std::vector<Port> mOut;
-        void CheckTypes(std::vector<Port>&);
+        std::vector<std::shared_ptr<Port>> mIn;
+        std::vector<std::shared_ptr<Port>> mOut;
+        void CheckTypes(std::vector<std::shared_ptr<Port>>&);
 
         /**
          * @brief Compute the result.
@@ -73,8 +74,10 @@ class Block: public IBlock
 template <class T>
 void Block<T>::removeWireKey(long id)
 {
-    if(getWireKeys().at(id) < 0) mOut[id].disconnect();
-    else mIn[id].disconnect();
+    Debug::Block("Block::removeWireKey("+std::to_string(id)+")"); 
+    if(getWireKeys().count(id) == 0) return;
+    if(getWireKeys().at(id) < 0) mOut.at(-getWireKeys().at(id)-1)->disconnect();
+    else mIn.at(getWireKeys().at(id))->disconnect();
 
     IBlock::removeWireKey(id);
 }
@@ -83,11 +86,11 @@ template <class T>
 void Block<T>::addWire(Wire *w, long key, int port)
 {
     Debug::Block("Block::addWire");
-    std::vector<Port>& v = (port < 0)?mOut:mIn;
+    std::vector<std::shared_ptr<Port>>& v = (port < 0)?mOut:mIn;
     int index = (port < 0) ? (-port-1):(port);
 
     // connect wire
-    if(v[index].wire == nullptr) v[index].wire = w;
+    if(v[index]->wire == nullptr) v[index]->wire = w;
     // already connected port
     else throw MyError("Adding wire to connected port", ErrorType::WireError);
 
@@ -100,21 +103,17 @@ void Block<T>::addWire(Wire *w, long key, int port)
         setLevel( w->getLevel() );
     }
 
-
     // output
-    if(port < 0)
+    if(port < 0 && getLevel() >= 0)
     {
         for(auto& it: v)
         {
             std::set<int> prop;
             prop.insert(getId());
-            it.propagateLevel(getLevel(), prop);
+            it->propagateLevel(getLevel(), prop);
         }
     }
-
-
 }
-
 
 template <class T>
 void Block<T>::propagateLevel(int level, std::set<int> prop)
@@ -129,7 +128,7 @@ void Block<T>::propagateLevel(int level, std::set<int> prop)
 
     // propagate
     prop.insert(getId());
-    for(auto& it: mOut) { it.propagateLevel(level, prop); }
+    for(auto& it: mOut) { it->propagateLevel(level, prop); }
 }
 
 template <class T>
@@ -149,8 +148,8 @@ template<>
 Value Block<std::function<double(double,double)>>::Compute(std::function<double(double,double)>)
 {
     Value v;
-    v.type = mOut[0].type;
-    v.value = mfunc(mIn[0].getValue().value, mIn[1].getValue().value);
+    v.type = mOut.at(0)->type;
+    v.value = mfunc(mIn.at(0)->getValue().value, mIn.at(1)->getValue().value);
     v.valid = true;
     return v;
 }
@@ -159,8 +158,8 @@ template<>
 Value Block<std::function<double(double)>>::Compute(std::function<double(double)>)
 {
     Value v;
-    v.type = mOut[0].type;
-    v.value = mfunc(mIn[0].getValue().value);
+    v.type = mOut.at(0)->type;
+    v.value = mfunc(mIn.at(0)->getValue().value);
     v.valid = true;
     return v;
 }

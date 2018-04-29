@@ -27,8 +27,14 @@ class Wire
         Wire(long key, IBlock& i, int iport, IBlock& o, int oport):
             mi(i), mo(o), mkey(key)
         {
-            mo.addWire(this, mkey, oport);
-            mi.addWire(this, mkey, iport);
+            try { 
+                mo.addWire(this, mkey, oport);
+                mi.addWire(this, mkey, iport);
+            } catch(MyError& e) { 
+                mo.removeWireKey(mkey); 
+                mi.removeWireKey(mkey);
+                throw e;
+            }
         }
 
         ~Wire()

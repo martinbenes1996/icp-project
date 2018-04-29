@@ -102,6 +102,8 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         long id; /**< Tady budes mit to id z modelu */
         emit sigCreateBlock(mchoice, id);
 
+        Debug::Gui("Create block "+std::to_string(id));
+
         // map signals
         mmapper.setMapping(newBlock.get(), id);
         QObject::connect(newBlock.get(), SIGNAL(sigBlockClick()),
@@ -138,6 +140,9 @@ bool PlayGround::createWireFunction()
     // wire request
     long id;
     bool success = true;
+    long begin = getIDFromBlock(block1);
+    long end = getIDFromBlock(block2);
+    Debug::Gui("Create wire: "+std::to_string(begin)+"<->"+std::to_string(end));
     emit sigCreateWire({getIDFromBlock(block1),connector1}, {getIDFromBlock(block2),connector2}, id, success);
     if(!success) return false;
 
@@ -161,9 +166,10 @@ bool PlayGround::createWireFunction()
 void PlayGround::deleteWireFunction(long i)
 {
 
-    Debug::Gui( "PlayGround: delete wire: "+std::to_string(i) );
-    emit sigDeleteWire(i);     // mapper mi neumoznuje posilat long, jen int
-    std::shared_ptr<MyWire> wire = mWires[i];
+    Debug::Gui( "PlayGround::deleteWireFunction("+std::to_string(i)+")" );
+    emit sigDeleteWire(i);
+    std::cerr << "In Gui: " << mWires.count(i) << "\n";
+    std::shared_ptr<MyWire> wire = mWires.at(i);
 
     wire->getBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
     wire->getBlock2()->setConnectorAvailability(wire->getConnector2(), 0);
@@ -172,14 +178,12 @@ void PlayGround::deleteWireFunction(long i)
     mscene->removeItem(wire->getText());
     mWires.erase(i);
 
-
 }
 
 void PlayGround::slotDeleteWire(long id)
 {
     Debug::Events("Deleting wire "+std::to_string(id));
     deleteWireFunction(id);
-    emit sigDeleteWire(id);
 }
 
 void PlayGround::slotForkWire(long id, QPointF)
@@ -190,7 +194,7 @@ void PlayGround::slotForkWire(long id, QPointF)
 void PlayGround::slotBlockClick(int i)
 {
     QGraphicsSceneMouseEvent * event;
-    std::shared_ptr<GuiBlock> block = mBlocks[i];
+    std::shared_ptr<GuiBlock> block = mBlocks.at(i);
     event = block->getMouseEvent();
 
     if(event->button() == Qt::LeftButton)
@@ -242,12 +246,6 @@ void PlayGround::slotBlockClick(int i)
 
 void PlayGroundView::mousePressEvent(QMouseEvent *event)
 {
-    //(void)event;
-    //std::cout << "PlayGroundView::mousePressEvent()\n";
-
-    //std::cout << event->x() << std::endl;
-    //std::cout << (QGraphicsSceneMouseEvent *)event->x() << std::endl;
-//std::cout << event->x() << " PGV " << event->y() << std::endl;
     if(event->button() == Qt::LeftButton)
     {
         Debug::Events("PlayGroundView: left click");

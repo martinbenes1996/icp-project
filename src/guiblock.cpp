@@ -58,7 +58,7 @@ void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 
 void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    std::cerr << "Block clicked!\n";
+    Debug::Events("Block clicked!");
     MPEvent = event;
     emit sigBlockClick();
 }

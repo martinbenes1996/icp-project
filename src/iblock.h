@@ -11,6 +11,7 @@
 #include <set>
 
 #include "defs.h"
+#include "debug.h"
 
 class Wire;
 
@@ -73,7 +74,7 @@ class IBlock
          * @brief Removes a single wire key.
          * @param key       Key of wire to remove.
          */
-        virtual void removeWireKey(long key) { mkeys.erase(key); }
+        virtual void removeWireKey(long key) { Debug::Block("IBlock::removeWireKey("+std::to_string(key)+")"); mkeys.erase(key); }
 
         /**
          * @brief Getter of keys of associated wires.
