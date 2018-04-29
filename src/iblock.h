@@ -14,7 +14,7 @@ class Wire;
 class IBlock
 {
     public:
-        IBlock(long id): mid(id) {}
+        IBlock(long id, long type): mid(id), mtype(type) {}
         virtual ~IBlock() {}
 
         /**
@@ -43,6 +43,8 @@ class IBlock
          * @returns The level value.
          */
         int getLevel() const { return mlevel; }
+
+        long getType() const { return mtype; }
 
         /**
          * @brief Propagates level towards.
@@ -83,6 +85,7 @@ class IBlock
     
     private:
         long mid;
+        long mtype;
 
         Value mvalue; /**< Value, that a block counted/has. */
         int mlevel = -1; /**< Level of the block in the scheme. */

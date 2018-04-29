@@ -26,7 +26,8 @@ void Model::slotCreateBlock(long type, long& key)
                 key,
                 Config::getFunc_2I1O(type),
                 Config::getInput(type),
-                Config::getOutput(type)
+                Config::getOutput(type),
+                type
             );
             break;
 
@@ -36,7 +37,8 @@ void Model::slotCreateBlock(long type, long& key)
                 key,
                 Config::getFunc_1I1O(type),
                 Config::getInput(type),
-                Config::getOutput(type)
+                Config::getOutput(type),
+                type
             );
             break;
 
@@ -126,4 +128,14 @@ void Model::slotReset()
     mBlocks.clear();
     mWires.clear();
     blockComputeQueue = std::queue<long>();
+}
+
+ModelState Model::getState()
+{
+    ModelState s;
+    for(auto& it: mBlocks)
+    {
+        s.blocks.insert( std::make_pair(it.first, it.second->getType()) );
+    }
+    return s;
 }

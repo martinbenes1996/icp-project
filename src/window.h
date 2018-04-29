@@ -9,6 +9,11 @@
 #include "menu.h"
 #include "playground.h"
 
+struct GuiState {
+   std::map<long, std::pair<double,double>> blocks;
+   // wires  
+};
+
 class Window: public QWidget
 {
     Q_OBJECT
@@ -18,9 +23,12 @@ class Window: public QWidget
 
         const PlayGround* getPG() const { return mplayground.get(); }
 
+        GuiState getState();
+        void reinit() { mplayground->reinit(); mmenu->reinit(); }
+
     public slots:
         void slotExit() { exit(0); }
-        void slotNew() { mplayground->reinit(); emit sigReset(); }
+        void slotNew() { reinit(); emit sigReset(); }
         void slotOpen() { emit sigOpen(); }
         void slotSave() { emit sigSave(); }
     signals:

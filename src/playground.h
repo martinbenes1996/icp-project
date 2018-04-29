@@ -29,10 +29,11 @@ class PlayGround: public QWidget
 
         PlayGround(QWidget* parent = 0);
 
-	PlayGroundView *getPlayGroundView() { return mview; }
+	    PlayGroundView *getPlayGroundView() { return mview; }
         bool hasChoice() { return mchoice != -1; }
 
         void reinit();
+        std::map<long,std::pair<double,double>> getBlockState();
 
         // slots and signals will have to be reworked
     public slots:

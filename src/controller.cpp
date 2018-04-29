@@ -37,4 +37,9 @@ void Controller::slotOpen()
 void Controller::slotSave()
 {
     std::cerr << "Save!\n";
+    GuiState gs = w.getState();
+    ModelState ms = m.getState();
+    for(auto& it: gs.blocks) std::cerr << it.first << ": " << it.second.first << "," << it.second.second << "\n";
+    for(auto& it: ms.blocks) std::cerr << it.first << ": " << it.second << "\n";
+    
 }

@@ -127,3 +127,8 @@ void Menu::slotChoiceRejected()
 {
     for(auto& it: mButtons) { it.second->setChecked(false); }
 }
+
+void Menu::reinit()
+{
+    for(auto& it: mButtons) { it.second->setChecked(false); }
+}

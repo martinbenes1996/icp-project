@@ -13,6 +13,12 @@
 #include "iblock.h"
 #include "wire.h"
 
+
+struct ModelState {
+    std::map<long,long> blocks;
+    // wires
+};
+
 /**
  * @brief Model.
  */
@@ -25,6 +31,8 @@ class Model: public QObject
 
         void startComputation();
         Computation computeBlock();
+
+        ModelState getState();
 
     public slots:
         /**
@@ -66,24 +74,18 @@ class Model: public QObject
 
         std::queue<long> blockComputeQueue;
 
+        int mblockkey = 0;
+        int mwirekey = 0;
         /**
          * @brief Generator of the block key.
          * @returns         The generated key
          */
-        long GenerateBlockKey()
-        {
-            static long gkey = 0;
-            return gkey++;
-        }
+        long GenerateBlockKey() { return mblockkey++; }
         /**
          * @brief Generator of the wire key.
          * @returns         The generated key.
          */
-        long GenerateWireKey()
-        {
-            static long gkey = 0;
-            return gkey++;
-        }
+        long GenerateWireKey() { return mwirekey++; }
 
 };
 

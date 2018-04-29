@@ -83,3 +83,11 @@ Window::Window(QWidget *parent): QWidget(parent)
     hlayout->addWidget(splitter);
 
 }
+
+GuiState Window::getState()
+{
+    GuiState s;
+    s.blocks = mplayground->getBlockState();
+    return s;
+}
+

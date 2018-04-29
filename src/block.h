@@ -26,8 +26,8 @@ class Block: public IBlock
          * @param outtypes  Types of input.
          * @param type_o    Type of the output.
          */
-        Block(long id, T func, std::vector<std::string> intypes, std::vector<std::string> outtypes):
-            IBlock(id), mfunc(func)
+        Block(long id, T func, std::vector<std::string> intypes, std::vector<std::string> outtypes, long type):
+            IBlock(id, type), mfunc(func)
         {
             for(auto& it: intypes) { mIn.push_back(it); }
             for(auto& it: outtypes) { mOut.push_back(it); }

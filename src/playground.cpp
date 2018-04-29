@@ -50,6 +50,9 @@ void PlayGround::reinit()
     }    
     mBlocks = std::map<long, std::shared_ptr<GuiBlock>>();
     mWires = std::map<long, std::shared_ptr<MyWire>>();
+
+    mchoice = -1;
+    mwire = false;
 }
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
@@ -291,4 +294,16 @@ void PlayGroundView::mousePressEvent(QMouseEvent *event)
 
     QGraphicsView::mousePressEvent(event);
 
+}
+
+std::map<long,std::pair<double,double>> PlayGround::getBlockState()
+{
+    std::map<long,std::pair<double,double>> m;
+    for(auto& it: mBlocks)
+    {
+        m.insert( std::make_pair(it.first,
+                    std::make_pair(it.second->x(), it.second->y()) )
+        );
+    }
+    return m;
 }

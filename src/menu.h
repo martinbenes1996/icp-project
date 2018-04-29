@@ -19,6 +19,8 @@ class Menu: public QWidget
         Menu(QWidget* parent = 0);
         void createImageButton(QString);
         void createTextButton(QString,bool);
+
+        void reinit();
    
     public slots:
         void slotChoicePressed(QString);
