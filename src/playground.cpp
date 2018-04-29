@@ -175,7 +175,7 @@ void PlayGround::slotBlockClick(int i)
 
         // wire selected ...
         if(mwire)
-        {std::cout << "kurva\n";
+        {
             bool wireFree;
             int connector;
 
@@ -201,7 +201,7 @@ void PlayGround::slotBlockClick(int i)
                 }
                 block1 = nullptr;
                 block2 = nullptr;
-                //createWire = false;
+                createWire = false;
                 //printNOISOMap(mWires);
             }
         }
