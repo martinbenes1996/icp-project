@@ -235,7 +235,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
 
     mtext = std::make_shared<QGraphicsTextItem>();
     mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
-    mtext->setPlainText("0");
+    mtext->setPlainText("N");
     mtext->setDefaultTextColor(Qt::cyan);
 
     QFont font = QFont();

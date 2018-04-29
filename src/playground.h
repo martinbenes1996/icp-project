@@ -50,6 +50,13 @@ class PlayGround: public QWidget
         std::map<long,GuiBlockDescriptor> getBlockState();
         void setBlockState(std::map<long,GuiBlockDescriptor>);
 
+        /**
+         * @brief   Sets new value of a wire for display.
+         * @param   id          ID of the wire
+         * @param   newValue    new value
+         */
+        void setWireValue(long id, double newValue);
+
         // slots and signals will have to be reworked
     public slots:
         /**

@@ -5,6 +5,7 @@
 
 
 #include <iostream>
+#include <string>
 
 #include <QMouseEvent>
 #include <QPainter>
@@ -61,6 +62,13 @@ void PlayGround::reinit()
     mwire = false;
 }
 
+void PlayGround::setWireValue(long id, double newValue)
+{
+    std::shared_ptr<MyWire> wire = mWires[id];
+
+    std::string str = std::to_string(newValue);
+    wire.get()->getText()->setPlainText(QString::fromStdString(std::to_string(newValue)));
+}
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {
