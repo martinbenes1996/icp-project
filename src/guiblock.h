@@ -28,9 +28,16 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
   public:
     GuiBlock(QPointF pos, long, QGraphicsItem* g = 0);
 
+    /**
+     * @brief   Gets type of the block.
+     * @returns type of the block represented by integer
+     */
     long getType() { return mtype; }
 
     // QRectF boundingRect() const override;
+    /**
+     * @brief   Function that paints the block.
+     */
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
     void mousePressEvent(QGraphicsSceneMouseEvent*);
@@ -39,16 +46,37 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
 
     void contains(QPointF);
 
+    /**
+     * @brief   Gets last mouse press event.
+     * @returns pointer to last mouse press event
+     */
     QGraphicsSceneMouseEvent * getMouseEvent() { return MPEvent; }
 
     // methods for different blocks
+    /**
+     * @brief   Determines which connector of the block was clicked and whether the block is free.
+     * @param   connector   pointer to a integer representing connectors
+     * @param   wireFree    pointer to integer representing availability of the connector
+     * @returns connector and availability of the connector through pointers
+     */
     void getPointFromBlock(int *connector, bool *wireFree);
+    /**
+     * @brief   Gets point in scene asociated with a connector.
+     * @param   connector   integer representing connector of a block
+     * @returns point in scene
+     */
     QPointF getConnectorPoint(int connector);
-    //QPointF getInput_2Point();
-    //QPointF getOutput_1Point();
-    //QPointF getOutput_2Point();
+
+    /**
+     * @brief   Sets connector availability.
+     * @param   connector   integer representing connector
+     * @param   addWire     true -> set not available, false -> set available
+     */
     void setConnectorAvailability(int connector, bool addWire);
 
+    /**
+     * @brief   Prints connector availability of a block. Debug function.
+     */
     void printCon() { std::cout << input1<<input2<<output1<<output2<<"\n"; }
     // ----------------------------
 
@@ -62,18 +90,18 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
     QRectF mrectangle;/*
     QBrush brush;
     QPen pen;*/
-    double mwidth = 30;
-    double mheight = 60;
+    double mwidth = 30;     /**< Width of the block. */
+    double mheight = 60;    /**< Height of the block. */
 
-    QGraphicsSceneMouseEvent * MPEvent = nullptr;
+    QGraphicsSceneMouseEvent * MPEvent = nullptr;   /**< Last mouse press event. */
 
     // different blocks variables - I/O
-    //int type;
-    long mtype;
+    long mtype;     /**< Type of the block. */
 
     QBrush blockBrush;
     QPen blockPen;
 
+    /**< Input and output connector availability. */
     bool input1 = false;
     bool input2 = false;
     bool output1 = false;

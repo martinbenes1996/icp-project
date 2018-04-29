@@ -1,3 +1,9 @@
+// iblock.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef IBLOCK_H
 #define IBLOCK_H
 
@@ -34,8 +40,8 @@ class IBlock
         virtual void setValue(const Value& value) { mvalue = value; }
 
         /**
-         * @brief Level setter. 
-         * @param level     New level value.     
+         * @brief Level setter.
+         * @param level     New level value.
          */
         virtual void setLevel(int level) { mlevel = level; }
         /**
@@ -58,8 +64,8 @@ class IBlock
          * @param key       Key of the wire.
          * @param port      Port to assign to.
          */
-        virtual void addWire(Wire*, long key, int port = 0) 
-        { 
+        virtual void addWire(Wire*, long key, int port = 0)
+        {
             mkeys.insert( std::make_pair(key,port) );
         }
 
@@ -82,7 +88,7 @@ class IBlock
 
         static bool isInputPort(int p) { return p >= 0; }
         static bool isOutputPort(int p) { return p < 0; }
-    
+
     private:
         long mid;
         long mtype;

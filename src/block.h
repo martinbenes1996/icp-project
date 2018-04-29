@@ -1,3 +1,9 @@
+// block.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef BLOCK_H
 #define BLOCK_H
 
@@ -19,8 +25,8 @@ template <class T>
 class Block: public IBlock
 {
     public:
-        /** 
-         * @brief Block constructor. 
+        /**
+         * @brief Block constructor.
          * @param func      Functionality of the block (lambdas as templates).
          * @param intypes   Types of inputs.
          * @param outtypes  Types of input.
@@ -48,7 +54,7 @@ class Block: public IBlock
         inline void propagateLevel(int, std::set<int>) override;
 
         inline void removeWireKey(long) override;
-    
+
     private:
         T mfunc; /**< Represents the functionality. */
 
@@ -79,21 +85,21 @@ void Block<T>::addWire(Wire *w, long key, int port)
     Debug::Block("Block::addWire");
     std::vector<Port>& v = (port < 0)?mOut:mIn;
     int index = (port < 0) ? (-port-1):(port);
-    
+
     // connect wire
     if(v[index].wire == nullptr) v[index].wire = w;
     // already connected port
     else throw MyError("Adding wire to connected port", ErrorType::WireError);
-    
+
     // add to keys
     IBlock::addWire(w, key, port);
 
       // input     // level is less than propagated
-    if(isInputPort(port) && getLevel() < w->getLevel()) 
-    { 
-        setLevel( w->getLevel() ); 
+    if(isInputPort(port) && getLevel() < w->getLevel())
+    {
+        setLevel( w->getLevel() );
     }
-    
+
 
     // output
     if(port < 0)
@@ -106,7 +112,7 @@ void Block<T>::addWire(Wire *w, long key, int port)
         }
     }
 
-    
+
 }
 
 
@@ -116,8 +122,8 @@ void Block<T>::propagateLevel(int level, std::set<int> prop)
     Debug::Block("Block::propagateLevel");
     // cycle detection
     if( prop.count(getId()) > 0)
-        throw MyError("Cycle detected!", ErrorType::BlockError); 
-    
+        throw MyError("Cycle detected!", ErrorType::BlockError);
+
     // level setter
     if(level > getLevel()) { setLevel(level); }
 
@@ -134,13 +140,13 @@ void Block<T>::Compute()
     // check matching types
     CheckTypes(mIn);
     CheckTypes(mOut);
-    
+
     // count result
     setValue( Compute(mfunc) );
 }
 
 template<>
-Value Block<std::function<double(double,double)>>::Compute(std::function<double(double,double)>) 
+Value Block<std::function<double(double,double)>>::Compute(std::function<double(double,double)>)
 {
     Value v;
     v.type = mOut[0].type;
@@ -150,7 +156,7 @@ Value Block<std::function<double(double,double)>>::Compute(std::function<double(
 }
 
 template<>
-Value Block<std::function<double(double)>>::Compute(std::function<double(double)>) 
+Value Block<std::function<double(double)>>::Compute(std::function<double(double)>)
 {
     Value v;
     v.type = mOut[0].type;

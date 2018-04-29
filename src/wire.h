@@ -1,3 +1,9 @@
+// wire.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef WIRE_H
 #define WIRE_H
 
@@ -11,8 +17,8 @@
 class Wire
 {
     public:
-        /** 
-         * @brief Wire constructor. 
+        /**
+         * @brief Wire constructor.
          * @param i     Input block.
          * @param iport Input block port.
          * @param o     Output block.
@@ -38,8 +44,8 @@ class Wire
 
         /** @brief Level getter (ask input). */
         int getLevel() { return mi.getLevel()+1; }
-        void propagateLevel(int level, std::set<int> prop) 
-        { 
+        void propagateLevel(int level, std::set<int> prop)
+        {
             mo.propagateLevel(level+1, prop);
         }
 
@@ -69,17 +75,17 @@ struct Port
     Value getValue() { check(); return wire->getValue(); }
     void disconnect() { wire = nullptr; }
     /** @brief Propagate level towards. */
-    void propagateLevel(int level, std::set<int> prop) 
-    { 
+    void propagateLevel(int level, std::set<int> prop)
+    {
         if(wire != nullptr) wire->propagateLevel(level, prop);
     }
-    
+
     /**
      * @brief Checks, wheather the port has assigned wire. Throws, if not.
      */
     void check()
-    { 
-        if(wire == nullptr) 
+    {
+        if(wire == nullptr)
             throw MyError("Port not assigned", ErrorType::WireError);
     }
 };

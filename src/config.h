@@ -1,3 +1,9 @@
+// config.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef CONFIG_H
 #define CONFIG_H
 

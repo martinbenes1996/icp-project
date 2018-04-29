@@ -1,3 +1,8 @@
+// model.cpp
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
 
 #include <iostream>
 
@@ -74,7 +79,7 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
             *mBlocks.at(endkey.key), endkey.port
         );
     } catch(MyError& e) { std::cerr << e.getMessage() << "\n"; success = false; }
-    
+
     mWires.insert( std::make_pair(key, w) );
     success = true;
 
@@ -93,12 +98,12 @@ void Model::startComputation()
     bool end = false;
     while(!end)
     {
-        bool found = false; 
+        bool found = false;
         for(auto& it: mBlocks) {
             if(it.second->getLevel() == level) {
                 blockComputeQueue.push(it.first);
                 found = true;
-            }   
+            }
             if(it.second->getLevel() == -1)
             {
                 throw MyError("Not all blocks connected!", ErrorType::BlockError);
@@ -115,7 +120,7 @@ Computation Model::computeBlock()
     // get id
     long id = blockComputeQueue.front();
     blockComputeQueue.pop();
-    
+
     // compute
     Computation c;
     c.key = id;

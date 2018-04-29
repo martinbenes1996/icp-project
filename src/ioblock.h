@@ -1,3 +1,9 @@
+// ioblock.h
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
+
 #ifndef IOBLOCK_H
 #define IOBLOCK_H
 
@@ -16,8 +22,8 @@ class Input: public IBlock
          */
         Input(long id double value = 0, std::string type):
             IBlock(id)
-        { 
-            setValue(value); 
+        {
+            setValue(value);
             mO.type = type;
         }
 

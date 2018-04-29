@@ -1,3 +1,8 @@
+// config.cpp
+// Autoři: xbenes49, xpolan09
+// Projekt do předmětu ICP.
+// Datum: 29.04.5018
+
 
 #include <iostream>
 #include <cmath>
@@ -108,10 +113,10 @@ std::vector<std::string> Config::getOutput(long key)
 
 std::map<std::string, long>& Config::getBlockNames() { return mBlockNames; }
 std::string Config::getImagePath(std::string s) { return ".." + PathSep + "examples" + PathSep + s + ".png"; }
-std::string Config::getBlockName(long key) 
-{ 
-    for(auto& it: mBlockNames) 
-        if(it.second == key) 
-            return it.first; 
+std::string Config::getBlockName(long key)
+{
+    for(auto& it: mBlockNames)
+        if(it.second == key)
+            return it.first;
     throw MyError("Unknown block key", ErrorType::BlockError);
 }
