@@ -48,6 +48,8 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
     //QPointF getOutput_1Point();
     //QPointF getOutput_2Point();
     void setConnectorAvailability(int connector, bool addWire);
+
+    void printCon() { std::cout << input1<<input2<<output1<<output2<<"\n"; }
     // ----------------------------
 
   signals:

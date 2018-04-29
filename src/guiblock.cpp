@@ -29,8 +29,17 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   p.setBrush( QBrush(Qt::black) );
   p.drawRect(port);
 
-  if(Config::decodeBlockType(type) == BlockType::OneIn_OneOut) mtype = 1;
-  else if(Config::decodeBlockType(type) == BlockType::TwoIn_OneOut) mtype = 2;
+  if(Config::decodeBlockType(type) == BlockType::OneIn_OneOut)
+  {
+    mtype = 1;
+    input2 = true;
+    output2 = true;
+  }
+  else if(Config::decodeBlockType(type) == BlockType::TwoIn_OneOut)
+  {
+    mtype = 2;
+    output2 = true;
+  }
 
   //setRect(mrectangle);
   //setBrush(blockBrush);
@@ -129,13 +138,13 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
         else if(tempRect2.contains(MPEvent->pos().x(), MPEvent->pos().y()))
         {
             Debug::Gui("levy dolni roh itemu");
-            *wireFree = !output1;
+            *wireFree = !input2;
             *connector = 1;
         }
         else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
         {
             Debug::Gui("pravy roh itemu");
-            *wireFree = !input2;
+            *wireFree = !output1;
             *connector = -1;
         }
     }
@@ -153,7 +162,7 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
         else if(tempRect3.contains(MPEvent->pos().x(), MPEvent->pos().y()))
         {
             Debug::Gui("pravy roh itemu");
-            *wireFree = !input2;
+            *wireFree = !output1;
             *connector = -1;
         }
     }

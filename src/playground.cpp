@@ -201,16 +201,20 @@ void PlayGround::slotBlockClick(int i)
                 block1 = block;
                 connector1 = connector;
                 createWire = createWire || wireFree;
+                block1->printCon();
             }
             else
             {
                 block2 = block;
                 connector2 = connector;
                 createWire = createWire && wireFree;
+                block2->printCon();
+                std::cout << createWire << "\n";
                 if(createWire)
                 {
+                    std::cout << "haha\n";
                     if(createWireFunction())
-                    {
+                    {std::cout << "hoho\n";
                         block1->setConnectorAvailability(connector1, true);
                         block2->setConnectorAvailability(connector2, true);
                     }
