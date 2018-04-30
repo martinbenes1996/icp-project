@@ -111,6 +111,16 @@ void Model::slotDeleteWire(long key)
         mWires.erase(key);
 }
 
+void Model::slotCreateInput(Value value, long& key)
+{
+
+}
+
+void Model::slotInputValueChanged(long key, Value value)
+{
+    
+}
+
 void Model::startComputation()
 {
     blockComputeQueue = std::queue<long>();

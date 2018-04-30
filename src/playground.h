@@ -110,6 +110,19 @@ class PlayGround: public QWidget
          */
         void sigCreateBlock(long type, long& key);
         /**
+         * @brief   Graphic's signal to the model, that input has been created.
+         *          The generated id (in the model) is passed by key.
+         * @param value     Assigned value.
+         * @param key       Reference for passing a key (backwards).
+         */
+        void sigCreateInput(Value value, long& key);
+        /**
+         * @brief   Graphic's signal to the model, that input changed its value.
+         * @param key       Key of input.
+         * @param value     New value.
+         */
+        void sigInputValueChanged(long key, Value value);
+        /**
          * @brief   Graphic's signal to the model, that block is deleted.
          * @param key       Key of deleted block.
          */

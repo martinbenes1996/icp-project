@@ -66,6 +66,18 @@ class Model: public QObject
          * @param key       Key of deleted wire.
          */
         void slotDeleteWire(long key);
+        /**
+         * @brief Invocated, when input is created (in GUI).
+         * @param value     Value, assigned to the input.
+         * @param key       Reference to return generated key.
+         */
+        void slotCreateInput(Value, long& key);
+        /**
+         * @brief Invocated, when input value is changed (in GUI).
+         * @param key       Key of input, whose value changed.
+         * @param value     New value.
+         */
+        void slotInputValueChanged(long key, Value);
 
         void slotReset();
 

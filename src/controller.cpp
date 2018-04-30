@@ -22,6 +22,9 @@ Controller::Controller()
     qRegisterMetaType<PortID>("PortID");
     QObject::connect(w.getPG(), SIGNAL(sigCreateWire(PortID, PortID, long&, bool&)), &m, SLOT(slotCreateWire(PortID, PortID, long&, bool&)), Qt::DirectConnection);
     QObject::connect(w.getPG(), SIGNAL(sigDeleteWire(long)), &m, SLOT(slotDeleteWire(long)));
+    qRegisterMetaType<Value>("Value");
+    QObject::connect(w.getPG(), SIGNAL(sigCreateInput(Value, long&)), &m, SLOT(slotCreateInput(Value, long&)), Qt::DirectConnection);
+    QObject::connect(w.getPG(), SIGNAL(sigInputValueChanged(long,Value)), &m, SLOT(slotInputValueChanged(long,Value)));
 
     QObject::connect(&m, SIGNAL(sigDeleteWire(long)), w.getPG(), SLOT(slotDeleteWire(long)), Qt::DirectConnection);
 

@@ -4,8 +4,9 @@
 // Datum: 29.04.5018
 
 
-
 #include <iostream>
+
+#include <QInputDialog>
 
 #include "debug.h"
 #include "guiblock.h"
@@ -259,11 +260,21 @@ std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
     return v;
 }
 
-GuiInput::GuiInput(QPointF pos, QGraphicsItem* g = 0):
+GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     QGraphicsEllipseItem(g)
 {
     setRect(pos.x()-mradius/2,pos.y()-mradius/2, mradius, mradius);
+
+
     // show input value dialog
+    bool ok;
+    QString text = QInputDialog::getText(0, "Input value dialog",
+                                         "Input value:", QLineEdit::Normal,
+                                         "", &ok);
+    if (ok && !text.isEmpty()) {
+        std::cout << text.toStdString() << "\n";
+    }
+
 
     setAcceptDrops(true);
     setAcceptHoverEvents(true);

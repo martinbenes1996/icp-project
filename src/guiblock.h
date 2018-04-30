@@ -166,7 +166,7 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
 {
     Q_OBJECT
     public:
-        GuiInput(QPointF pos, QGraphicsItem* g);
+        GuiInput(QPointF pos, QGraphicsItem* g = 0);
 
         void setValue(Value v) { mvalue = v; }
         void mousePressEvent(QGraphicsSceneMouseEvent* event);

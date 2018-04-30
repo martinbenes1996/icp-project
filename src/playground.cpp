@@ -79,17 +79,28 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     {
 
     }
+    // umisteni vstupu
+    else if(minput)
+    {
+        std::shared_ptr<GuiInput> newInput = std::make_shared<GuiInput>(event->pos());
+        mscene->addItem(newInput.get());
+        // collisions
+        QList<QGraphicsItem *> tempList;
+        tempList = newInput->collidingItems();
+        if(tempList.empty() != true)
+        {
+            mscene->removeItem(newInput.get());
+            return;
+        }
+    }
     // umisteni krabicky
     else if(mchoice >= 0)
     {
-
-        // pozadat guiblock o block
+        // create guiblock
         std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(event->pos(), mchoice);
         mscene->addItem(newBlock.get());
 
-        // kolize
-        // nejdrive se vlozi blok do sceny a pak se zkontroluje, jestli neni kolize
-        // moc se mi to reseni nelibi, mozno udelat bez vkladani?
+        // collisions
         QList<QGraphicsItem *> tempList;
         tempList = newBlock->collidingItems();
         if(tempList.empty() != true)
