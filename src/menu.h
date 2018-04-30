@@ -35,6 +35,7 @@ class Menu: public QWidget
     signals:
         void sigChoiceMode(long);
         void sigWireMode();
+        void sigInput();
     private:
         QSignalMapper mmapper;
         std::map<QString, QPushButton*> mButtons;

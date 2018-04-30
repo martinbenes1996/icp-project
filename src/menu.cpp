@@ -55,12 +55,10 @@ void Menu::createTextButton(QString s, bool checkable = true)
     QObject::connect(btn, SIGNAL(pressed()), &mmapper, SLOT(map()));
 }
 
-constexpr auto loadBtn = "Load";
-constexpr auto saveBtn = "Save";
 constexpr auto compBtn = "Compute";
 constexpr auto stepBtn = "Step";
-constexpr auto exitBtn = "Exit";
 constexpr auto wireBtn = "Wire";
+constexpr auto inputBtn = "Input";
 
 Menu::Menu(QWidget* parent): QWidget(parent)
 {
@@ -92,6 +90,7 @@ Menu::Menu(QWidget* parent): QWidget(parent)
 
     // wire
     createTextButton(wireBtn);
+    createTextButton(inputBtn);
 
     QObject::connect(&mmapper, SIGNAL(mapped(QString)), this, SLOT(slotChoicePressed(QString)));
     setContentsMargins(0,0,0,0);
@@ -103,6 +102,7 @@ void Menu::slotChoicePressed(QString name)
 
     for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
     if(name == wireBtn) { emit sigWireMode(); return; }
+    if(name == inputBtn) { emit sigInput(); return; }
 
     auto m = Config::getBlockNames();
     #warning wtf logic?

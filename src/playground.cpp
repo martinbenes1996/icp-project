@@ -168,7 +168,6 @@ void PlayGround::deleteWireFunction(long i)
 
     Debug::Gui( "PlayGround::deleteWireFunction("+std::to_string(i)+")" );
     emit sigDeleteWire(i);
-    std::cerr << "In Gui: " << mWires.count(i) << "\n";
     std::shared_ptr<MyWire> wire = mWires.at(i);
 
     wire->getBlock1()->setConnectorAvailability(wire->getConnector1(), 0);

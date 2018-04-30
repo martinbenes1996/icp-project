@@ -16,11 +16,14 @@
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsEllipseItem>
 #include <QPointF>
 #include <QRectF>
 #include <QBrush>
 #include <QPen>
 #include <QLineF>
+
+#include "defs.h"
 
 class GuiBlock: public QObject, public QGraphicsPixmapItem
 {
@@ -157,6 +160,21 @@ class MyWire: public QObject
         std::shared_ptr<GuiBlock> gblock2;
         int mconnector1;
         int mconnector2;
+};
+
+class GuiInput: public QObject, public QGraphicsEllipseItem
+{
+    Q_OBJECT
+    public:
+        GuiInput(QPointF pos, QGraphicsItem* g);
+
+        void setValue(Value v) { mvalue = v; }
+        void mousePressEvent(QGraphicsSceneMouseEvent* event);
+        void hoverEnterEvent(QGraphicsSceneHoverEvent*);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
+    private:
+        Value mvalue;
+        double mradius = 20;
 };
 
 

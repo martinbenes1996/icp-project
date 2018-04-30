@@ -259,3 +259,34 @@ std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
     return v;
 }
 
+GuiInput::GuiInput(QPointF pos, QGraphicsItem* g = 0):
+    QGraphicsEllipseItem(g)
+{
+    setRect(pos.x()-mradius/2,pos.y()-mradius/2, mradius, mradius);
+    // show input value dialog
+
+    setAcceptDrops(true);
+    setAcceptHoverEvents(true);
+}
+
+void GuiInput::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    if(event->button() == Qt::LeftButton)
+    {
+        Debug::Gui("Left button on input!");
+    }
+    else if(event->button() == Qt::RightButton)
+    {
+        Debug::Gui("Right button on input!");
+    }
+}
+
+void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent*)
+{
+
+}
+
+void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
+{
+
+}

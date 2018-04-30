@@ -55,6 +55,13 @@ struct Value {
     std::string type; /**< Type of the value. */
     double value = 0; /**< Value itself. */
     bool valid = false;
+    Value& operator= (const Value& v)
+    {
+        this->type = v.type;
+        this->value = v.value;
+        this->valid = v.valid;
+        return *this;
+    }
 };
 
 struct Computation

@@ -28,6 +28,7 @@ Window::Window(QWidget *parent): QWidget(parent)
     QObject::connect(mplayground->getPlayGroundView(), SIGNAL(sigViewRightClick(QMouseEvent *)), mplayground.get(), SLOT(slotViewRightClick(QMouseEvent *)));
 
     QObject::connect(mmenu.get(), SIGNAL(sigWireMode()), mplayground.get(), SLOT(slotWireMode()));
+    QObject::connect(mmenu.get(), SIGNAL(sigInput()), mplayground.get(), SLOT(slotInput()));
 
     // splits the menu part and the playground (view!) part
     QSplitter *splitter = new QSplitter(this);
