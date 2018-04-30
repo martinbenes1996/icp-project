@@ -273,9 +273,11 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
                                          "", &ok);
     if (ok && !text.isEmpty()) {
         std::cout << text.toStdString() << "\n";
+        mvalue.value = text.toDouble();
+        mvalue.type = "general"; // complete!!!
+        mvalue.valid = true;
     }
-
-
+    
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
 }

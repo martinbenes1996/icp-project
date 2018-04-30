@@ -21,7 +21,7 @@ class Wire;
 class IBlock
 {
     public:
-        IBlock(long id, long type): mid(id), mtype(type) {}
+        IBlock(long id, long type = -1): mid(id), mtype(type) {}
         virtual ~IBlock() {}
 
         /**
@@ -49,7 +49,7 @@ class IBlock
          * @brief Level getter.
          * @returns The level value.
          */
-        int getLevel() const { return mlevel; }
+        virtual int getLevel() const { return mlevel; }
 
         long getType() const { return mtype; }
 
@@ -81,6 +81,11 @@ class IBlock
          * @returns Set of keys.
          */
         std::map<long,int> getWireKeys() const { return mkeys; }
+
+        virtual bool isInput() { return false; }
+
+        virtual SimulationResults distributeResult() { return SimulationResults(); }
+        virtual SimulationResults& distributeResult(SimulationResults& r) { return r; }
 
 
     protected:

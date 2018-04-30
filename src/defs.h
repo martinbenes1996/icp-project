@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 
 /**
  * @brief Type of the error.
@@ -75,6 +76,21 @@ struct GuiBlockDescriptor {
     long type;
 };
 
+struct Result {
+    double value;
+    std::string type;
+    int level;
+};
+struct SimulationResults {
+    std::map<long,Result> blocks;
+    std::map<long,Result> wires;
+
+    void mergeWith(const SimulationResults& s)
+    {
+        for(auto& it: s.blocks) { this->blocks.insert(it); }
+        for(auto& it: s.wires) { this->blocks.insert(it); }
+    }
+};
 
 
 

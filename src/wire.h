@@ -55,6 +55,19 @@ class Wire
             mo.propagateLevel(level+1, prop);
         }
 
+        SimulationResults& distributeResult(SimulationResults& sr) const
+        {
+            Result r;
+            Value v;
+
+            r.level = mi.getLevel();
+            r.value = v.value;
+            r.type = v.type;
+
+            sr.wires.insert( std::make_pair(mkey,r) );
+            return mo.distributeResult(sr);
+        }
+
     private:
         IBlock& mi; /**< Input block reference. */
         IBlock& mo; /**< Output block reference. */
@@ -84,6 +97,11 @@ struct Port
     void propagateLevel(int level, std::set<int> prop)
     {
         if(wire != nullptr) wire->propagateLevel(level, prop);
+    }
+    SimulationResults& distributeResult(SimulationResults& r) const 
+    {
+        if(wire == nullptr) return r;
+        else return wire->distributeResult(r);
     }
 
     /**

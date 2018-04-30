@@ -18,6 +18,58 @@
 #include "iblock.h"
 #include "wire.h"
 
+/**
+ * @brief Input block.
+ */
+class Input: public IBlock
+{
+    public:
+        /**
+         * @brief Input constructor
+         * @param value     Initial value of constructor.
+         */
+        Input(long id, Value value):
+            IBlock(id), mO(value.type)
+        {
+            Debug::Block("Input::Input");
+            setValue(value);
+        }
+
+        /**
+         * @brief Assigns wire to the port.
+         * @param w         Wire to assign.
+         * @param key       Key of the wire.
+         * @param port      Port to assign to.
+         */
+        void addWire(Wire* w, long key, int port = 0) override
+        {
+            if(mO.wire == nullptr) mO.wire = w;
+            else throw MyError("Input has only output port", ErrorType::BlockError);
+            IBlock::addWire(w, key, port);
+        }
+
+        int getLevel() const override { return 0; }
+        inline void setLevel(int) override { throw MyError("Level of the input is constant", ErrorType::BlockError); }
+
+        bool isInput() override { return true; }
+
+        SimulationResults distributeResult() const 
+        {
+            SimulationResults sr;
+            Result r;
+            Value v = getValue();
+
+            r.value = v.value;
+            r.type = v.type;
+            r.level = 0;
+
+            sr.blocks.insert( std::make_pair(getId(),r) );
+            return mO.distributeResult(sr);
+        }
+
+    private:
+        Port mO; /**< Output wire. */
+};
 
 /**
  * @brief Block.
@@ -56,11 +108,31 @@ class Block: public IBlock
 
         inline void removeWireKey(long) override;
 
+        SimulationResults& distributeResult(SimulationResults& sr) override 
+        {
+            for(auto& it: mIn) { if(!it->getValue().valid) { return sr; } }
+
+            Result r;
+            Value v = getValue();
+
+            r.value = v.value;
+            r.type = v.type;
+            r.level = 0;
+
+            sr.blocks.insert( std::make_pair(getId(),r) );
+
+            SimulationResults tmp;
+            for(auto& it: mOut) { tmp.mergeWith(it->distributeResult(sr)); }
+            sr.mergeWith(tmp);
+            return sr;
+        }
+
     private:
         T mfunc; /**< Represents the functionality. */
 
         std::vector<std::shared_ptr<Port>> mIn;
         std::vector<std::shared_ptr<Port>> mOut;
+
         void CheckTypes(std::vector<std::shared_ptr<Port>>&);
 
         /**

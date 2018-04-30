@@ -29,7 +29,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
   public:
-    GuiBlock(QPointF pos, long, QGraphicsItem* g = 0);
+    GuiBlock(QPointF, long, QGraphicsItem* g = 0);
 
     /**
      * @brief   Gets type of the block.
@@ -43,9 +43,9 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
      */
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
-    void mousePressEvent(QGraphicsSceneMouseEvent*);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent*);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
+    void mousePressEvent(QGraphicsSceneMouseEvent*) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent*) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
 
     void contains(QPointF);
 
@@ -62,32 +62,31 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
      * @param   wireFree    pointer to integer representing availability of the connector
      * @returns connector and availability of the connector through pointers
      */
-    void getPointFromBlock(int *connector, bool *wireFree);
+    void getPointFromBlock(int *, bool *);
     /**
      * @brief   Gets point in scene asociated with a connector.
      * @param   connector   integer representing connector of a block
      * @returns point in scene
      */
-    QPointF getConnectorPoint(int connector);
+    QPointF getConnectorPoint(int);
 
     /**
      * @brief   Sets connector availability.
      * @param   connector   integer representing connector
      * @param   addWire     true -> set not available, false -> set available
      */
-    void setConnectorAvailability(int connector, bool addWire);
+    void setConnectorAvailability(int, bool);
 
     /**
      * @brief   Prints connector availability of a block. Debug function.
      */
     void printCon() { std::cout << input1<<input2<<output1<<output2<<"\n"; }
+
+    void setValue(Value v) { mvalue = v; }
     // ----------------------------
 
   signals:
-         /**
-         * @brief   Signal to the PlayGround, mouse click.
-         */
-        void sigBlockClick();
+    void sigBlockClick();
 
   private:
     QRectF mrectangle;/*
@@ -100,6 +99,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
 
     // different blocks variables - I/O
     long mtype;     /**< Type of the block. */
+    Value mvalue;
 
     QBrush blockBrush;
     QPen blockPen;
@@ -168,10 +168,17 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
     public:
         GuiInput(QPointF pos, QGraphicsItem* g = 0);
 
+        Value getValue() { return mvalue; }
         void setValue(Value v) { mvalue = v; }
-        void mousePressEvent(QGraphicsSceneMouseEvent* event);
-        void hoverEnterEvent(QGraphicsSceneHoverEvent*);
-        void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
+
+        void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+        void hoverEnterEvent(QGraphicsSceneHoverEvent*) override;
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
+
+        bool isInput() { return true; }
+    
+    signals:
+        void sigBlockClick();
     private:
         Value mvalue;
         double mradius = 20;

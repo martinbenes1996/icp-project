@@ -113,7 +113,10 @@ void Model::slotDeleteWire(long key)
 
 void Model::slotCreateInput(Value value, long& key)
 {
+    key = GenerateBlockKey();
+    Debug::Model( "Create input "+std::to_string(key) );
 
+    std::shared_ptr<IBlock> b = std::make_shared<Input>(key,value);
 }
 
 void Model::slotInputValueChanged(long key, Value value)

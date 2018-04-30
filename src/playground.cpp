@@ -92,6 +92,16 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
             mscene->removeItem(newInput.get());
             return;
         }
+
+        long id;
+        emit sigCreateInput(newInput->getValue(), id);
+
+        Debug::Gui("Create block "+std::to_string(id));
+
+        mmapper.setMapping(newInput.get(), id);
+        QObject::connect(newInput.get(), SIGNAL(sigBlockClick()),
+                         &mmapper, SLOT(map()));
+
     }
     // umisteni krabicky
     else if(mchoice >= 0)
