@@ -50,6 +50,8 @@ class PlayGround: public QWidget
         std::map<long,GuiBlockDescriptor> getBlockState();
         void setBlockState(std::map<long,GuiBlockDescriptor>);
 
+        void inputClick(int);
+
         /**
          * @brief   Sets new value of a wire for display.
          * @param   id          ID of the wire
@@ -166,6 +168,7 @@ class PlayGround: public QWidget
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
         std::map<long, std::shared_ptr<MyWire>> mWires; /**< Placed wires. */
+        std::map<long, std::shared_ptr<GuiInput>> mInputs; /**< Placed inputs. */
 
         QSignalMapper mmapper;
 

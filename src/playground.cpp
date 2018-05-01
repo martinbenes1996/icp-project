@@ -83,7 +83,9 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     else if(minput)
     {
         std::shared_ptr<GuiInput> newInput = std::make_shared<GuiInput>(event->pos());
+        if(!newInput->isOk()) return;
         mscene->addItem(newInput.get());
+
         // collisions
         QList<QGraphicsItem *> tempList;
         tempList = newInput->collidingItems();
@@ -101,6 +103,8 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         mmapper.setMapping(newInput.get(), id);
         QObject::connect(newInput.get(), SIGNAL(sigBlockClick()),
                          &mmapper, SLOT(map()));
+
+        mInputs.insert( std::make_pair(id,newInput) );
 
     }
     // umisteni krabicky
@@ -211,10 +215,23 @@ void PlayGround::slotForkWire(long id, QPointF)
     Debug::Events("Forking wire "+std::to_string(id));
 }
 
+void PlayGround::inputClick(int i)
+{
+    Debug::Events("PlayGround::inputClick "+std::to_string(i));
+    if(mInputs.at(i)->getMouseEvent()->button() == Qt::RightButton)
+    {
+        emit sigDeleteBlock(i);
+        mscene->removeItem(mInputs.at(i).get());
+        mInputs.erase(i);
+    }
+    else if(mInputs.at(i)->getMouseEvent()->button() == Qt::LeftButton)
+}
+
 void PlayGround::slotBlockClick(int i)
 {
     QGraphicsSceneMouseEvent * event;
-    std::shared_ptr<GuiBlock> block = mBlocks.at(i);
+    if(mInputs.count(i) > 0) { inputClick(i); return; }
+    auto block = mBlocks.at(i);
     event = block->getMouseEvent();
 
     if(event->button() == Qt::LeftButton)

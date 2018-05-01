@@ -101,14 +101,13 @@ void Menu::slotChoicePressed(QString name)
 {
 
     for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
+    #warning wtf logic?
+    if(mButtons.at(name)->isChecked()) { emit sigChoiceMode(-1); return; }
     if(name == wireBtn) { emit sigWireMode(); return; }
     if(name == inputBtn) { emit sigInput(); return; }
 
     auto m = Config::getBlockNames();
-    #warning wtf logic?
-    long key = (!mButtons.at(name)->isChecked()) ?
-                    m.at(name.toStdString()) : -1;
-    emit sigChoiceMode(key);
+    emit sigChoiceMode(m.at(name.toStdString()));
 
     // std::cout << name.toStdString() << "\n";
 }

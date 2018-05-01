@@ -69,6 +69,7 @@ void Model::slotDeleteBlock(long key)
     }
 
     // erase the block
+    if(mInputs.count(key) > 0) mInputs.erase(key);
     mBlocks.erase(key);
     
 }

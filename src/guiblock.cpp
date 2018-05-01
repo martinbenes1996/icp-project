@@ -26,9 +26,9 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   setPos(pos.x()-mwidth/2,pos.y()-mheight/2);
 
   QRectF port(pos.x()+mwidth/2, pos.y(), 100,100);
-  QPainter p;
-  p.setBrush( QBrush(Qt::black) );
-  p.drawRect(port);
+  //QPainter p;
+  //p.setBrush( QBrush(Qt::black) );
+  //p.drawRect(port);
 
   if(Config::decodeBlockType(type) == BlockType::OneIn_OneOut)
   {
@@ -54,7 +54,6 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
 void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
   QGraphicsPixmapItem::paint(p,s,w);
-
 }
 
 void GuiBlock::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -267,16 +266,11 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
 
 
     // show input value dialog
-    bool ok;
-    QString text = QInputDialog::getText(0, "Input value dialog",
-                                         "Input value:", QLineEdit::Normal,
-                                         "", &ok);
-    if (ok && !text.isEmpty()) {
-        std::cout << text.toStdString() << "\n";
-        mvalue.value = text.toDouble();
-        mvalue.type = "general"; // complete!!!
-        mvalue.valid = true;
-    }
+    double val = QInputDialog::getDouble(0, "Input value dialog",
+                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
+    mvalue.value = val;
+    mvalue.type = "general"; // complete!!!
+    mvalue.valid = true;
     
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
@@ -284,6 +278,8 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
 
 void GuiInput::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
+    MPEvent = event;
+    emit sigBlockClick();
     if(event->button() == Qt::LeftButton)
     {
         Debug::Gui("Left button on input!");
@@ -291,6 +287,24 @@ void GuiInput::mousePressEvent(QGraphicsSceneMouseEvent* event)
     else if(event->button() == Qt::RightButton)
     {
         Debug::Gui("Right button on input!");
+    }
+}
+
+void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    if(event->button() == Qt::LeftButton)
+    {
+        // show input value dialog
+        bool ok;
+        QString text = QInputDialog::getText(0, "Input value dialog",
+                                            "Input value:", QLineEdit::Normal,
+                                            "", &ok);
+        if (ok && !text.isEmpty()) {
+            std::cout << text.toStdString() << "\n";
+            mvalue.value = text.toDouble();
+            mvalue.type = "general"; // complete!!!
+            mvalue.valid = true;
+        }
     }
 }
 
@@ -302,4 +316,9 @@ void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
 
+}
+
+void GuiInput::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
+{
+  QGraphicsEllipseItem::paint(p,s,w);
 }

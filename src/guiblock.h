@@ -171,17 +171,28 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         Value getValue() { return mvalue; }
         void setValue(Value v) { mvalue = v; }
 
-        void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+        void mousePressEvent(QGraphicsSceneMouseEvent*) override;
+        void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*) override;
         void hoverEnterEvent(QGraphicsSceneHoverEvent*) override;
         void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
+        void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
-        bool isInput() { return true; }
+        bool isOk() { return mok; }
+
+        /**
+         * @brief   Gets last mouse press event.
+         * @returns pointer to last mouse press event
+         */
+        QGraphicsSceneMouseEvent * getMouseEvent() { return MPEvent; }
     
     signals:
         void sigBlockClick();
     private:
         Value mvalue;
         double mradius = 20;
+        bool mok;
+
+        QGraphicsSceneMouseEvent * MPEvent = nullptr;
 };
 
 
