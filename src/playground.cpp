@@ -225,6 +225,9 @@ void PlayGround::inputClick(int i)
         mInputs.erase(i);
     }
     else if(mInputs.at(i)->getMouseEvent()->button() == Qt::LeftButton)
+    {
+        
+    }
 }
 
 void PlayGround::slotBlockClick(int i)
