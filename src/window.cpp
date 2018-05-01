@@ -51,35 +51,43 @@ Window::Window(QWidget *parent): QWidget(parent)
     setLayout(vlayout);
 
     // create file
-    QMenu *menu1 = new QMenu(QString("Soubor"), this);
+    QMenu *menu1 = new QMenu(QString("File"), this);
     // new
-    QAction *newAction = menu1->addAction(QString("Nový"));
+    QAction *newAction = menu1->addAction(QString("New"));
     newAction->setShortcuts(QKeySequence::New);
-    newAction->setStatusTip( QString("Obnoví program do stavu po spuštění.") );
     QObject::connect(newAction, SIGNAL(triggered()), this, SLOT(slotNew()) );
     // load
-    QAction *loadAction = menu1->addAction(QString("Otevřít"));
+    QAction *loadAction = menu1->addAction(QString("Open"));
     loadAction->setShortcuts(QKeySequence::Open);
-    loadAction->setStatusTip( QString("Otevře soubor.") );
     QObject::connect(loadAction, SIGNAL(triggered()), this, SLOT(slotOpen()) );
     // save
-    QAction *saveAction = menu1->addAction(QString("Uložit"));
+    QAction *saveAction = menu1->addAction(QString("Save"));
     saveAction->setShortcuts(QKeySequence::Save);
-    saveAction->setStatusTip( QString("Uloží do souboru.") );
     QObject::connect(saveAction, SIGNAL(triggered()), this, SLOT(slotSave()) );
     // exit
-    QAction *exitAction = menu1->addAction(QString("Ukončit"));
+    QAction *exitAction = menu1->addAction(QString("Exit"));
     exitAction->setShortcuts(QKeySequence::Quit);
     exitAction->setShortcuts(QKeySequence::Close);
-    exitAction->setStatusTip( QString("Ukončí program a zavře okno.") );
     QObject::connect(exitAction, SIGNAL(triggered()), this, SLOT(slotExit()) );
-
     menubar->addMenu(menu1);
 
-    // create help
-    QMenu *menu2 = new QMenu(QString("Nápověda"), this);
-    QAction *helpAction = menu2->addAction(QString("Pomoc"));
+    // create file
+    QMenu *menu2 = new QMenu(QString("Run"), this);
+    // calculate
+    QAction *calculateAction = menu2->addAction(QString("Calculate"));
+    calculateAction->setStatusTip( QString("Obnoví program do stavu po spuštění.") );
+    QObject::connect(calculateAction, SIGNAL(triggered()), this, SLOT(slotCalculate()) );
+    // debug
+    QAction *debugAction = menu2->addAction(QString("Debug"));
+    debugAction->setShortcuts(QKeySequence::Open);
+    debugAction->setStatusTip( QString("Otevře soubor.") );
+    QObject::connect(debugAction, SIGNAL(triggered()), this, SLOT(slotDebug()) );
     menubar->addMenu(menu2);
+
+    // create help
+    QMenu *menu3 = new QMenu(QString("Nápověda"), this);
+    QAction *helpAction = menu3->addAction(QString("Pomoc"));
+    menubar->addMenu(menu3);
 
     QWidget *content = new QWidget(this);
     vlayout->addWidget(content);
@@ -118,4 +126,6 @@ void Window::slotSave()
     emit sigSave(filename.toStdString());
 }
 
+void Window::slotDebug() { emit sigRun(true); }
+void Window::slotCalculate() { emit sigRun(false); }
 

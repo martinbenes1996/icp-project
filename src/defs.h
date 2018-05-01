@@ -65,12 +65,6 @@ struct Value {
     }
 };
 
-struct Computation
-{
-    long key;
-    Value result;
-};
-
 struct GuiBlockDescriptor {
     std::pair<double, double> pos;
     long type;
@@ -82,15 +76,40 @@ struct Result {
     int level;
 };
 struct SimulationResults {
-    std::map<long,Result> blocks;
-    std::map<long,Result> wires;
+    std::map<int, std::map<long,Result>> blocks;
+    std::map<int, std::map<long,Result>> wires;
 
     void mergeWith(const SimulationResults& s)
     {
-        for(auto& it: s.blocks) { this->blocks.insert(it); }
-        for(auto& it: s.wires) { this->blocks.insert(it); }
+        for(auto& i: s.blocks) { 
+            for(auto& j: i.second) {
+                insertBlock(j.first, j.second);
+            }
+        }
+        for(auto& i: s.wires) {
+            for(auto& j: i.second) {
+                insertBlock(j.first, j.second);
+            }
+        }
+    }
+
+    void insertBlock(long id, Result r)
+    {
+        if(blocks.count(r.level) == 0)
+            blocks.insert( std::make_pair(r.level,std::map<long,Result>()) );
+
+        blocks.at(r.level).insert( std::make_pair(id,r) );
+    }
+
+    void insertWire(long id, Result r)
+    {
+        if(wires.count(r.level) == 0)
+            wires.insert( std::make_pair(r.level,std::map<long,Result>()) );
+
+        wires.at(r.level).insert( std::make_pair(id,r) );
     }
 };
+
 
 
 

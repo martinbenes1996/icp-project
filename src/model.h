@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <queue>
+#include <set>
 #include <string>
 
 #include <QObject>
@@ -35,8 +36,7 @@ class Model: public QObject
     public:
         ~Model();
 
-        void startComputation();
-        Computation computeBlock();
+        SimulationResults startComputation();
 
         ModelState getState();
         void setState(ModelState);
@@ -90,9 +90,8 @@ class Model: public QObject
 
     private:
         std::map<long, std::shared_ptr<IBlock>> mBlocks; /**< Map of blocks. */
+        std::set<long> mInputs;
         std::map<long, std::shared_ptr<Wire>> mWires;    /**< Map of wires. */
-
-        std::queue<long> blockComputeQueue;
 
         int mblockkey = 0;
         int mwirekey = 0;

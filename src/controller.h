@@ -18,11 +18,10 @@ class Controller: public QObject
     public:
         Controller();
 
-        void startComputation();
-
     public slots:
         void slotOpen(std::string);
         void slotSave(std::string);
+        void slotRun(bool);
 
     private:
         Model m;

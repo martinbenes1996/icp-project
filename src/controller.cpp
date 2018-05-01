@@ -31,12 +31,8 @@ Controller::Controller()
     QObject::connect(&w, SIGNAL(sigReset()), &m, SLOT(slotReset()));
     QObject::connect(&w, SIGNAL(sigOpen(std::string)), this, SLOT(slotOpen(std::string)));
     QObject::connect(&w, SIGNAL(sigSave(std::string)), this, SLOT(slotSave(std::string)));
+    QObject::connect(&w, SIGNAL(sigRun(bool)), this, SLOT(slotRun(bool)));
     w.show();
-}
-
-void Controller::startComputation()
-{
-    m.startComputation();
 }
 
 std::vector<std::string> split(std::string s)
@@ -56,7 +52,7 @@ std::vector<std::string> split(std::string s)
 
 void Controller::slotOpen(std::string path)
 {
-    Debug::Controller("Open!");
+    Debug::Controller("Controller::slotOpen");
     std::filebuf fb;
     fb.open (path,std::ios::in);
     std::istream os(&fb);
@@ -100,7 +96,7 @@ void Controller::slotOpen(std::string path)
 
 void Controller::slotSave(std::string path)
 {
-    Debug::Controller("Save!");
+    Debug::Controller("Controller::slotSave");
     // get states
     GuiState gs = w.getState();
     ModelState ms = m.getState();
@@ -121,4 +117,21 @@ void Controller::slotSave(std::string path)
     os << "# WIRES #\n";
 
     fb.close();
+}
+
+void Controller::slotRun(bool debug)
+{
+    Debug::Controller("Controller::slotRun(dbg="
+                     + std::string(((debug)?"true":"false"))
+                     + ")" );
+    SimulationResults results = m.startComputation();
+
+    for(auto& i: results.blocks)
+    {
+        for(auto& j: i.second)
+        {
+            std::cerr << j.first << ":" << j.second.value
+                      << "[" << i.first << "]\n";
+        }
+    }
 }

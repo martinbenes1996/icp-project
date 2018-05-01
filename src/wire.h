@@ -64,7 +64,7 @@ class Wire
             r.value = v.value;
             r.type = v.type;
 
-            sr.wires.insert( std::make_pair(mkey,r) );
+            sr.insertWire(mkey,r);
             return mo.distributeResult(sr);
         }
 

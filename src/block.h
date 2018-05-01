@@ -63,7 +63,7 @@ class Input: public IBlock
             r.type = v.type;
             r.level = 0;
 
-            sr.blocks.insert( std::make_pair(getId(),r) );
+            sr.insertBlock(getId(), r);
             return mO.distributeResult(sr);
         }
 
@@ -119,7 +119,7 @@ class Block: public IBlock
             r.type = v.type;
             r.level = 0;
 
-            sr.blocks.insert( std::make_pair(getId(),r) );
+            sr.insertBlock(getId(),r);
 
             SimulationResults tmp;
             for(auto& it: mOut) { tmp.mergeWith(it->distributeResult(sr)); }

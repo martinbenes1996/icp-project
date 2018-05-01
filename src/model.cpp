@@ -117,55 +117,32 @@ void Model::slotCreateInput(Value value, long& key)
     Debug::Model( "Create input "+std::to_string(key) );
 
     std::shared_ptr<IBlock> b = std::make_shared<Input>(key,value);
+
+    mBlocks.insert( std::make_pair(key, b) );
+    mInputs.insert( key );
 }
 
 void Model::slotInputValueChanged(long key, Value value)
 {
-    
+    mBlocks.at(key)->setValue(value);
 }
 
-void Model::startComputation()
+SimulationResults Model::startComputation()
 {
-    blockComputeQueue = std::queue<long>();
-    int level = 0;
-    bool end = false;
-    while(!end)
+    // collect results
+    SimulationResults sr;
+    for(auto& inkey: mInputs)
     {
-        bool found = false;
-        for(auto& it: mBlocks) {
-            if(it.second->getLevel() == level) {
-                blockComputeQueue.push(it.first);
-                found = true;
-            }
-            if(it.second->getLevel() == -1)
-            {
-                throw MyError("Not all blocks connected!", ErrorType::BlockError);
-            }
-        }
-
-        level++;
-        end = !found;
+        sr.mergeWith(mBlocks.at(inkey)->distributeResult());
     }
-}
-
-Computation Model::computeBlock()
-{
-    // get id
-    long id = blockComputeQueue.front();
-    blockComputeQueue.pop();
-
-    // compute
-    Computation c;
-    c.key = id;
-    c.result = mBlocks.at(id)->getValue();
-    return c;
+    return sr;
 }
 
 void Model::slotReset()
 {
     mBlocks.clear();
+    mInputs.clear();
     mWires.clear();
-    blockComputeQueue = std::queue<long>();
     mblockkey = 0;
     mwirekey = 0;
 }

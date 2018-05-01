@@ -38,10 +38,13 @@ class Window: public QWidget
         void slotNew() { reinit(); emit sigReset(); }
         void slotOpen();
         void slotSave();
+        void slotDebug();
+        void slotCalculate();
     signals:
         void sigReset();
         void sigOpen(std::string);
         void sigSave(std::string);
+        void sigRun(bool dbg);
     private:
         std::shared_ptr<PlayGround> mplayground;
         std::shared_ptr<Menu> mmenu;
