@@ -324,13 +324,6 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     positionCenter = pos;
 
     // show input value dialog
-    //double value;
-    //std::string type;
-
-    //double val = QInputDialog::getDouble(0, "Input value dialog",
-    //            "Input value:", 0, -2147483647, 2147483647, 5, &mok);
-    //mvalue.value = value;
-    //mvalue.type = type; // complete!!!
     getUserValue(&mvalue.value, mvalue.type, &mok);
     mvalue.valid = true;
     //std::cout << value << " " << type << std::endl;
@@ -348,7 +341,7 @@ void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
     int typeIdx = 0;
 
     QDialog dialog;
-    QFormLayout form(&dialog)/* = QFormLayout(&dialog)*/;
+    QFormLayout form(&dialog);
 
     dialog.setWindowTitle("Input value dialog");
 
@@ -401,11 +394,6 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     if(event->button() == Qt::LeftButton)
     {
         // show input value dialog
-        //double val = QInputDialog::getDouble(0, "Input value dialog",
-        //        "Input value:", 0, -2147483647, 2147483647, 5, &mok);
-
-        //mvalue.value = val;
-        //mvalue.type = "general"; // complete!!!
         getUserValue(&mvalue.value, mvalue.type, &mok);
         mvalue.valid = true;
         //std::cout << mvalue.value << " " << mvalue.type << std::endl;
