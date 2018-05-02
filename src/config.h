@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -40,6 +41,10 @@ namespace Config
     std::map<std::string, long>& getBlockNames();
     std::string getImagePath(std::string);
     std::string getBlockName(long);
+
+    void addType(std::string);
+    void removeType(std::string);
+    std::set<std::string> getTypes();
 
 }
 

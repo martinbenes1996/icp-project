@@ -40,6 +40,9 @@ class Window: public QWidget
         void slotSave();
         void slotDebug();
         void slotCalculate();
+        void slotAddType();
+        void slotRemoveType();
+        void slotRemoveType(const QString&);
     signals:
         void sigReset();
         void sigOpen(std::string);

@@ -18,10 +18,13 @@ namespace
     std::map<long, std::vector<std::string>> mOut;
 
     std::map<std::string, long> mBlockNames;
+    std::set<std::string> mTypes;
 }
 
 void Config::initConfig()
 {
+    mTypes.insert("general");
+    
     // sem je potřeba dodat případ, kdy není zmáčklý žádný čudlík (zmáčknu čudlík a pak volbu zruším musí poslat -1)
     //mBlockNames.insert( std::make_pair("nic", -1) );
     //mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
@@ -80,6 +83,7 @@ void Config::initConfig()
     mf_1I1O.insert( std::make_pair(id, [](double x){return sqrt(x);}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
+
 }
 
 BlockType Config::decodeBlockType(long key) {
@@ -120,3 +124,7 @@ std::string Config::getBlockName(long key)
             return it.first;
     throw MyError("Unknown block key", ErrorType::BlockError);
 }
+
+void Config::addType(std::string type) { mTypes.insert(type); }
+void Config::removeType(std::string type) { mTypes.erase(type); }
+std::set<std::string> Config::getTypes() { return mTypes; }

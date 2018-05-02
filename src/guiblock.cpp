@@ -328,16 +328,29 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     dialog.setComboBoxItems(items);
     dialog.exec();
 */
-    double val = QInputDialog::getDouble(0, "Input value dialog",
-                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
-    mvalue.value = val;
-    mvalue.type = "general"; // complete!!!
-    mvalue.valid = true;
+    showValueDialog();
 
-    setToolTip(QString::fromStdString("Value: "+std::to_string(val)+" Type: "+mvalue.type));
+    setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
 
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
+}
+
+void GuiInput::showValueDialog()
+{
+    // value
+    double val = QInputDialog::getDouble(0, "Input value dialog",
+                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
+    // type
+    QStringList items;
+    for(auto& it: Config::getTypes()) { items << QString::fromStdString(it); }
+    bool ok;
+    QString type = QInputDialog::getItem(0, "Remove type", "Remove type:", items, 0, false, &ok);
+    if(!ok) return;
+
+    mvalue.value = val;
+    mvalue.type = type.toStdString();
+    mvalue.valid = true;
 }
 
 void GuiInput::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -358,15 +371,7 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        // show input value dialog
-        double val = QInputDialog::getDouble(0, "Input value dialog",
-                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
-        
-        mvalue.value = val;
-        mvalue.type = "general"; // complete!!!
-        mvalue.valid = true;
-            
-        //setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+        showValueDialog();
     }
 }
 

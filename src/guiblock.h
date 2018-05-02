@@ -213,6 +213,8 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
 
         QGraphicsSceneMouseEvent * MPEvent = nullptr;
 
+        void showValueDialog();
+
         //std::shared_ptr<QLabel> label = nullptr;
 };
 

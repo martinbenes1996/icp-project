@@ -5,6 +5,7 @@
 
 
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QHBoxLayout>
 #include <QMenuBar>
 #include <QSplitter>
@@ -75,19 +76,25 @@ Window::Window(QWidget *parent): QWidget(parent)
     QMenu *menu2 = new QMenu(QString("Run"), this);
     // calculate
     QAction *calculateAction = menu2->addAction(QString("Calculate"));
-    calculateAction->setStatusTip( QString("Obnoví program do stavu po spuštění.") );
     QObject::connect(calculateAction, SIGNAL(triggered()), this, SLOT(slotCalculate()) );
     // debug
     QAction *debugAction = menu2->addAction(QString("Debug"));
     debugAction->setShortcuts(QKeySequence::Open);
-    debugAction->setStatusTip( QString("Otevře soubor.") );
     QObject::connect(debugAction, SIGNAL(triggered()), this, SLOT(slotDebug()) );
     menubar->addMenu(menu2);
 
-    // create help
-    QMenu *menu3 = new QMenu(QString("Nápověda"), this);
-    QAction *helpAction = menu3->addAction(QString("Pomoc"));
+    // create types
+    QMenu *menu3 = new QMenu(QString("Types"), this);
+    QAction *addTypeAction = menu3->addAction(QString("Add type"));
+    QObject::connect(addTypeAction, SIGNAL(triggered()), this, SLOT(slotAddType()));
+    QAction *removeTypeAction = menu3->addAction(QString("Remove type"));
+    QObject::connect(removeTypeAction, SIGNAL(triggered()), this, SLOT(slotRemoveType()));
     menubar->addMenu(menu3);
+
+    // create help
+    QMenu *menu4 = new QMenu(QString("Help"), this);
+    QAction *helpAction = menu4->addAction(QString("ShowHelp"));
+    menubar->addMenu(menu4);
 
     QWidget *content = new QWidget(this);
     vlayout->addWidget(content);
@@ -128,4 +135,32 @@ void Window::slotSave()
 
 void Window::slotDebug() { emit sigRun(true); }
 void Window::slotCalculate() { emit sigRun(false); }
+
+void Window::slotAddType()
+{
+    bool ok;
+    QString val = QInputDialog::getText(0, "Add type",
+                "Add type:", QLineEdit::Normal, "", &ok);
+    if(!ok) return;
+
+    Config::addType(val.toStdString());
+}
+
+void Window::slotRemoveType()
+{
+    QStringList items;
+    for(auto& it: Config::getTypes()) { items << QString::fromStdString(it); }
+
+    bool ok;
+    QString val = QInputDialog::getItem(0, "Remove type", "Remove type:", 
+                items, 0, true, &ok);
+    if(!ok) return;
+
+    Config::removeType(val.toStdString());
+}
+
+void Window::slotRemoveType(const QString&)
+{
+
+}
 
