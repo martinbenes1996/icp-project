@@ -364,7 +364,16 @@ void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
 
     if(dialog.exec() == QDialog::Accepted)
     {
-        *value = std::stod(line.get()->text().toStdString());
+        try
+        {
+            *value = std::stod(line.get()->text().toStdString());
+        }
+        catch(std::exception e)
+        {
+            std::cerr << e.what() << std::endl;
+            *mok = false;
+            return;
+        }
         typeIdx = box.currentIndex();
         if(typeIdx == 2) type = "general";
         else type = "unknown";
