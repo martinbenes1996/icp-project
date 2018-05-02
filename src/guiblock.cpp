@@ -324,37 +324,28 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     positionCenter = pos;
 
     // show input value dialog
-    /* test
-    QStringList items;
-    items << QString("jedna");
-    items << QString("dva");
+    //double value;
+    //std::string type;
 
-    QInputDialog dialog;
-    dialog.setComboBoxItems(items);
-    dialog.exec();
-*/
-    double value;
-    int typeIdx;
-    getUserValue(&value, &typeIdx);
-    //std::cout << value << " " << typeIdx << std::endl;
-
-    double val = QInputDialog::getDouble(0, "Input value dialog",
-                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
-    mvalue.value = val;
-    mvalue.type = "general"; // complete!!!
+    //double val = QInputDialog::getDouble(0, "Input value dialog",
+    //            "Input value:", 0, -2147483647, 2147483647, 5, &mok);
+    //mvalue.value = value;
+    //mvalue.type = type; // complete!!!
+    getUserValue(&mvalue.value, mvalue.type, &mok);
     mvalue.valid = true;
+    //std::cout << value << " " << type << std::endl;
 
-    setToolTip(QString::fromStdString("Value: "+std::to_string(val)+" Type: "+mvalue.type));
+    setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
 
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
 }
 
 
-void GuiInput::getUserValue(double *value, int *typeIdx)
+void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
 {
     *value = 0.0;
-    *typeIdx = 0;
+    int typeIdx = 0;
 
     QDialog dialog;
     QFormLayout form(&dialog)/* = QFormLayout(&dialog)*/;
@@ -369,6 +360,7 @@ void GuiInput::getUserValue(double *value, int *typeIdx)
     QComboBox box;
     box.addItem("prvni");
     box.addItem("druhy");
+    box.addItem("general");
     form.addRow(label2, &box);
 
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
@@ -380,9 +372,13 @@ void GuiInput::getUserValue(double *value, int *typeIdx)
     if(dialog.exec() == QDialog::Accepted)
     {
         *value = std::stod(line.get()->text().toStdString());
-        *typeIdx = box.currentIndex();
-        //std::cout << *value << " " << *typeIdx << std::endl;
+        typeIdx = box.currentIndex();
+        if(typeIdx == 2) type = "general";
+        else type = "unknown";
+        //std::cout << *value << " " << typeIdx << std::endl;
+        *mok = true;
     }
+    else *mok = false;
 
 }
 
@@ -405,14 +401,16 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     if(event->button() == Qt::LeftButton)
     {
         // show input value dialog
-        double val = QInputDialog::getDouble(0, "Input value dialog",
-                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
+        //double val = QInputDialog::getDouble(0, "Input value dialog",
+        //        "Input value:", 0, -2147483647, 2147483647, 5, &mok);
 
-        mvalue.value = val;
-        mvalue.type = "general"; // complete!!!
+        //mvalue.value = val;
+        //mvalue.type = "general"; // complete!!!
+        getUserValue(&mvalue.value, mvalue.type, &mok);
         mvalue.valid = true;
+        //std::cout << mvalue.value << " " << mvalue.type << std::endl;
 
-        //setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
     }
 }
 
