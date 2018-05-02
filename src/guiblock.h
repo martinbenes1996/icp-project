@@ -142,6 +142,7 @@ class MyWire: public QObject
 
         std::vector<std::shared_ptr<MyLine>> getLine() { return mLines; }
         QGraphicsTextItem *getText() { return mtext.get(); }
+        std::shared_ptr<GuiInput> getIBlock1() { return iblock1; }
         std::shared_ptr<GuiBlock> getBlock1() { return gblock1; }
         std::shared_ptr<GuiBlock> getBlock2() { return gblock2; }
         int getConnector1() { return mconnector1; }
@@ -158,9 +159,9 @@ class MyWire: public QObject
         std::shared_ptr<QGraphicsTextItem> mtext;
         static std::vector<std::pair<QPointF,QPointF>> splitLine(QPointF, QPointF);
         // text <- depends on value from module (connect with signal)
-        std::shared_ptr<GuiInput> iblock1;
-        std::shared_ptr<GuiBlock> gblock1;
-        std::shared_ptr<GuiBlock> gblock2;
+        std::shared_ptr<GuiInput> iblock1 = nullptr;
+        std::shared_ptr<GuiBlock> gblock1 = nullptr;
+        std::shared_ptr<GuiBlock> gblock2 = nullptr;
         int mconnector1;
         int mconnector2;
 };

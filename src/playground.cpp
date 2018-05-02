@@ -206,7 +206,8 @@ void PlayGround::deleteWireFunction(long i)
     emit sigDeleteWire(i);
     std::shared_ptr<MyWire> wire = mWires.at(i);
 
-    wire->getBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
+    if(wire->getBlock1() == nullptr) wire->getIBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
+    else wire->getBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
     wire->getBlock2()->setConnectorAvailability(wire->getConnector2(), 0);
 
     for(auto& it: wire->getLine()) { mscene->removeItem(it.get()); }
