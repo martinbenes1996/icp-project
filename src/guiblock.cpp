@@ -408,8 +408,10 @@ void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
             return;
         }
         typeIdx = box.currentIndex();
-        if(typeIdx == 2) type = "general";
-        else type = "unknown";
+        type = box.itemText(typeIdx).toStdString();
+        //type = Config::getTypes()[typeIdx];
+        //if(typeIdx == 2) type = "general";
+        //else type = "unknown";
         //std::cout << *value << " " << typeIdx << std::endl;
         *mok = true;
     }
