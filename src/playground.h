@@ -196,6 +196,7 @@ class PlayGround: public QWidget
         int connector2;             /**< Connector of the second block. */
         std::shared_ptr<GuiInput> iblock1 = nullptr;
         std::shared_ptr<GuiBlock> block1 = nullptr; /**< First block. */
+        std::shared_ptr<GuiInput> iblock2 = nullptr;
         std::shared_ptr<GuiBlock> block2 = nullptr; /**< Second block. */
 
 };

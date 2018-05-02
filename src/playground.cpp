@@ -188,19 +188,24 @@ bool PlayGround::createWireFunction()
     long begin;
     if(block1 == nullptr) begin = getIDFromInput(iblock1);
     else begin = getIDFromBlock(block1);
-    long end = getIDFromBlock(block2);
+    long end;
+    if(block2 == nullptr) end = getIDFromInput(iblock2);
+    else end = getIDFromBlock(block2);
     Debug::Gui("Create wire: "+std::to_string(begin)+"<->"+std::to_string(end));
-    emit sigCreateWire({/*getIDFromBlock(block1)*/begin,connector1}, {getIDFromBlock(block2),connector2}, id, success);
+    emit sigCreateWire({/*getIDFromBlock(block1)*/begin,connector1}, {/*getIDFromBlock(block2)*/end,connector2}, id, success);
     if(!success) return false;
 
     // put wire into map
     QPointF point1;
     if(block1 == nullptr) point1 = iblock1->getConnectorPoint(connector1);
     else point1 = block1->getConnectorPoint(connector1);
-    QPointF point2 = block2->getConnectorPoint(connector2);
+    QPointF point2;
+    if(block2 == nullptr) point2 = iblock2->getConnectorPoint(connector2);
+    else point2 = block2->getConnectorPoint(connector2);
     std::shared_ptr<MyWire> newWire;
-    if(block1 == nullptr) newWire = std::make_shared<MyWire>(id,point1, point2, iblock1, block2, connector1, connector2);
-    else newWire = std::make_shared<MyWire>(id,point1, point2, block1, block2, connector1, connector2);
+    if(block1 != nullptr && block2 != nullptr) newWire = std::make_shared<MyWire>(id,point1, point2, block1, block2, connector1, connector2);
+    else if(block1 == nullptr) newWire = std::make_shared<MyWire>(id,point1, point2, iblock1, block2, connector1, connector2);
+    else newWire = std::make_shared<MyWire>(id,point1, point2, block1, iblock2, connector1, connector2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
     for(auto& it: newWire->getLine()) { mscene->addItem(it.get()); }
@@ -223,7 +228,8 @@ void PlayGround::deleteWireFunction(long i)
 
     if(wire->getBlock1() == nullptr) wire->getIBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
     else wire->getBlock1()->setConnectorAvailability(wire->getConnector1(), 0);
-    wire->getBlock2()->setConnectorAvailability(wire->getConnector2(), 0);
+    if(wire->getBlock2() == nullptr) wire->getIBlock2()->setConnectorAvailability(wire->getConnector2(), 0);
+    else wire->getBlock2()->setConnectorAvailability(wire->getConnector2(), 0);
 
     for(auto& it: wire->getLine()) { mscene->removeItem(it.get()); }
     mscene->removeItem(wire->getText());
@@ -267,27 +273,31 @@ void PlayGround::inputClick(int i)
             int connector;
 
             block->getPointFromBlock(&connector, &wireFree);
-            if(iblock1.get() == nullptr)
+            if(iblock1.get() == nullptr && block1.get() == nullptr)
             {
                 iblock1 = block;
                 connector1 = connector;
                 createWire = createWire || wireFree;
             }
             else        // cannot connect two inputs
-            {/*
-                block2 = block;
+            {
+                iblock2 = block;
                 connector2 = connector;
                 createWire = createWire && wireFree;
-                if(createWire)
+                // wire cannot connect 2 input blocks
+                if(createWire && (iblock1 == nullptr || iblock2 == nullptr))
                 {
                     if(createWireFunction())
                     {
-                        iblock1->setConnectorAvailability(connector1, true);
-                        block2->setConnectorAvailability(connector2, true);
+                        if(block1 == nullptr) iblock1->setConnectorAvailability(connector1, true);
+                        else block1->setConnectorAvailability(connector1, true);
+                        if(block2 == nullptr) iblock2->setConnectorAvailability(connector2, true);
+                        else block2->setConnectorAvailability(connector2, true);
                     }
-                }*/
+                }
                 iblock1 = nullptr;
                 block1 = nullptr;
+                iblock2 = nullptr;
                 block2 = nullptr;
                 createWire = false;
                 //printNOISOMap(mWires);
@@ -325,17 +335,20 @@ void PlayGround::slotBlockClick(int i)
                 block2 = block;
                 connector2 = connector;
                 createWire = createWire && wireFree;
-                if(createWire)
+                // wire cannot connect 2 input blocks
+                if(createWire && (iblock1 == nullptr || iblock2 == nullptr))
                 {
                     if(createWireFunction())
                     {
                         if(iblock1 != nullptr) iblock1->setConnectorAvailability(connector1, true);
                         else block1->setConnectorAvailability(connector1, true);
-                        block2->setConnectorAvailability(connector2, true);
+                        if(iblock2 != nullptr) iblock2->setConnectorAvailability(connector2, true);
+                        else block2->setConnectorAvailability(connector2, true);
                     }
                 }
                 iblock1 = nullptr;
                 block1 = nullptr;
+                iblock2 = nullptr;
                 block2 = nullptr;
                 createWire = false;
                 //printNOISOMap(mWires);

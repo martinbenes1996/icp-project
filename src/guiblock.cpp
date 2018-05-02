@@ -288,6 +288,38 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
     mvalue.valid = false;
 
 }
+MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiInput> gb2, int connector1, int connector2): mid(id)
+{
+    for(auto& it: MyWire::splitLine(point1, point2))
+    {
+        std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
+                        this, SLOT(slotForkWire(QPointF)));
+        QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
+                        this, SLOT(slotDeleteWire()));
+        mLines.push_back(l);
+        l.get()->setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+    }
+
+    gblock1 = gb1;
+    iblock2 = gb2;
+
+    mconnector1 = connector1;
+    mconnector2 = connector2;
+
+    mtext = std::make_shared<QGraphicsTextItem>();
+    mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    mtext->setPlainText("N");
+    mtext->setDefaultTextColor(Qt::cyan);
+
+    QFont font = QFont();
+    font.setPixelSize(12);
+    mtext->setFont(font);
+
+    mvalue.valid = false;
+
+}
 
 void MyWire::setValue(Value v)
 {

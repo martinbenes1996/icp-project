@@ -140,11 +140,13 @@ class MyWire: public QObject
     public:
         MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2);
         MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiInput> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2);
+        MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiInput> gb2, int connector1, int connector2);
 
         std::vector<std::shared_ptr<MyLine>> getLine() { return mLines; }
         QGraphicsTextItem *getText() { return mtext.get(); }
         std::shared_ptr<GuiInput> getIBlock1() { return iblock1; }
         std::shared_ptr<GuiBlock> getBlock1() { return gblock1; }
+        std::shared_ptr<GuiInput> getIBlock2() { return iblock2; }
         std::shared_ptr<GuiBlock> getBlock2() { return gblock2; }
         int getConnector1() { return mconnector1; }
         int getConnector2() { return mconnector2; }
@@ -165,6 +167,7 @@ class MyWire: public QObject
         // text <- depends on value from module (connect with signal)
         std::shared_ptr<GuiInput> iblock1 = nullptr;
         std::shared_ptr<GuiBlock> gblock1 = nullptr;
+        std::shared_ptr<GuiInput> iblock2 = nullptr;
         std::shared_ptr<GuiBlock> gblock2 = nullptr;
         int mconnector1;
         int mconnector2;
