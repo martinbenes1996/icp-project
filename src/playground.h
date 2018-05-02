@@ -150,6 +150,8 @@ class PlayGround: public QWidget
          * @returns ID of the block
          */
         long getIDFromBlock(std::shared_ptr<GuiBlock> block);
+
+        long getIDFromInput(std::shared_ptr<GuiInput> block);
         /**
          * @brief   Creates a wire.
          * @returns true -> success, false -> failure
@@ -181,6 +183,7 @@ class PlayGround: public QWidget
         bool createWire = false;    /**< True when two points are selected -> create wire. */
         int connector1;             /**< Connector of the first block. */
         int connector2;             /**< Connector of the second block. */
+        std::shared_ptr<GuiInput> iblock1 = nullptr;
         std::shared_ptr<GuiBlock> block1 = nullptr; /**< First block. */
         std::shared_ptr<GuiBlock> block2 = nullptr; /**< Second block. */
 

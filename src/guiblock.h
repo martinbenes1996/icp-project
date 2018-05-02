@@ -132,11 +132,13 @@ class MyLine: public QObject, public QGraphicsLineItem
         void sigDeleteWire();
 };
 
+class GuiInput;
 class MyWire: public QObject
 {
     Q_OBJECT
     public:
         MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2);
+        MyWire(long, QPointF point1, QPointF point2, std::shared_ptr<GuiInput> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2);
 
         std::vector<std::shared_ptr<MyLine>> getLine() { return mLines; }
         QGraphicsTextItem *getText() { return mtext.get(); }
@@ -156,6 +158,7 @@ class MyWire: public QObject
         std::shared_ptr<QGraphicsTextItem> mtext;
         static std::vector<std::pair<QPointF,QPointF>> splitLine(QPointF, QPointF);
         // text <- depends on value from module (connect with signal)
+        std::shared_ptr<GuiInput> iblock1;
         std::shared_ptr<GuiBlock> gblock1;
         std::shared_ptr<GuiBlock> gblock2;
         int mconnector1;
@@ -184,13 +187,24 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
          * @returns pointer to last mouse press event
          */
         QGraphicsSceneMouseEvent * getMouseEvent() { return MPEvent; }
-    
+
+        void getPointFromBlock(int *connector, bool *wireFree);
+        QPointF getConnectorPoint(int connector);
+        /**
+         * @brief   Sets connector availability.
+         * @param   connector   integer representing connector
+         * @param   addWire     true -> set not available, false -> set available
+         */
+        void setConnectorAvailability(int, bool);
+
     signals:
         void sigBlockClick();
     private:
         Value mvalue;
         double mradius = 20;
         bool mok;
+        QPointF positionCenter;
+        bool output1 = false;
 
         QGraphicsSceneMouseEvent * MPEvent = nullptr;
 };

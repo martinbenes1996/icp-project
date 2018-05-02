@@ -159,22 +159,33 @@ long PlayGround::getIDFromBlock(std::shared_ptr<GuiBlock> block)
     for(auto i: mBlocks) { if(i.second == block) return i.first; }
     return -1;
 }
+long PlayGround::getIDFromInput(std::shared_ptr<GuiInput> block)
+{
+    for(auto i: mInputs) { if(i.second == block) return i.first; }
+    return -1;
+}
 
 bool PlayGround::createWireFunction()
 {
     // wire request
     long id;
     bool success = true;
-    long begin = getIDFromBlock(block1);
+    long begin;
+    if(block1 == nullptr) begin = getIDFromInput(iblock1);
+    else begin = getIDFromBlock(block1);
     long end = getIDFromBlock(block2);
     Debug::Gui("Create wire: "+std::to_string(begin)+"<->"+std::to_string(end));
-    emit sigCreateWire({getIDFromBlock(block1),connector1}, {getIDFromBlock(block2),connector2}, id, success);
+    emit sigCreateWire({/*getIDFromBlock(block1)*/begin,connector1}, {getIDFromBlock(block2),connector2}, id, success);
     if(!success) return false;
 
     // put wire into map
-    QPointF point1 = block1->getConnectorPoint(connector1);
+    QPointF point1;
+    if(block1 == nullptr) point1 = iblock1->getConnectorPoint(connector1);
+    else point1 = block1->getConnectorPoint(connector1);
     QPointF point2 = block2->getConnectorPoint(connector2);
-    std::shared_ptr<MyWire> newWire = std::make_shared<MyWire>(id,point1, point2, block1, block2, connector1, connector2);
+    std::shared_ptr<MyWire> newWire;
+    if(block1 == nullptr) newWire = std::make_shared<MyWire>(id,point1, point2, iblock1, block2, connector1, connector2);
+    else newWire = std::make_shared<MyWire>(id,point1, point2, block1, block2, connector1, connector2);
     mWires.insert( std::make_pair(id,newWire) );
     // draw wire
     for(auto& it: newWire->getLine()) { mscene->addItem(it.get()); }
@@ -215,6 +226,10 @@ void PlayGround::slotForkWire(long id, QPointF)
     Debug::Events("Forking wire "+std::to_string(id));
 }
 
+
+// ---------------------------------- INPUT BLOCK ------------------------------
+
+
 void PlayGround::inputClick(int i)
 {
     Debug::Events("PlayGround::inputClick "+std::to_string(i));
@@ -226,7 +241,42 @@ void PlayGround::inputClick(int i)
     }
     else if(mInputs.at(i)->getMouseEvent()->button() == Qt::LeftButton)
     {
-        
+        //QGraphicsSceneMouseEvent * event;
+        auto block = mInputs.at(i);
+        //event = block->getMouseEvent();
+
+        if(mwire)
+        {
+            bool wireFree;
+            int connector;
+
+            block->getPointFromBlock(&connector, &wireFree);
+            if(iblock1.get() == nullptr)
+            {
+                iblock1 = block;
+                connector1 = connector;
+                createWire = createWire || wireFree;
+            }
+            else        // cannot connect two inputs
+            {/*
+                block2 = block;
+                connector2 = connector;
+                createWire = createWire && wireFree;
+                if(createWire)
+                {
+                    if(createWireFunction())
+                    {
+                        iblock1->setConnectorAvailability(connector1, true);
+                        block2->setConnectorAvailability(connector2, true);
+                    }
+                }*/
+                iblock1 = nullptr;
+                block1 = nullptr;
+                block2 = nullptr;
+                createWire = false;
+                //printNOISOMap(mWires);
+            }
+        }
     }
 }
 
@@ -248,7 +298,7 @@ void PlayGround::slotBlockClick(int i)
             int connector;
 
             block->getPointFromBlock(&connector, &wireFree);
-            if(block1.get() == nullptr)
+            if(block1.get() == nullptr && iblock1.get() == nullptr)
             {
                 block1 = block;
                 connector1 = connector;
@@ -263,10 +313,12 @@ void PlayGround::slotBlockClick(int i)
                 {
                     if(createWireFunction())
                     {
-                        block1->setConnectorAvailability(connector1, true);
+                        if(iblock1 != nullptr) iblock1->setConnectorAvailability(connector1, true);
+                        else block1->setConnectorAvailability(connector1, true);
                         block2->setConnectorAvailability(connector2, true);
                     }
                 }
+                iblock1 = nullptr;
                 block1 = nullptr;
                 block2 = nullptr;
                 createWire = false;

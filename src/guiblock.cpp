@@ -243,6 +243,35 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     mtext->setFont(font);
 
 }
+MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2): mid(id)
+{
+    for(auto& it: MyWire::splitLine(point1, point2))
+    {
+        std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
+                        this, SLOT(slotForkWire(QPointF)));
+        QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
+                        this, SLOT(slotDeleteWire()));
+        mLines.push_back(l);
+    }
+
+    iblock1 = gb1;
+    gblock2 = gb2;
+
+    mconnector1 = connector1;
+    mconnector2 = connector2;
+
+    mtext = std::make_shared<QGraphicsTextItem>();
+    mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    mtext->setPlainText("N");
+    mtext->setDefaultTextColor(Qt::cyan);
+
+    QFont font = QFont();
+    font.setPixelSize(12);
+    mtext->setFont(font);
+
+}
 
 std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
 {
@@ -263,7 +292,7 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     QGraphicsEllipseItem(g)
 {
     setRect(pos.x()-mradius/2,pos.y()-mradius/2, mradius, mradius);
-
+    positionCenter = pos;
 
     // show input value dialog
     double val = QInputDialog::getDouble(0, "Input value dialog",
@@ -271,7 +300,7 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     mvalue.value = val;
     mvalue.type = "general"; // complete!!!
     mvalue.valid = true;
-    
+
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
 }
@@ -321,4 +350,28 @@ void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 void GuiInput::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
   QGraphicsEllipseItem::paint(p,s,w);
+}
+
+
+QPointF GuiInput::getConnectorPoint(int connector)
+{
+    QPointF itemPoint = positionCenter;
+    QPointF connectorPoint;
+
+    connectorPoint.setX(itemPoint.x() + mradius);
+    connectorPoint.setY(itemPoint.y());
+
+    return connectorPoint;
+}
+
+void GuiInput::getPointFromBlock(int *connector, bool *wireFree)
+{
+    *connector = -1;
+    *wireFree = !output1;
+}
+
+void GuiInput::setConnectorAvailability(int connector, bool addWire)
+{
+    if(addWire) output1 = true;
+    else output1 = false;
 }
