@@ -7,6 +7,8 @@
 #include <iostream>
 
 #include <QInputDialog>
+#include <QToolTip>
+#include <QLabel>
 
 #include "debug.h"
 #include "guiblock.h"
@@ -313,6 +315,8 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     mvalue.type = "general"; // complete!!!
     mvalue.valid = true;
 
+    setToolTip(QString::fromStdString("Value: "+std::to_string(val)+" Type: "+mvalue.type));
+
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
 }
@@ -345,18 +349,22 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
             mvalue.value = text.toDouble();
             mvalue.type = "general"; // complete!!!
             mvalue.valid = true;
+
+            setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
         }
     }
 }
 
-void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent*)
+void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    //label = std::make_shared<QLabel>("text");
 
+    //QToolTip::showText(event->pos(), "text input!");
 }
 
-void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
+void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-
+    //hideText();
 }
 
 void GuiInput::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)

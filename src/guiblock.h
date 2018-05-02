@@ -211,6 +211,8 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         bool output1 = false;
 
         QGraphicsSceneMouseEvent * MPEvent = nullptr;
+
+        //std::shared_ptr<QLabel> label = nullptr;
 };
 
 

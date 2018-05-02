@@ -41,6 +41,11 @@ class PlayGround: public QWidget
          */
 	    PlayGroundView *getPlayGroundView() { return mview; }
 	    /**
+         * @brief   Getter for play ground scene.
+         * @returns pointer to QGraphicsScene
+         */
+	    QGraphicsScene *getPlayGroundScene() { return mscene; }
+	    /**
          * @brief   Button is clicked in menu.
          * @returns true -> choice made, false -> choice not made
          */
