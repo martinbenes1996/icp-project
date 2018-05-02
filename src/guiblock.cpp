@@ -7,7 +7,6 @@
 #include <iostream>
 
 #include <QInputDialog>
-#include <QToolTip>
 #include <QLabel>
 
 #include "debug.h"
@@ -45,6 +44,7 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   }
 
   mvalue.valid = false;
+  setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
 
   //setRect(mrectangle);
   //setBrush(blockBrush);
@@ -229,6 +229,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
                         this, SLOT(slotDeleteWire()));
         mLines.push_back(l);
+        l.get()->setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
     }
 
     gblock1 = gb1;
@@ -260,6 +261,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
                         this, SLOT(slotDeleteWire()));
         mLines.push_back(l);
+        l.get()->setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
     }
 
     iblock1 = gb1;
@@ -284,7 +286,14 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
 void MyWire::setValue(Value v)
 {
     mvalue = v;
-    if(v.valid) mtext->setPlainText(QString::fromStdString(std::to_string(v.value)+" "+v.type));
+    if(v.valid)
+    {
+        mtext->setPlainText(QString::fromStdString(std::to_string(v.value)+" "+v.type));
+        for(auto& it: mLines)
+        {
+            it.get()->setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+        }
+    }
 }
 
 std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
