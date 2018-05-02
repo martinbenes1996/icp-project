@@ -28,11 +28,7 @@ class IBlock
          * @brief Value getter.
          * @returns The block value.
          */
-        virtual Value getValue() const
-        {
-            if(mvalue.valid) return mvalue;
-            else throw MyError("The block value is not assigned yet", ErrorType::BlockError);
-        }
+        virtual Value getValue() const { return mvalue; }
 
         /**
          * @brief Value setter.

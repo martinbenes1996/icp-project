@@ -57,6 +57,7 @@ class Wire
 
         SimulationResults& distributeResult(SimulationResults& sr) const
         {
+            Debug::Block("Wire::distributeResult");
             Result r;
             Value v;
 

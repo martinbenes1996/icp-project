@@ -10,7 +10,7 @@
 #include <iostream>
 
 #ifdef DEBUG_MODE
-    //#define BLOCK_DEBUG
+    #define BLOCK_DEBUG
     #define MODEL_DEBUG
     #define EVENTS_DEBUG
     #define GUI_DEBUG

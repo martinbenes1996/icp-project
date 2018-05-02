@@ -115,7 +115,7 @@ void Model::slotDeleteWire(long key)
 void Model::slotCreateInput(Value value, long& key)
 {
     key = GenerateBlockKey();
-    Debug::Model( "Create input "+std::to_string(key) );
+    Debug::Model( "Model::slotCreateInput("+std::to_string(key)+")" );
 
     std::shared_ptr<IBlock> b = std::make_shared<Input>(key,value);
 
@@ -134,6 +134,7 @@ SimulationResults Model::startComputation()
     SimulationResults sr;
     for(auto& inkey: mInputs)
     {
+        std::cerr << inkey << "\n";
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
     }
     return sr;
@@ -141,9 +142,9 @@ SimulationResults Model::startComputation()
 
 void Model::slotReset()
 {
+    mWires.clear();
     mBlocks.clear();
     mInputs.clear();
-    mWires.clear();
     mblockkey = 0;
     mwirekey = 0;
 }
