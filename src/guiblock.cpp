@@ -9,6 +9,11 @@
 #include <QInputDialog>
 #include <QLabel>
 #include <QStringList>
+#include <QLineEdit>
+#include <QDialog>
+#include <QFormLayout>
+#include <QDialogButtonBox>
+#include <QComboBox>
 
 #include "debug.h"
 #include "guiblock.h"
@@ -328,7 +333,10 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     dialog.setComboBoxItems(items);
     dialog.exec();
 */
-    getUserValue();
+    double value;
+    int typeIdx;
+    getUserValue(&value, &typeIdx);
+    //std::cout << value << " " << typeIdx << std::endl;
 
     double val = QInputDialog::getDouble(0, "Input value dialog",
                 "Input value:", 0, -2147483647, 2147483647, 5, &mok);
@@ -342,16 +350,11 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     setAcceptHoverEvents(true);
 }
 
-#include <QLineEdit>
-#include <QDialog>
-#include <QFormLayout>
-#include <QDialogButtonBox>
-#include <QComboBox>
 
-void GuiInput::getUserValue()
+void GuiInput::getUserValue(double *value, int *typeIdx)
 {
-    double value = 0.0;
-    int typeIdx = 1;
+    *value = 0.0;
+    *typeIdx = 0;
 
     QDialog dialog;
     QFormLayout form(&dialog)/* = QFormLayout(&dialog)*/;
@@ -376,15 +379,10 @@ void GuiInput::getUserValue()
 
     if(dialog.exec() == QDialog::Accepted)
     {
-        value = std::stod(line.get()->text().toStdString());
-        std::cout << value << typeIdx << std::endl;
+        *value = std::stod(line.get()->text().toStdString());
+        *typeIdx = box.currentIndex();
+        //std::cout << *value << " " << *typeIdx << std::endl;
     }
-    /*
-    d.addLineEdit("Input value: ", &value);
-    d.addComboBox("type: ", "jedna|dva", &typeIdx);
-
-    d.exec();
-    //if(d.wasCancelled()) return;*/
 
 }
 
@@ -409,11 +407,11 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
         // show input value dialog
         double val = QInputDialog::getDouble(0, "Input value dialog",
                 "Input value:", 0, -2147483647, 2147483647, 5, &mok);
-        
+
         mvalue.value = val;
         mvalue.type = "general"; // complete!!!
         mvalue.valid = true;
-            
+
         //setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
     }
 }
