@@ -205,6 +205,8 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
     signals:
         void sigBlockClick();
     private:
+        void getUserValue();
+
         Value mvalue;
         double mradius = 20;
         bool mok;

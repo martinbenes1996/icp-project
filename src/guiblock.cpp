@@ -328,6 +328,8 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     dialog.setComboBoxItems(items);
     dialog.exec();
 */
+    getUserValue();
+
     double val = QInputDialog::getDouble(0, "Input value dialog",
                 "Input value:", 0, -2147483647, 2147483647, 5, &mok);
     mvalue.value = val;
@@ -338,6 +340,52 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
 
     setAcceptDrops(true);
     setAcceptHoverEvents(true);
+}
+
+#include <QLineEdit>
+#include <QDialog>
+#include <QFormLayout>
+#include <QDialogButtonBox>
+#include <QComboBox>
+
+void GuiInput::getUserValue()
+{
+    double value = 0.0;
+    int typeIdx = 1;
+
+    QDialog dialog;
+    QFormLayout form(&dialog)/* = QFormLayout(&dialog)*/;
+
+    dialog.setWindowTitle("Input value dialog");
+
+    std::shared_ptr<QLineEdit> line = std::make_shared<QLineEdit>(&dialog);
+    QString label = QString("Input value: ");
+    form.addRow(label, line.get());
+
+    QString label2 = QString("Input type: ");
+    QComboBox box;
+    box.addItem("prvni");
+    box.addItem("druhy");
+    form.addRow(label2, &box);
+
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
+    form.addRow(&buttonBox);
+
+    QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    if(dialog.exec() == QDialog::Accepted)
+    {
+        value = std::stod(line.get()->text().toStdString());
+        std::cout << value << typeIdx << std::endl;
+    }
+    /*
+    d.addLineEdit("Input value: ", &value);
+    d.addComboBox("type: ", "jedna|dva", &typeIdx);
+
+    d.exec();
+    //if(d.wasCancelled()) return;*/
+
 }
 
 void GuiInput::mousePressEvent(QGraphicsSceneMouseEvent* event)
