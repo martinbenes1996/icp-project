@@ -8,6 +8,7 @@
 
 #include <QInputDialog>
 #include <QLabel>
+#include <QStringList>
 
 #include "debug.h"
 #include "guiblock.h"
@@ -318,6 +319,15 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     positionCenter = pos;
 
     // show input value dialog
+    /* test
+    QStringList items;
+    items << QString("jedna");
+    items << QString("dva");
+
+    QInputDialog dialog;
+    dialog.setComboBoxItems(items);
+    dialog.exec();
+*/
     double val = QInputDialog::getDouble(0, "Input value dialog",
                 "Input value:", 0, -2147483647, 2147483647, 5, &mok);
     mvalue.value = val;
