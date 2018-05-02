@@ -42,6 +42,8 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
     output2 = true;
   }
 
+  mvalue.valid = false;
+
   //setRect(mrectangle);
   //setBrush(blockBrush);
   //setPen(blockPen);
@@ -242,6 +244,8 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     font.setPixelSize(12);
     mtext->setFont(font);
 
+    mvalue.valid = false;
+
 }
 MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2): mid(id)
 {
@@ -271,6 +275,14 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
     font.setPixelSize(12);
     mtext->setFont(font);
 
+    mvalue.valid = false;
+
+}
+
+void MyWire::setValue(Value v)
+{
+    mvalue = v;
+    if(v.valid) mtext->setPlainText(QString::fromStdString(std::to_string(v.value)+" "+v.type));
 }
 
 std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)

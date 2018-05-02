@@ -147,6 +147,8 @@ class MyWire: public QObject
         std::shared_ptr<GuiBlock> getBlock2() { return gblock2; }
         int getConnector1() { return mconnector1; }
         int getConnector2() { return mconnector2; }
+        //void setValue(Value v) { mvalue = v; }
+        void setValue(Value v);
     public slots:
         void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
         void slotDeleteWire() { emit sigDeleteWire(mid); }
@@ -154,6 +156,7 @@ class MyWire: public QObject
         void sigForkWire(long, QPointF);
         void sigDeleteWire(long);
     private:
+        Value mvalue;
         long mid;
         std::vector<std::shared_ptr<MyLine>> mLines;
         std::shared_ptr<QGraphicsTextItem> mtext;
