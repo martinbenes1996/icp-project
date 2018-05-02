@@ -62,12 +62,26 @@ void PlayGround::reinit()
     mwire = false;
 }
 
-void PlayGround::setWireValue(long id, double newValue)
+void PlayGround::setWireValue(long id, Value v)
 {
     std::shared_ptr<MyWire> wire = mWires[id];
 
+    wire.get()->setValue(v);
+/*
     std::string str = std::to_string(newValue);
     wire.get()->getText()->setPlainText(QString::fromStdString(std::to_string(newValue)));
+*/
+}
+void PlayGround::setBlockValue(long id, Value v)
+{
+    if(mInputs.count(id) > 0) { return; }   // model cannot change value of input
+
+    std::shared_ptr<GuiBlock> block = mBlocks[id];
+    block.get()->setValue(v);
+/*
+    std::string str = std::to_string(newValue);
+    wire.get()->getText()->setPlainText(QString::fromStdString(std::to_string(newValue)));
+*/
 }
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)

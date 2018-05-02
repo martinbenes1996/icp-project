@@ -62,7 +62,13 @@ class PlayGround: public QWidget
          * @param   id          ID of the wire
          * @param   newValue    new value
          */
-        void setWireValue(long id, double newValue);
+        void setWireValue(long id, Value v);
+        /**
+         * @brief   Sets new value of a block for display.
+         * @param   id          ID of the block
+         * @param   newValue    new value
+         */
+        void setBlockValue(long id, Value v);
 
         // slots and signals will have to be reworked
     public slots:
