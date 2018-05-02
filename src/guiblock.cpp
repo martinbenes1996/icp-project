@@ -407,18 +407,14 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     if(event->button() == Qt::LeftButton)
     {
         // show input value dialog
-        bool ok;
-        QString text = QInputDialog::getText(0, "Input value dialog",
-                                            "Input value:", QLineEdit::Normal,
-                                            "", &ok);
-        if (ok && !text.isEmpty()) {
-            std::cout << text.toStdString() << "\n";
-            mvalue.value = text.toDouble();
-            mvalue.type = "general"; // complete!!!
-            mvalue.valid = true;
-
-            setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
-        }
+        double val = QInputDialog::getDouble(0, "Input value dialog",
+                "Input value:", 0, -2147483647, 2147483647, 5, &mok);
+        
+        mvalue.value = val;
+        mvalue.type = "general"; // complete!!!
+        mvalue.valid = true;
+            
+        //setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
     }
 }
 

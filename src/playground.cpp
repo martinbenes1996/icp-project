@@ -55,11 +55,12 @@ void PlayGround::reinit()
         for(auto& i: it.second->getLine()) { mscene->removeItem(i.get()); }
         mscene->removeItem(it.second->getText());
     }
-    mBlocks = std::map<long, std::shared_ptr<GuiBlock>>();
-    mWires = std::map<long, std::shared_ptr<MyWire>>();
+    for(auto& it: mInputs) { mscene->removeItem(it.second.get()); }
+    mBlocks.clear();
+    mWires.clear();
+    mInputs.clear();
 
-    mchoice = -1;
-    mwire = false;
+    annulateChoice();
 }
 
 void PlayGround::setWireValue(long id, Value v)

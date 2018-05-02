@@ -43,9 +43,17 @@ class Input: public IBlock
          */
         void addWire(Wire* w, long key, int port = 0) override
         {
+            Debug::Block("Input::addWire()");
             if(mO.wire == nullptr) mO.wire = w;
             else throw MyError("Input has only output port", ErrorType::BlockError);
             IBlock::addWire(w, key, port);
+        }
+
+        void removeWireKey(long key)
+        {
+            Debug::Block("Input::removeWireKey()");
+            if(mO.wire != nullptr) mO.wire = nullptr;
+            IBlock::removeWireKey(key);
         }
 
         int getLevel() const override { return 0; }
@@ -53,8 +61,9 @@ class Input: public IBlock
 
         bool isInput() override { return true; }
 
-        SimulationResults distributeResult() const 
+        SimulationResults distributeResult() override
         {
+            Debug::Block("Input::distributeResult()");
             SimulationResults sr;
             Result r;
             Value v = getValue();
@@ -110,9 +119,11 @@ class Block: public IBlock
 
         SimulationResults& distributeResult(SimulationResults& sr) override 
         {
+            Debug::Block("Block::distributeResult()");
             for(auto& it: mIn) { if(!it->getValue().valid) { return sr; } }
 
             Result r;
+            Compute();
             Value v = getValue();
 
             r.value = v.value;
@@ -234,6 +245,12 @@ Value Block<std::function<double(double)>>::Compute(std::function<double(double)
     v.value = mfunc(mIn.at(0)->getValue().value);
     v.valid = true;
     return v;
+}
+
+template <class T>
+void Block<T>::CheckTypes(std::vector<std::shared_ptr<Port>>&)
+{
+    // add type check
 }
 
 #endif // BLOCK_H
