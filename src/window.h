@@ -27,7 +27,7 @@ class Window: public QWidget
         Window(QWidget *parent = 0);
         virtual ~Window() {}
 
-        const PlayGround* getPG() const { return mplayground.get(); }
+        PlayGround* getPG() const { return mplayground.get(); }
 
         GuiState getState();
         void setState(GuiState);
@@ -50,6 +50,8 @@ class Window: public QWidget
         void sigOpen(std::string);
         void sigSave(std::string);
         void sigRun(bool dbg);
+        void sigPreviousResult();
+        void sigNextResult();
     private:
         std::shared_ptr<PlayGround> mplayground;
         std::shared_ptr<Menu> mmenu;

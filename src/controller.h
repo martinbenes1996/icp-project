@@ -12,54 +12,32 @@
 #include "model.h"
 #include "window.h"
 
+/**
+ * @brief   This class holds the model and window, connects them together.
+ *          It saves and loads from file. It leads the calculations.
+ */
 class Controller: public QObject
 {
     Q_OBJECT
     public:
+        /** 
+         * @brief   Controller constructor. Connects the model and the window.
+         */ 
         Controller();
 
     public slots:
+        /**
+         * @brief   Opens the file and loads the data to the model and window.
+         *          Called from the 
+         * @param path      Path to the file.
+         */
         void slotOpen(std::string);
         void slotSave(std::string);
         void slotRun(bool);
 
-        void nextResult()
-        {
-            if(mblockresults.size() <= mblockit)
-                throw MyError("Simulation end!", ErrorType::NotAnError);
-
-            if(mblockresults.at(mblockit).second.level != mlastlevel)
-            {
-                sendWireResults(mlastlevel);
-                mlastlevel = mblockresults.at(mblockit).second.level;
-            }
-            else
-            {
-                emit sigBlockResult(mblockresults.at(mblockit).first,
-                                    mblockresults.at(mblockit).second);
-                mblockit++;
-            }
-        }
-
-        void prevResult()
-        {
-            if(mblockit == 0) return;
-            else
-            {
-                size_t mendit = mblockit;
-                mblockit = 0;
-                mlastlevel = 0;
-                // reset view
-                for(mblockit = 0; mblockit < mendit; mblockit++)
-                { 
-                    nextResult();
-                }
-            }
-        }
-
-    signals:
-        void sigBlockResult(long id, Result);
-        void sigWireResult(long id, Result);
+        void slotNextResult();
+        void slotPreviousResult();
+        
     private:
         Model m;
         Window w;
@@ -69,13 +47,7 @@ class Controller: public QObject
         std::vector<std::pair<long,Result>> mblockresults;
         size_t mblockit;
 
-        void sendWireResults(int level)
-        {
-            for(auto& it: mwireresults.at(level))
-            {
-                emit sigWireResult(it.first, it.second);
-            }
-        }
+        void sendWireResults(int level);
 
 };
 

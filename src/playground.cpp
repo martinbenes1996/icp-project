@@ -65,6 +65,7 @@ void PlayGround::reinit()
 
 void PlayGround::setWireValue(long id, Value v)
 {
+    Debug::Compute("PlayGround::setWireValue("+std::to_string(id)+")");
     std::shared_ptr<MyWire> wire = mWires[id];
 
     wire.get()->setValue(v);
@@ -75,9 +76,10 @@ void PlayGround::setWireValue(long id, Value v)
 }
 void PlayGround::setBlockValue(long id, Value v)
 {
+    Debug::Compute("PlayGround::setBlockValue("+std::to_string(id)+")");
     if(mInputs.count(id) > 0) { return; }   // model cannot change value of input
 
-    std::shared_ptr<GuiBlock> block = mBlocks[id];
+    std::shared_ptr<GuiBlock> block = mBlocks.at(id);
     block.get()->setValue(v);
 /*
     std::string str = std::to_string(newValue);

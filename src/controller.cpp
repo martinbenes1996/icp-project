@@ -33,6 +33,8 @@ Controller::Controller()
     QObject::connect(&w, SIGNAL(sigOpen(std::string)), this, SLOT(slotOpen(std::string)));
     QObject::connect(&w, SIGNAL(sigSave(std::string)), this, SLOT(slotSave(std::string)));
     QObject::connect(&w, SIGNAL(sigRun(bool)), this, SLOT(slotRun(bool)));
+    QObject::connect(&w, SIGNAL(sigPreviousResult()), this, SLOT(slotPreviousResult()));
+    QObject::connect(&w, SIGNAL(sigNextResult()), this, SLOT(slotNextResult()));
     w.show();
 }
 
@@ -140,4 +142,51 @@ void Controller::slotRun(bool debug)
     mwireresults = results.wires;
     mlastlevel = 0;
     mblockit = 0;
+}
+
+void Controller::slotPreviousResult()
+{
+    if(mblockit == 0) return;
+    else {
+        size_t mendit = mblockit;
+        mblockit = 0;
+        mlastlevel = 0;
+        // reset view
+        w.getPG()->setAllDefaultColor();
+        while(mblockit < mendit)
+        { 
+            slotNextResult();
+        }
+        mblockit--;
+        Debug::Compute("slotPreviousResult() = " + std::to_string(mblockit));
+    }
+}
+
+void Controller::slotNextResult()
+{
+    if(mblockresults.size() <= mblockit) return;
+
+    if(mblockresults.at(mblockit).second.level != mlastlevel)
+    {
+        sendWireResults(mlastlevel);
+        mlastlevel = mblockresults.at(mblockit).second.level;
+    }
+    else
+    {
+        long id = mblockresults.at(mblockit).first;
+        w.getPG()->setBlockValue(id, (Value)mblockresults.at(mblockit).second);
+        w.getPG()->setBlockColor(id, true);
+        mblockit++;
+    }
+}
+
+void Controller::sendWireResults(int level)
+{
+    if(mwireresults.count(level) == 0) return;
+    for(auto& it: mwireresults.at(level))
+    {
+        long id = it.first;
+        w.getPG()->setWireValue(id, (Value)it.second);
+        w.getPG()->setWireColor(id, true);
+    }
 }

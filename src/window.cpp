@@ -187,13 +187,15 @@ void Window::keyPressEvent(QKeyEvent *event)
             mcompute = false;
             mmenu->endComputation();
         }
-        else if(event->key() == Qt::Key_Left)
+        else if(event->key() == Qt::Key_A)
         {
             Debug::Compute("Previous step.");
+            emit sigPreviousResult();
         }
-        else if(event->key() == Qt::Key_Right)
+        else if(event->key() == Qt::Key_D)
         {
             Debug::Compute("Next step.");
+            emit sigNextResult();
         }
     }
     

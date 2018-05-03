@@ -75,6 +75,15 @@ struct Result {
     double value;
     std::string type;
     int level;
+
+    explicit operator Value()
+    {
+        Value v;
+        v.type = this->type;
+        v.value = this->value;
+        v.valid = true;
+        return v;
+    }
 };
 struct SimulationResults {
     std::map<int, std::map<long,Result>> blocks;
