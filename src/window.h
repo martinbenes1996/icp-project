@@ -34,6 +34,7 @@ class Window: public QWidget
         void reinit() { mplayground->reinit(); mmenu->reinit(); }
 
         void keyPressEvent(QKeyEvent *);
+        void endComputation();
 
     public slots:
         void slotExit() { exit(0); }

@@ -28,16 +28,25 @@ class Controller: public QObject
     public slots:
         /**
          * @brief   Opens the file and loads the data to the model and window.
-         *          Called from the 
+         *          Called from the window, where the dialog is raised.
          * @param path      Path to the file.
          */
         void slotOpen(std::string);
+        /**
+         * @brief   Opens the file and saves the state of the model and window.
+         *          Called from the window, where the dialog is raised.
+         * @param path      Path to the file.
+         */
         void slotSave(std::string);
+        /**
+         * @brief   Runs the computation
+         * @param dbg       Weather to step, or run altogether.
+         */
         void slotRun(bool);
 
         void slotNextResult();
         void slotPreviousResult();
-        
+
     private:
         Model m;
         Window w;

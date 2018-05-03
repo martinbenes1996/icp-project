@@ -142,6 +142,16 @@ void Controller::slotRun(bool debug)
     mwireresults = results.wires;
     mlastlevel = 0;
     mblockit = 0;
+
+    if(!debug)
+    {
+        while(mblockresults.size() > mblockit)
+        {
+            slotNextResult();
+        }
+        w.endComputation();
+    }
+        
 }
 
 void Controller::slotPreviousResult()

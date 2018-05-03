@@ -183,9 +183,7 @@ void Window::keyPressEvent(QKeyEvent *event)
     {
         if(event->key() == Qt::Key_Escape)
         {
-            Debug::Compute("End computation.");
-            mcompute = false;
-            mmenu->endComputation();
+            endComputation();
         }
         else if(event->key() == Qt::Key_A)
         {
@@ -199,4 +197,11 @@ void Window::keyPressEvent(QKeyEvent *event)
         }
     }
     
+}
+
+void Window::endComputation()
+{
+    Debug::Compute("End computation.");
+    mcompute = false;
+    mmenu->endComputation();
 }
