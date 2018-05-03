@@ -84,6 +84,30 @@ void PlayGround::setBlockValue(long id, Value v)
     wire.get()->getText()->setPlainText(QString::fromStdString(std::to_string(newValue)));
 */
 }
+void PlayGround::setWireColor(long id, bool active)
+{
+    std::shared_ptr<MyWire> wire = mWires[id];
+
+    wire.get()->setColor(active);
+}
+void PlayGround::setBlockColor(long id, bool active)
+{
+    if(mInputs.count(id) > 0) { return; }   // model cannot change color of input ??
+
+    std::shared_ptr<GuiBlock> block = mBlocks[id];
+    block.get()->setColor(active);
+}
+void PlayGround::setAllDefaultColor()
+{
+    for(auto const& x: mWires)
+    {
+        x.second.get()->setColor(false);
+    }
+    for(auto x: mBlocks)
+    {
+        x.second.get()->setColor(false);
+    }
+}
 
 void PlayGround::slotViewLeftClick(QMouseEvent *event)
 {

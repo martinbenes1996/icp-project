@@ -207,6 +207,17 @@ void GuiBlock::setConnectorAvailability(int connector, bool addWire)
     }
 }
 
+void GuiBlock::setColor(bool active)
+{
+    if(active)
+    {
+
+    }
+    else
+    {
+    }
+}
+
 void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
     //std::cerr << "enter\n";
@@ -319,6 +330,24 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
 
     mvalue.valid = false;
 
+}
+
+void MyWire::setColor(bool active)
+{
+    for(auto x: mLines)
+    {
+        if(active)
+        {
+            //QBrush b = QBrush(Qt::red, Qt::SolidPattern);
+            QPen p = QPen(QBrush(Qt::red, Qt::SolidPattern), 2);
+            //p.setWidth(pen().width());
+            x.get()->setPen(p);
+        }
+        else
+        {
+            x.get()->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        }
+    }
 }
 
 void MyWire::setValue(Value v)
