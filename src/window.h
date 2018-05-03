@@ -39,6 +39,8 @@ class Window: public QWidget
         void keyPressEvent(QKeyEvent *);
         void endComputation();
 
+        void showDialog(const char *);
+
     public slots:
         void slotExit() { exit(0); }
         void slotNew() { reinit(); emit sigReset(); }

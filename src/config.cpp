@@ -45,7 +45,7 @@ void Config::initConfig()
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("divider", id) );
-    mf_2I1O.insert( std::make_pair(id, [](double x,double y){return x/y;}) );
+    mf_2I1O.insert( std::make_pair(id, [](double x,double y){ if(y==0)throw "division by zero"; return x/y;}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general", "general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
@@ -60,7 +60,7 @@ void Config::initConfig()
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("ln", id) );
-    mf_1I1O.insert( std::make_pair(id, [](double x){return log(x);}) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){if(x<=0)throw "logarithm by non-positive"; return log(x);}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
@@ -80,7 +80,7 @@ void Config::initConfig()
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("sqrt", id) );
-    mf_1I1O.insert( std::make_pair(id, [](double x){return sqrt(x);}) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){if(x<0)throw "square root of negative"; return sqrt(x);}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 

@@ -67,8 +67,9 @@ void Controller::slotOpen(std::string path)
     ModelState ms;
 
     while( getline(os, s) ) {
-        std::vector<std::string> v = split(s);
         if(s == "# WIRES #") break;
+        if(s == "") continue;
+        std::vector<std::string> v = split(s);
         try {
             long id = std::stol(v.at(0));
             long type = std::stol(v.at(1));
@@ -88,13 +89,44 @@ void Controller::slotOpen(std::string path)
     }
 
     // read wires
+    while( getline(os, s) ) {
+        if(s == "# TYPES #") break;
+        if(s == "") continue;
+        std::vector<std::string> v = split(s);
+        /*
+        try {
+            long id = std::stol(v.at(0));
+            long type = std::stol(v.at(1));
+            double x = std::stod(v.at(2));
+            double y = std::stod(v.at(3));
+
+            GuiBlockDescriptor g;
+            g.pos = std::make_pair(x,y);
+            g.type = type;
+
+            gs.blocks.insert( std::make_pair(id, g) );
+            ms.blocks.insert( std::make_pair(id, type) );
+        } catch(std::exception& e) {
+            std::cerr << "Invalid input file!\n";
+            return;
+        }
+        */
+    }
+
+    std::vector<std::string> newtypes;
+    while( getline(os, s) ) {
+        newtypes.push_back(s);
+    }
+
+    
     w.reinit();
     m.reinit();
+    auto types = Config::getTypes();
+    for(auto& it: types) { Config::removeType(it); }
 
     w.setState(gs);
     m.setState(ms);
-
-
+    for(auto& it: newtypes) { Config::addType(it); }
 }
 
 void Controller::slotSave(std::string path)
@@ -118,6 +150,14 @@ void Controller::slotSave(std::string path)
     }
     // save wires
     os << "# WIRES #\n";
+    // ...
+
+    // save types
+    os << "# TYPES #\n";
+    for(auto& it: Config::getTypes())
+    {
+        os << it << "\n";
+    }
 
     fb.close();
 }
@@ -128,7 +168,9 @@ void Controller::slotRun(bool debug)
                      + std::string(((debug)?"true":"false"))
                      + ")" );
     // compute
-    SimulationResults results = m.startComputation();
+    SimulationResults results;
+    try { results = m.startComputation(); }
+    catch(const char * e) { w.showDialog(e); return; }
     std::vector<std::pair<long, Result>> r;
     for(auto& i: results.blocks)
     {

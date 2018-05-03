@@ -8,6 +8,7 @@
 #include <QInputDialog>
 #include <QHBoxLayout>
 #include <QMenuBar>
+#include <QMessageBox>
 #include <QSplitter>
 #include <QList>        // list of sizes for splitter
 
@@ -205,4 +206,11 @@ void Window::endComputation()
     mcompute = false;
     mmenu->endComputation();
     mplayground->setAllDefaultColor();
+}
+
+void Window::showDialog(const char * msg)
+{
+    QMessageBox mb(QMessageBox::Critical, "BlockEditor error", QString::fromStdString(msg), QMessageBox::Ok);
+    mb.exec();
+    endComputation();
 }

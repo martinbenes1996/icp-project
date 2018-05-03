@@ -419,6 +419,14 @@ std::map<long,GuiBlockDescriptor> PlayGround::getBlockState()
         d.pos.second = it.second->y();
         m.insert( std::make_pair(it.first,d) );
     }
+    for(auto& it: mInputs)
+    {
+        GuiBlockDescriptor d;
+        d.type = it.second->getType();
+        d.pos.first = it.second->x();
+        d.pos.second = it.second->y();
+        m.insert( std::make_pair(it.first,d) );
+    }
     return m;
 }
 
