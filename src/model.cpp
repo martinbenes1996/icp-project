@@ -135,6 +135,7 @@ SimulationResults Model::startComputation()
     SimulationResults sr;
     for(auto& inkey: mInputs)
     {
+        std::cerr << "key: " << inkey << "\n";
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
         for(auto& it: sr.blocks)
         {
@@ -145,7 +146,7 @@ SimulationResults Model::startComputation()
             }
             std::cerr << "\n";
         }
-        sr.mergeWith(mBlocks.at(inkey)->distributeResult());
+        
     }
     
     endComputation();

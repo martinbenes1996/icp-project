@@ -130,7 +130,7 @@ class Block: public IBlock
         SimulationResults& distributeResult(SimulationResults& sr) override 
         {
             for(auto& it: mIn) { if(!it->getValue().valid) { return sr; } }
-            Debug::Block("Block::distributeResult()");
+            Debug::Block("Block::distributeResult() = " + std::to_string(getId()));
 
             Result r;
             Compute();

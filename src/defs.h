@@ -105,7 +105,7 @@ struct SimulationResults {
         }
         for(auto& i: s.wires) {
             for(auto& j: i.second) {
-                insertBlock(j.first, j.second);
+                insertWire(j.first, j.second);
             }
         }
     }
@@ -139,18 +139,18 @@ struct SimulationResults {
             SimulationResults::setMaxLevel(r.level);
         if(this->wires.count(r.level) == 0)
             this->wires.insert(std::make_pair(r.level,std::map<long,Result>()) );
-        for(int i = 0; i < (int)this->wires.size(); i++)
+        for(auto& i: this->wires)
         {
-            if(i == r.level) {
-                if(this->wires.at(i).count(id) == 0) {
-                    this->wires.at(i).insert(std::make_pair(i,r));
-                } else if(this->wires.at(i).at(id).level < r.level) {
-                    this->wires.at(i).at(id).level = r.level;
+            if(i.first == r.level) {
+                if(i.second.count(id) == 0) {
+                    i.second.insert(std::make_pair(id,r));
+                } else if(i.second.at(id).level < r.level) {
+                    i.second.at(id).level = r.level;
                 }
             }
             else {
-                if(this->wires.at(i).count(id) > 0) {
-                    this->wires.at(i).erase(id);
+                if(i.second.count(id) > 0) {
+                    i.second.erase(id);
                 }
             }
         }
