@@ -240,7 +240,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     for(auto& it: MyWire::splitLine(point1, point2))
     {
         std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
-        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 3));
         QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
                         this, SLOT(slotForkWire(QPointF)));
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
@@ -338,14 +338,12 @@ void MyWire::setColor(bool active)
     {
         if(active)
         {
-            //QBrush b = QBrush(Qt::red, Qt::SolidPattern);
-            QPen p = QPen(QBrush(Qt::red, Qt::SolidPattern), 2);
-            //p.setWidth(pen().width());
+            QPen p = QPen(QBrush(Qt::red, Qt::SolidPattern), 3);
             x.get()->setPen(p);
         }
         else
         {
-            x.get()->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+            x.get()->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 3));
         }
     }
 }
