@@ -288,7 +288,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
     for(auto& it: MyWire::splitLine(point1, point2))
     {
         std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
-        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 3));
         QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
                         this, SLOT(slotForkWire(QPointF)));
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
@@ -320,7 +320,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     for(auto& it: MyWire::splitLine(point1, point2))
     {
         std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
-        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 3));
         QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
                         this, SLOT(slotForkWire(QPointF)));
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
