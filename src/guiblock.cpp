@@ -39,13 +39,13 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
 
   if(Config::decodeBlockType(type) == BlockType::OneIn_OneOut)
   {
-    mtype = 1;
+    mporttype = 1;
     input2 = true;
     output2 = true;
   }
   else if(Config::decodeBlockType(type) == BlockType::TwoIn_OneOut)
   {
-    mtype = 2;
+    mporttype = 2;
     output2 = true;
   }
 
@@ -81,7 +81,7 @@ QPointF GuiBlock::getConnectorPoint(int connector)
     QPointF itemPoint = mrectangle.center();
     QPointF connectorPoint;
 
-    if(mtype == 2)       // two_in_one_out
+    if(mporttype == 2)       // two_in_one_out
     {
         if(connector == 0)
         {
@@ -99,7 +99,7 @@ QPointF GuiBlock::getConnectorPoint(int connector)
             connectorPoint.setY(itemPoint.y());
         }
     }
-    else if(mtype == 1)
+    else if(mporttype == 1)
     {
         if(connector == 0)
         {
@@ -133,7 +133,7 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
 
     //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
     //std::cout << MPEvent->pos().x() << MPEvent->pos().y() << std::endl;
-    if(mtype == 2)       // two_in_one_out
+    if(mporttype == 2)       // two_in_one_out
     {
         QRectF tempRect1 = QRectF(0.0, 0.0+mheight/8.0, mwidth/2.0, mheight/4.0);
         QRectF tempRect2 = QRectF(0.0, 0.0+(mheight*5.0)/8.0, mwidth/2.0, mheight/4.0);
@@ -158,7 +158,7 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
             *connector = -1;
         }
     }
-    else if(mtype == 1)      // one_in_one_out
+    else if(mporttype == 1)      // one_in_one_out
     {
         QRectF tempRect1 = QRectF(0.0, 0.0+mheight/4.0, mwidth/2.0, mheight/2.0);
         QRectF tempRect3 = QRectF(0.0+mwidth/2.0, 0.0+mheight/4.0, mwidth/2.0, mheight/2.0);
@@ -211,6 +211,9 @@ void GuiBlock::setColor(bool active)
 {
     if(active)
     {
+        //Debug::Gui(std::to_string(mtype));
+        //Debug::Gui(Config::getBlockName(mtype));
+        //Debug::Gui(Config::getHLImagePath(Config::getBlockName(mtype)));
         QPixmap i( QString::fromStdString(Config::getHLImagePath(
                     Config::getBlockName(mtype)
         )));
@@ -220,6 +223,8 @@ void GuiBlock::setColor(bool active)
     }
     else
     {
+        //Debug::Gui(Config::getBlockName(mtype));
+        //Debug::Gui(Config::getImagePath(Config::getBlockName(mtype)));
         QPixmap i( QString::fromStdString(Config::getImagePath(
                     Config::getBlockName(mtype)
         )));

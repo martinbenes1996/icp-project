@@ -102,6 +102,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
 
     // different blocks variables - I/O
     long mtype;     /**< Type of the block. */
+    long mporttype;
     Value mvalue;
 
     QBrush blockBrush;

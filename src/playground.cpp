@@ -186,6 +186,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 }
 void PlayGround::slotViewRightClick(QMouseEvent *event)
 {
+    Debug::Events("PlayGround::slotViewRightClick");
     (void *)event;
 
     // for testing a loop detection

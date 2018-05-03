@@ -35,7 +35,7 @@ void Config::initConfig()
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("subtractor", id) );
-    mf_2I1O.insert( std::make_pair(id, [](double a,double b){return a*b;}) );
+    mf_2I1O.insert( std::make_pair(id, [](double a,double b){return a-b;}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general", "general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
@@ -50,12 +50,12 @@ void Config::initConfig()
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("ex", id) );
-    mf_1I1O.insert( std::make_pair(id, [](double x){return pow(2.718281,x);}) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return exp(x);}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 
     mBlockNames.insert( std::make_pair("abs", id) );
-    mf_1I1O.insert( std::make_pair(id, [](double x){return abs(x);}) );
+    mf_1I1O.insert( std::make_pair(id, [](double x){return fabs(x);}) );
     mIn.insert( std::make_pair(id, std::vector<std::string>{"general"}) );
     mOut.insert( std::make_pair(id++, std::vector<std::string>{"general"}) );
 

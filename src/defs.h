@@ -89,8 +89,8 @@ struct Result {
     }
 };
 struct SimulationResults {
-    std::map<int, std::map<long,Result>> blocks;
-    std::map<int, std::map<long,Result>> wires;
+    std::map<int, std::map<long,Result>> blocks = std::map<int, std::map<long,Result>>();
+    std::map<int, std::map<long,Result>> wires = std::map<int, std::map<long,Result>>();
 
     static int getMaxLevel();
     static void setMaxLevel(int max);

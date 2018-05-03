@@ -65,7 +65,7 @@ class Input: public IBlock
 
         SimulationResults distributeResult() override
         {
-            Debug::Block("Input::distributeResult()");
+            Debug::Block("Input::distributeResult() = "+std::to_string(getId()));
             SimulationResults sr;
             Result r;
             Value v = getValue();
@@ -183,7 +183,7 @@ void Block<T>::addWire(Wire *w, long key, int port)
     int index = (port < 0) ? (-port-1):(port);
 
     // connect wire
-    if(v[index]->wire == nullptr) v[index]->wire = w;
+    if(v.at(index)->wire == nullptr) v.at(index)->wire = w;
     // already connected port
     else throw MyError("Adding wire to connected port", ErrorType::WireError);
 

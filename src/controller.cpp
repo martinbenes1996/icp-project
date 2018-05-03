@@ -134,6 +134,7 @@ void Controller::slotRun(bool debug)
     {
         for(auto& j: i.second)
         {
+            std::cerr << "id " << j.first << " level " << i.first << "\n";
             assert(i.first == j.second.level);
             r.push_back( std::make_pair(j.first,j.second) );
         }
@@ -184,7 +185,9 @@ void Controller::slotNextResult()
     else
     {
         long id = mblockresults.at(mblockit).first;
-        w.getPG()->setBlockValue(id, (Value)mblockresults.at(mblockit).second);
+        Value v = (Value)mblockresults.at(mblockit).second;
+        std::cerr << id << ":" << v.value << " " << v.type << " " << v.valid << "\n";
+        w.getPG()->setBlockValue(id, v);
         w.getPG()->setBlockColor(id, true);
         mblockit++;
     }
@@ -196,7 +199,8 @@ void Controller::sendWireResults(int level)
     for(auto& it: mwireresults.at(level))
     {
         long id = it.first;
-        w.getPG()->setWireValue(id, (Value)it.second);
+        Value v = (Value)it.second;
+        w.getPG()->setWireValue(id, v);
         w.getPG()->setWireColor(id, true);
     }
 }

@@ -67,7 +67,7 @@ void Model::slotDeleteBlock(long key)
     mBlocks.erase(key);
     
 }
-// nejak zarid, at se success nastavi na false, pokud se to nepovede. Nechci ti pokazit ten tvuj sablonovy skvost.
+
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& success)
 {
     if(startkey.port >= 0 && endkey.port < 0)
@@ -135,7 +135,16 @@ SimulationResults Model::startComputation()
     SimulationResults sr;
     for(auto& inkey: mInputs)
     {
-        std::cerr << inkey << "\n";
+        sr.mergeWith(mBlocks.at(inkey)->distributeResult());
+        for(auto& it: sr.blocks)
+        {
+            std::cerr << it.first << ": ";
+            for(auto& i: it.second)
+            {
+                std::cerr << i.first << " ";
+            }
+            std::cerr << "\n";
+        }
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
     }
     
