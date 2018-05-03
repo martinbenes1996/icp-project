@@ -117,6 +117,7 @@ std::vector<std::string> Config::getOutput(long key)
 
 std::map<std::string, long>& Config::getBlockNames() { return mBlockNames; }
 std::string Config::getImagePath(std::string s) { return ".." + PathSep + "examples" + PathSep + s + ".png"; }
+std::string Config::getHLImagePath(std::string s) { return ".." + PathSep + "examples" + PathSep + s + "_hl.png"; }
 std::string Config::getBlockName(long key)
 {
     for(auto& it: mBlockNames)

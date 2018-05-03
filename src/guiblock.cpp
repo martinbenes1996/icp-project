@@ -211,10 +211,21 @@ void GuiBlock::setColor(bool active)
 {
     if(active)
     {
-
+        QPixmap i( QString::fromStdString(Config::getHLImagePath(
+                    Config::getBlockName(mtype)
+        )));
+        i = i.scaledToHeight(mheight);
+        mwidth = i.width();
+        setPixmap(i);
     }
     else
     {
+        QPixmap i( QString::fromStdString(Config::getImagePath(
+                    Config::getBlockName(mtype)
+        )));
+        i = i.scaledToHeight(mheight);
+        mwidth = i.width();
+        setPixmap(i);
     }
 }
 
@@ -379,6 +390,7 @@ std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
 GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     QGraphicsEllipseItem(g)
 {
+    Debug::Gui("GuiInput::GuiInput");
     setRect(pos.x()-mradius/2,pos.y()-mradius/2, mradius, mradius);
     positionCenter = pos;
 
@@ -415,7 +427,6 @@ void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
         box.addItem(QString::fromStdString(it));
     }
     form.addRow(label2, &box);
-
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
     form.addRow(&buttonBox);
 

@@ -66,9 +66,12 @@ struct Value {
     }
 };
 
+/**
+ * @brief Describes the graphic block.
+ */
 struct GuiBlockDescriptor {
-    std::pair<double, double> pos;
-    long type;
+    std::pair<double, double> pos; /**< Position of the block in the scene. */
+    long type; /**< Type of the placed block. */
 };
 
 struct Result {

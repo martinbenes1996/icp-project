@@ -204,4 +204,5 @@ void Window::endComputation()
     Debug::Compute("End computation.");
     mcompute = false;
     mmenu->endComputation();
+    mplayground->setAllDefaultColor();
 }

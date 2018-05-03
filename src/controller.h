@@ -43,21 +43,30 @@ class Controller: public QObject
          * @param dbg       Weather to step, or run altogether.
          */
         void slotRun(bool);
-
+        /**
+         * @brief   Sends next result in computation.
+         */
         void slotNextResult();
+        /**
+         * @brief   Sends previous result in computation.  
+         */
         void slotPreviousResult();
 
     private:
-        Model m;
-        Window w;
+        Model m; /**< Model object. */
+        Window w; /**< Window object. */
 
-        int mlastlevel = 0;
-        std::map<int,std::map<long,Result>> mwireresults;
-        std::vector<std::pair<long,Result>> mblockresults;
-        size_t mblockit;
-
+        /* -------- computation variables ---------- */
+        int mlastlevel = 0; /**< Last result level. */
+        std::map<int,std::map<long,Result>> mwireresults; /**< Results of wires. */
+        std::vector<std::pair<long,Result>> mblockresults; /**< Results of blocks */
+        size_t mblockit; /**< Block iterator. */
+        /**
+         * @brief   Emits all the wires at the given level.
+         * @param level     Level of the emitted wires.
+         */
         void sendWireResults(int level);
-
+        /* ----------------------------------------- */
 };
 
 #endif // CONTROLLER_H

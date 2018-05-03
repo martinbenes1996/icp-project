@@ -20,9 +20,11 @@
 #include "iblock.h"
 #include "wire.h"
 
-
+/**
+ * @brief Saved state of the model.
+ */
 struct ModelState {
-    std::map<long,long> blocks;
+    std::map<long,long> blocks; /**< Block state <id,type>. */
     // wires
 };
 
@@ -34,13 +36,29 @@ class Model: public QObject
     Q_OBJECT
 
     public:
-        ~Model();
+        /**
+         * @brief   Model destructor.
+         */
+        ~Model() { slotReset(); }
 
+        /**
+         * @brief   Computes the results.
+         * @returns Results of connected blocks.
+         */
         SimulationResults startComputation();
-        void endComputation();
-
+        /**
+         * @brief Gets the state (for saving).
+         * @returns The state to save.
+         */
         ModelState getState();
+        /**
+         * @brief Sets the state (loading the file).
+         * @param state     State to set.
+         */
         void setState(ModelState);
+        /**
+         * @brief Resets the model.
+         */
         void reinit() { slotReset(); }
 
     public slots:
@@ -79,7 +97,9 @@ class Model: public QObject
          * @param value     New value.
          */
         void slotInputValueChanged(long key, Value);
-
+        /**
+         * @brief Resets the model.
+         */
         void slotReset();
 
     signals:
@@ -91,11 +111,16 @@ class Model: public QObject
 
     private:
         std::map<long, std::shared_ptr<IBlock>> mBlocks; /**< Map of blocks. */
-        std::set<long> mInputs;
+        std::set<long> mInputs; /**< Input blocks set. */
         std::map<long, std::shared_ptr<Wire>> mWires;    /**< Map of wires. */
 
-        int mblockkey = 0;
-        int mwirekey = 0;
+        /**
+         * @brief   Resets the model after the computation.
+         */
+        void endComputation();
+
+        int mblockkey = 0; /**< Key generator for the blocks. */
+        int mwirekey = 0; /**< Key generator for the wires. */
         /**
          * @brief Generator of the block key.
          * @returns         The generated key

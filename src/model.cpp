@@ -10,11 +10,6 @@
 #include "config.h"
 #include "model.h"
 
-Model::~Model()
-{
-    slotReset();
-}
-
 void Model::slotCreateBlock(long type, long& key)
 {
     key = GenerateBlockKey();
@@ -143,6 +138,8 @@ SimulationResults Model::startComputation()
         std::cerr << inkey << "\n";
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
     }
+    
+    endComputation();
     return sr;
 }
 

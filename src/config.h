@@ -40,6 +40,7 @@ namespace Config
 
     std::map<std::string, long>& getBlockNames();
     std::string getImagePath(std::string);
+    std::string getHLImagePath(std::string);
     std::string getBlockName(long);
 
     void addType(std::string);

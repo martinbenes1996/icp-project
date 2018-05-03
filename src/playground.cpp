@@ -126,6 +126,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         std::shared_ptr<GuiInput> newInput = std::make_shared<GuiInput>(event->pos());
         if(!newInput->isOk()) return;
         mscene->addItem(newInput.get());
+        
 
         // collisions
         QList<QGraphicsItem *> tempList;

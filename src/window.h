@@ -15,8 +15,11 @@
 #include "menu.h"
 #include "playground.h"
 
+/**
+ * @brief State of the view.
+ */
 struct GuiState {
-   std::map<long, GuiBlockDescriptor> blocks;
+   std::map<long, GuiBlockDescriptor> blocks; /**< Block state <id,GuiBlockDescriptor>. */
    // wires
 };
 
