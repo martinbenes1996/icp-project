@@ -69,6 +69,22 @@ class PlayGround: public QWidget
          * @param   newValue    new value
          */
         void setBlockValue(long id, Value v);
+        /**
+         * @brief   Sets new color of a wire for display.
+         * @param   id          ID of the wire
+         * @param   active      true -> red, false -> black
+         */
+        void setWireColor(long id, bool active);
+        /**
+         * @brief   Sets new color of a block for display.
+         * @param   id          ID of the block
+         * @param   active      true -> red picture, false -> normal picture
+         */
+        void setBlockColor(long id, bool active);
+        /**
+         * @brief   Sets default color of all entities in scene.
+         */
+        void setAllDefaultColor();
 
         // slots and signals will have to be reworked
     public slots:

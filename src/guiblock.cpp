@@ -207,6 +207,17 @@ void GuiBlock::setConnectorAvailability(int connector, bool addWire)
     }
 }
 
+void GuiBlock::setColor(bool active)
+{
+    if(active)
+    {
+
+    }
+    else
+    {
+    }
+}
+
 void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
     //std::cerr << "enter\n";
@@ -229,7 +240,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     for(auto& it: MyWire::splitLine(point1, point2))
     {
         std::shared_ptr<MyLine> l = std::make_shared<MyLine>(it.first, it.second);
-        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 2));
+        l->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 3));
         QObject::connect(l.get(), SIGNAL(sigForkWire(QPointF)),
                         this, SLOT(slotForkWire(QPointF)));
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
@@ -319,6 +330,22 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
 
     mvalue.valid = false;
 
+}
+
+void MyWire::setColor(bool active)
+{
+    for(auto x: mLines)
+    {
+        if(active)
+        {
+            QPen p = QPen(QBrush(Qt::red, Qt::SolidPattern), 3);
+            x.get()->setPen(p);
+        }
+        else
+        {
+            x.get()->setPen(QPen(QBrush(Qt::darkGray, Qt::SolidPattern), 3));
+        }
+    }
 }
 
 void MyWire::setValue(Value v)
@@ -466,7 +493,7 @@ QPointF GuiInput::getConnectorPoint(int connector)
     QPointF itemPoint = positionCenter;
     QPointF connectorPoint;
 
-    connectorPoint.setX(itemPoint.x() + mradius);
+    connectorPoint.setX(itemPoint.x() + mradius/2);
     connectorPoint.setY(itemPoint.y());
 
     return connectorPoint;

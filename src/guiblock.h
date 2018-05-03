@@ -84,6 +84,8 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
     void printCon() { std::cout << input1<<input2<<output1<<output2<<"\n"; }
 
     void setValue(Value v) { mvalue = v; setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));}
+
+    void setColor(bool active);
     // ----------------------------
 
   signals:
@@ -152,6 +154,8 @@ class MyWire: public QObject
         int getConnector2() { return mconnector2; }
         //void setValue(Value v) { mvalue = v; }
         void setValue(Value v);
+        // if active is true, it sets color of the wire to red, else black
+        void setColor(bool active);
     public slots:
         void slotForkWire(QPointF p) { emit sigForkWire(mid,p); }
         void slotDeleteWire() { emit sigDeleteWire(mid); }
@@ -211,7 +215,7 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         void getUserValue(double *value, std::string &type, bool *mok);
 
         Value mvalue;
-        double mradius = 20;
+        double mradius = 30;
         bool mok;
         QPointF positionCenter;
         bool output1 = false;
