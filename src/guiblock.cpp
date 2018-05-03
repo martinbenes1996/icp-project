@@ -341,8 +341,8 @@ std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
     double dy = (f.y()-s.y());
     QPointF p1(s.x()+dx, s.y());
     QPointF p2(s.x()+dx, s.y()+dy);
-    std::cout << s.x() << " " << s.y() << ", " << f.x() << " " << f.y() << "\n";
-    std::cout << dx << " " << dy << "\n";
+    //std::cout << s.x() << " " << s.y() << ", " << f.x() << " " << f.y() << "\n";
+    //std::cout << dx << " " << dy << "\n";
     v.push_back( std::make_pair(s, p1) );
     v.push_back( std::make_pair(p1, p2) );
     v.push_back( std::make_pair(p2, f) );

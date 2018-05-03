@@ -121,3 +121,18 @@ void Menu::reinit()
 {
     for(auto& it: mButtons) { it.second->setChecked(false); }
 }
+
+void Menu::slotRun(bool)
+{
+    emit sigChoiceMode(-1);
+    for(auto& it: mButtons) { it.second->setDisabled(true); }
+}
+
+void Menu::endComputation()
+{
+    for(auto& it: mButtons) 
+    { 
+        it.second->setDisabled(false);
+        if(it.second->isChecked()) { slotChoicePressed(it.first); }
+    }
+}

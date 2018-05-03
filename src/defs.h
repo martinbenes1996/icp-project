@@ -21,6 +21,7 @@ enum ErrorType {
     TypeError, /**< Error of incompatible types. */
     WireError, /**< Error of a wire. */
     ViewError, /**< Error of a view. */
+    NotAnError, /**< Not an error. */
 };
 
 /**
@@ -79,6 +80,10 @@ struct SimulationResults {
     std::map<int, std::map<long,Result>> blocks;
     std::map<int, std::map<long,Result>> wires;
 
+    static int getMaxLevel();
+    static void setMaxLevel(int max);
+    static void resetMaxLevel();
+
     void mergeWith(const SimulationResults& s)
     {
         for(auto& i: s.blocks) { 
@@ -95,18 +100,48 @@ struct SimulationResults {
 
     void insertBlock(long id, Result r)
     {
-        if(blocks.count(r.level) == 0)
-            blocks.insert( std::make_pair(r.level,std::map<long,Result>()) );
-
-        blocks.at(r.level).insert( std::make_pair(id,r) );
+        if(r.level > SimulationResults::getMaxLevel())
+            SimulationResults::setMaxLevel(r.level);
+        if(this->blocks.count(r.level) == 0)
+            this->blocks.insert(std::make_pair(r.level,std::map<long,Result>()) );
+        for(auto& i: this->blocks)
+        {
+            if(i.first == r.level) {
+                if(i.second.count(id) == 0) {
+                    i.second.insert(std::make_pair(id,r));
+                } else if(i.second.at(id).level < r.level) {
+                    i.second.at(id).level = r.level;
+                }
+            }
+            else {
+                if(i.second.count(id) > 0) {
+                    i.second.erase(id);
+                }
+            }
+        }
     }
 
     void insertWire(long id, Result r)
     {
-        if(wires.count(r.level) == 0)
-            wires.insert( std::make_pair(r.level,std::map<long,Result>()) );
-
-        wires.at(r.level).insert( std::make_pair(id,r) );
+        if(r.level > SimulationResults::getMaxLevel())
+            SimulationResults::setMaxLevel(r.level);
+        if(this->wires.count(r.level) == 0)
+            this->wires.insert(std::make_pair(r.level,std::map<long,Result>()) );
+        for(int i = 0; i < (int)this->wires.size(); i++)
+        {
+            if(i == r.level) {
+                if(this->wires.at(i).count(id) == 0) {
+                    this->wires.at(i).insert(std::make_pair(i,r));
+                } else if(this->wires.at(i).at(id).level < r.level) {
+                    this->wires.at(i).at(id).level = r.level;
+                }
+            }
+            else {
+                if(this->wires.at(i).count(id) > 0) {
+                    this->wires.at(i).erase(id);
+                }
+            }
+        }
     }
 };
 

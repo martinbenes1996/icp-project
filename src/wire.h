@@ -57,9 +57,9 @@ class Wire
 
         SimulationResults& distributeResult(SimulationResults& sr) const
         {
-            Debug::Block("Wire::distributeResult");
+            Debug::Block("Wire::distributeResult()");
             Result r;
-            Value v;
+            Value v = mi.getValue();
 
             r.level = mi.getLevel();
             r.value = v.value;

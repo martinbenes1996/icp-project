@@ -23,9 +23,60 @@ class Controller: public QObject
         void slotSave(std::string);
         void slotRun(bool);
 
+        void nextResult()
+        {
+            if(mblockresults.size() <= mblockit)
+                throw MyError("Simulation end!", ErrorType::NotAnError);
+
+            if(mblockresults.at(mblockit).second.level != mlastlevel)
+            {
+                sendWireResults(mlastlevel);
+                mlastlevel = mblockresults.at(mblockit).second.level;
+            }
+            else
+            {
+                emit sigBlockResult(mblockresults.at(mblockit).first,
+                                    mblockresults.at(mblockit).second);
+                mblockit++;
+            }
+        }
+
+        void prevResult()
+        {
+            if(mblockit == 0) return;
+            else
+            {
+                size_t mendit = mblockit;
+                mblockit = 0;
+                mlastlevel = 0;
+                // reset view
+                for(mblockit = 0; mblockit < mendit; mblockit++)
+                { 
+                    nextResult();
+                }
+            }
+        }
+
+    signals:
+        void sigBlockResult(long id, Result);
+        void sigWireResult(long id, Result);
     private:
         Model m;
         Window w;
+
+        int mlastlevel = 0;
+        std::map<int,std::map<long,Result>> mwireresults;
+        std::vector<std::pair<long,Result>> mblockresults;
+        size_t mblockit;
+
+        void sendWireResults(int level)
+        {
+            for(auto& it: mwireresults.at(level))
+            {
+                emit sigWireResult(it.first, it.second);
+            }
+        }
+
 };
 
 #endif // CONTROLLER_H

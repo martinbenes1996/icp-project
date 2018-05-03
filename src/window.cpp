@@ -11,6 +11,7 @@
 #include <QSplitter>
 #include <QList>        // list of sizes for splitter
 
+#include "debug.h"
 #include "window.h"
 
 Window::Window(QWidget *parent): QWidget(parent)
@@ -104,6 +105,8 @@ Window::Window(QWidget *parent): QWidget(parent)
     //hlayout->setSpacing(0);
     hlayout->addWidget(splitter);
 
+    QObject::connect(this, SIGNAL(sigRun(bool)), mmenu.get(), SLOT(slotRun(bool)));
+
 }
 
 GuiState Window::getState()
@@ -133,8 +136,18 @@ void Window::slotSave()
     emit sigSave(filename.toStdString());
 }
 
-void Window::slotDebug() { emit sigRun(true); }
-void Window::slotCalculate() { emit sigRun(false); }
+void Window::slotDebug() 
+{ 
+    Debug::Compute("Start debug.");
+    mcompute = true;
+    emit sigRun(true);
+}
+void Window::slotCalculate() 
+{ 
+    Debug::Compute("Start calculate.");
+    mcompute = true; 
+    emit sigRun(false); 
+}
 
 void Window::slotAddType()
 {
@@ -164,3 +177,24 @@ void Window::slotRemoveType(const QString&)
 
 }
 
+void Window::keyPressEvent(QKeyEvent *event)
+{
+    if(mcompute)
+    {
+        if(event->key() == Qt::Key_Escape)
+        {
+            Debug::Compute("End computation.");
+            mcompute = false;
+            mmenu->endComputation();
+        }
+        else if(event->key() == Qt::Key_Left)
+        {
+            Debug::Compute("Previous step.");
+        }
+        else if(event->key() == Qt::Key_Right)
+        {
+            Debug::Compute("Next step.");
+        }
+    }
+    
+}

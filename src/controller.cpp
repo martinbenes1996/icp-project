@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cassert>
 
 #include <QObject>
 
@@ -124,14 +125,19 @@ void Controller::slotRun(bool debug)
     Debug::Controller("Controller::slotRun(dbg="
                      + std::string(((debug)?"true":"false"))
                      + ")" );
+    // compute
     SimulationResults results = m.startComputation();
-
+    std::vector<std::pair<long, Result>> r;
     for(auto& i: results.blocks)
     {
         for(auto& j: i.second)
         {
-            std::cerr << j.first << ":" << j.second.value
-                      << "[" << i.first << "]\n";
+            assert(i.first == j.second.level);
+            r.push_back( std::make_pair(j.first,j.second) );
         }
     }
+    mblockresults = r;
+    mwireresults = results.wires;
+    mlastlevel = 0;
+    mblockit = 0;
 }

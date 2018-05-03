@@ -6,6 +6,10 @@
 
 #include "defs.h"
 
+namespace {
+    int maxLevel = -1;
+}
+
 int MyError::getCode()
 {
     switch(mcode)
@@ -14,3 +18,7 @@ int MyError::getCode()
         default: return 42;
     }
 }
+
+int SimulationResults::getMaxLevel() { return maxLevel; }
+void SimulationResults::setMaxLevel(int max) { maxLevel = max; }
+void SimulationResults::resetMaxLevel() { maxLevel = -1; }

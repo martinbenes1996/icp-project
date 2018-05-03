@@ -10,11 +10,12 @@
 #include <iostream>
 
 #ifdef DEBUG_MODE
-    #define BLOCK_DEBUG
-    #define MODEL_DEBUG
-    #define EVENTS_DEBUG
-    #define GUI_DEBUG
-    #define CONTROLLER_DEBUG
+    //#define BLOCK_DEBUG
+    //#define MODEL_DEBUG
+    //#define EVENTS_DEBUG
+    //#define GUI_DEBUG
+    //#define CONTROLLER_DEBUG
+    #define COMPUTE_DEBUG
     //...
 #endif // DEBUG_MODE
 
@@ -53,6 +54,12 @@ namespace Debug
             std::cerr << str << "\n";
         #endif
         (void)str;
+    }
+
+    inline void Compute(std::string str) {
+        #ifdef COMPUTE_DEBUG
+            std::cerr << str << "\n";
+        #endif
     }
 }
 

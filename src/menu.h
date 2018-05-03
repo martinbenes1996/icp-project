@@ -28,14 +28,18 @@ class Menu: public QWidget
 
         void reinit();
 
+        void endComputation();
+
     public slots:
         void slotChoicePressed(QString);
         void slotChoiceRejected();
+        void slotRun(bool);
 
     signals:
         void sigChoiceMode(long);
         void sigWireMode();
         void sigInput();
+
     private:
         QSignalMapper mmapper;
         std::map<QString, QPushButton*> mButtons;

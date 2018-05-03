@@ -44,22 +44,24 @@ class Input: public IBlock
         void addWire(Wire* w, long key, int port = 0) override
         {
             Debug::Block("Input::addWire()");
-            if(mO.wire == nullptr) mO.wire = w;
-            else throw MyError("Input has only output port", ErrorType::BlockError);
+            mO.wire = w;
+            std::set<int> s;
+            propagateLevel(0, s);
             IBlock::addWire(w, key, port);
         }
 
-        void removeWireKey(long key)
+        void removeWireKey(long key) override
         {
             Debug::Block("Input::removeWireKey()");
-            if(mO.wire != nullptr) mO.wire = nullptr;
+            mO.wire = nullptr;
             IBlock::removeWireKey(key);
         }
 
         int getLevel() const override { return 0; }
-        inline void setLevel(int) override { throw MyError("Level of the input is constant", ErrorType::BlockError); }
+        void setLevel(int) override { throw MyError("Level of the input is constant", ErrorType::BlockError); }
 
         bool isInput() override { return true; }
+
 
         SimulationResults distributeResult() override
         {
@@ -74,6 +76,14 @@ class Input: public IBlock
 
             sr.insertBlock(getId(), r);
             return mO.distributeResult(sr);
+        }
+
+        void propagateLevel(int, std::set<int> s) override
+        {
+            Debug::Block("Input::propageteLevel()");
+            s.insert(getId());
+            mO.propagateLevel(0, s);
+            std::cerr << "Final level of " << getId() << " is " << getLevel() << "\n";
         }
 
     private:
@@ -119,8 +129,8 @@ class Block: public IBlock
 
         SimulationResults& distributeResult(SimulationResults& sr) override 
         {
-            Debug::Block("Block::distributeResult()");
             for(auto& it: mIn) { if(!it->getValue().valid) { return sr; } }
+            Debug::Block("Block::distributeResult()");
 
             Result r;
             Compute();
@@ -128,7 +138,7 @@ class Block: public IBlock
 
             r.value = v.value;
             r.type = v.type;
-            r.level = 0;
+            r.level = getLevel();
 
             sr.insertBlock(getId(),r);
 
@@ -168,7 +178,7 @@ void Block<T>::removeWireKey(long id)
 template <class T>
 void Block<T>::addWire(Wire *w, long key, int port)
 {
-    Debug::Block("Block::addWire");
+    Debug::Block("Block::addWire()");
     std::vector<std::shared_ptr<Port>>& v = (port < 0)?mOut:mIn;
     int index = (port < 0) ? (-port-1):(port);
 
@@ -201,13 +211,14 @@ void Block<T>::addWire(Wire *w, long key, int port)
 template <class T>
 void Block<T>::propagateLevel(int level, std::set<int> prop)
 {
-    Debug::Block("Block::propagateLevel");
+    Debug::Block("Block::propagateLevel("+std::to_string(level)+")");
     // cycle detection
     if( prop.count(getId()) > 0)
         throw MyError("Cycle detected!", ErrorType::BlockError);
 
     // level setter
     if(level > getLevel()) { setLevel(level); }
+    std::cerr << "Final level of " << getId() << " is " << getLevel() << "\n";
 
     // propagate
     prop.insert(getId());
@@ -217,7 +228,7 @@ void Block<T>::propagateLevel(int level, std::set<int> prop)
 template <class T>
 void Block<T>::Compute()
 {
-    Debug::Block("Block::Compute");
+    Debug::Block("Block::Compute()");
 
     // check matching types
     CheckTypes(mIn);

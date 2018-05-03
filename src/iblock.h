@@ -36,6 +36,8 @@ class IBlock
          */
         virtual void setValue(const Value& value) { mvalue = value; }
 
+        void resetValue() { Value v; setValue(v); }
+
         /**
          * @brief Level setter.
          * @param level     New level value.

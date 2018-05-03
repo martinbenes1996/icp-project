@@ -37,6 +37,7 @@ class Model: public QObject
         ~Model();
 
         SimulationResults startComputation();
+        void endComputation();
 
         ModelState getState();
         void setState(ModelState);

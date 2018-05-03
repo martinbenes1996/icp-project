@@ -33,6 +33,8 @@ class Window: public QWidget
         void setState(GuiState);
         void reinit() { mplayground->reinit(); mmenu->reinit(); }
 
+        void keyPressEvent(QKeyEvent *);
+
     public slots:
         void slotExit() { exit(0); }
         void slotNew() { reinit(); emit sigReset(); }
@@ -51,6 +53,7 @@ class Window: public QWidget
     private:
         std::shared_ptr<PlayGround> mplayground;
         std::shared_ptr<Menu> mmenu;
+        bool mcompute = false;
 };
 
 #endif // WINDOW_H

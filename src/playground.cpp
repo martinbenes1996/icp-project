@@ -221,7 +221,6 @@ bool PlayGround::createWireFunction()
 
 void PlayGround::deleteWireFunction(long i)
 {
-
     Debug::Gui( "PlayGround::deleteWireFunction("+std::to_string(i)+")" );
     emit sigDeleteWire(i);
     std::shared_ptr<MyWire> wire = mWires.at(i);
@@ -234,7 +233,6 @@ void PlayGround::deleteWireFunction(long i)
     for(auto& it: wire->getLine()) { mscene->removeItem(it.get()); }
     mscene->removeItem(wire->getText());
     mWires.erase(i);
-
 }
 
 void PlayGround::slotDeleteWire(long id)

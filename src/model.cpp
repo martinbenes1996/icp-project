@@ -18,7 +18,7 @@ Model::~Model()
 void Model::slotCreateBlock(long type, long& key)
 {
     key = GenerateBlockKey();
-    Debug::Model( "Create block "+std::to_string(key) );
+    Debug::Model( "Model::slotCreateBlock("+std::to_string(key)+")" );
 
     std::shared_ptr<IBlock> b;
     BlockType bt = Config::decodeBlockType(type);
@@ -62,8 +62,7 @@ void Model::slotDeleteBlock(long key)
 
     // erase connected wires
     for(auto& it: wkeys) 
-    { 
-        std::cerr << "deleting " << it.first << "\n";
+    {
         slotDeleteWire(it.first);
         emit sigDeleteWire(it.first);
     }
@@ -76,8 +75,14 @@ void Model::slotDeleteBlock(long key)
 // nejak zarid, at se success nastavi na false, pokud se to nepovede. Nechci ti pokazit ten tvuj sablonovy skvost.
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& success)
 {
-    if((startkey.port < 0 && endkey.port < 0)
-    || (startkey.port >= 0 && endkey.port >= 0))
+    if(startkey.port >= 0 && endkey.port < 0)
+    {
+        PortID tmp;
+        tmp = startkey;
+        startkey = endkey;
+        endkey = tmp;
+    }
+    if(startkey.port >= 0 && endkey.port >= 0)
     {
         std::cerr << "Must be output to input!\n";
         success = false;
@@ -85,7 +90,7 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
     }
 
     key = GenerateWireKey();
-    Debug::Model( "Model::slotCreateWire "+std::to_string(key) );
+    Debug::Model( "Model::slotCreateWire("+std::to_string(key)+")" );
 
     std::shared_ptr<Wire> w;
     try {
@@ -131,6 +136,7 @@ void Model::slotInputValueChanged(long key, Value value)
 SimulationResults Model::startComputation()
 {
     // collect results
+    SimulationResults::resetMaxLevel();
     SimulationResults sr;
     for(auto& inkey: mInputs)
     {
@@ -138,6 +144,14 @@ SimulationResults Model::startComputation()
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
     }
     return sr;
+}
+
+void Model::endComputation()
+{
+    for(auto& it: mBlocks)
+    {
+        it.second->resetValue();
+    }
 }
 
 void Model::slotReset()
@@ -169,3 +183,5 @@ void Model::setState(ModelState s)
     }
     // wires
 }
+
+
