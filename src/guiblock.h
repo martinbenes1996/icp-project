@@ -215,7 +215,7 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         void getUserValue(double *value, std::string &type, bool *mok);
 
         Value mvalue;
-        double mradius = 20;
+        double mradius = 30;
         bool mok;
         QPointF positionCenter;
         bool output1 = false;

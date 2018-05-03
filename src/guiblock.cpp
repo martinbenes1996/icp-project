@@ -495,7 +495,7 @@ QPointF GuiInput::getConnectorPoint(int connector)
     QPointF itemPoint = positionCenter;
     QPointF connectorPoint;
 
-    connectorPoint.setX(itemPoint.x() + mradius);
+    connectorPoint.setX(itemPoint.x() + mradius/2);
     connectorPoint.setY(itemPoint.y());
 
     return connectorPoint;
