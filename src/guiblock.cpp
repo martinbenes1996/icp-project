@@ -14,6 +14,7 @@
 #include <QFormLayout>
 #include <QDialogButtonBox>
 #include <QComboBox>
+#include <math.h>
 
 #include "debug.h"
 #include "guiblock.h"
@@ -50,7 +51,7 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   }
 
   mvalue.valid = false;
-  setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+  setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
 
   //setRect(mrectangle);
   //setBrush(blockBrush);
@@ -262,7 +263,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
                         this, SLOT(slotDeleteWire()));
         mLines.push_back(l);
-        l.get()->setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+        l.get()->setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
     }
 
     gblock1 = gb1;
@@ -275,7 +276,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
-    mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    mtext->setPos( (point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3, (point1.y()+point2.y())/2 );
     mtext->setPlainText("N");
     mtext->setDefaultTextColor(Qt::cyan);
 
@@ -297,7 +298,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
                         this, SLOT(slotDeleteWire()));
         mLines.push_back(l);
-        l.get()->setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+        l.get()->setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
     }
 
     iblock1 = gb1;
@@ -310,7 +311,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
     mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
-    mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    mtext->setPos( (point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3, (point1.y()+point2.y())/2 );
     mtext->setPlainText("N");
     mtext->setDefaultTextColor(Qt::cyan);
 
@@ -332,7 +333,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
         QObject::connect(l.get(), SIGNAL(sigDeleteWire()),
                         this, SLOT(slotDeleteWire()));
         mLines.push_back(l);
-        l.get()->setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+        l.get()->setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
     }
 
     gblock1 = gb1;
@@ -345,7 +346,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
-    mtext->setPos( (point1.x()+point2.x())/2, (point1.y()+point2.y())/2 );
+    mtext->setPos( (point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3, (point1.y()+point2.y())/2 );
     mtext->setPlainText("N");
     mtext->setDefaultTextColor(Qt::cyan);
 
@@ -378,10 +379,10 @@ void MyWire::setValue(Value v)
     mvalue = v;
     if(v.valid)
     {
-        mtext->setPlainText(QString::fromStdString(std::to_string(v.value)+" "+v.type));
+        mtext->setPlainText(QString::fromStdString(std::to_string(v.value)/*+" "+v.type*/));
         for(auto& it: mLines)
         {
-            it.get()->setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+            it.get()->setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
         }
     }
 }
@@ -414,11 +415,11 @@ GuiInput::GuiInput(QPointF pos, bool load, QGraphicsItem* g):
         getUserValue(&mvalue.value, mvalue.type, &mok);
         mvalue.valid = true;
 
-        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
     }
     else
     {
-        setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+        setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
     }
     //std::cout << value << " " << type << std::endl;
 
@@ -500,12 +501,13 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
         mvalue.valid = true;
         //std::cout << mvalue.value << " " << mvalue.type << std::endl;
 
-        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
     }
 }
 
 void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    //QToolTip::showText(QWidget::mapToGlobal(event->pos().toPoint()), "heheheh");
     //label = std::make_shared<QLabel>("text");
 
     //QToolTip::showText(event->pos(), "text input!");
@@ -513,7 +515,7 @@ void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    //hideText();
+    //QToolTip::hideText();
 }
 
 void GuiInput::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
