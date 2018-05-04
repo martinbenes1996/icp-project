@@ -219,7 +219,7 @@ bool PlayGround::createWireFunction()
     long end;
     if(block2 == nullptr) end = getIDFromInput(iblock2);
     else end = getIDFromBlock(block2);
-    //std::cout << begin << connector1 << end << connector2 << std::endl;
+    //std::cout << begin <<" "<< connector1 <<" "<< end <<" "<< connector2 << std::endl;
     Debug::Gui("Create wire: "+std::to_string(begin)+"<->"+std::to_string(end));
     emit sigCreateWire({/*getIDFromBlock(block1)*/begin,connector1}, {/*getIDFromBlock(block2)*/end,connector2}, id, success);
     if(!success) return false;
