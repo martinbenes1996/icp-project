@@ -436,11 +436,11 @@ std::vector<struct wireState> PlayGround::getWireState()
     for(auto& it:mWires)
     {
         struct wireState w;
-        w.id = it.first;
-        w.point1_x = it.second->getSavedPoint1().x();
-        w.point1_y = it.second->getSavedPoint1().y();
-        w.point2_x = it.second->getSavedPoint2().x();
-        w.point2_y = it.second->getSavedPoint2().y();
+        //w.id = it.first;
+        //w.point1_x = it.second->getSavedPoint1().x();
+        //w.point1_y = it.second->getSavedPoint1().y();
+        //w.point2_x = it.second->getSavedPoint2().x();
+        //w.point2_y = it.second->getSavedPoint2().y();
         if(it.second->getIBlock1() == nullptr) w.block1_id = getIDFromBlock(it.second->getBlock1());
         else w.block1_id = getIDFromInput(it.second->getIBlock1());
         if(it.second->getIBlock2() == nullptr) w.block2_id = getIDFromBlock(it.second->getBlock2());

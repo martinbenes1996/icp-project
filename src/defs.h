@@ -77,11 +77,11 @@ struct GuiBlockDescriptor {
 };
 
 struct wireState {
-    int id;
-    double point1_x;
-    double point1_y;
-    double point2_x;
-    double point2_y;
+    //int id;
+    //double point1_x;
+    //double point1_y;
+    //double point2_x;
+    //double point2_y;
     int block1_id;
     int block2_id;
     int connector1;

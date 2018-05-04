@@ -96,15 +96,15 @@ void Controller::slotOpen(std::string path)
 
         try {
             struct wireState wire;
-            wire.id = std::stol(v.at(0));
-            wire.point1_x = std::stod(v.at(1));
-            wire.point1_y = std::stod(v.at(2));
-            wire.point2_x = std::stod(v.at(3));
-            wire.point2_y = std::stod(v.at(4));
-            wire.block1_id = std::stol(v.at(5));
-            wire.block2_id = std::stol(v.at(6));
-            wire.connector1 = std::stoi(v.at(7));
-            wire.connector2 = std::stoi(v.at(8));
+            //wire.id = std::stol(v.at(0));
+            //wire.point1_x = std::stod(v.at(1));
+            //wire.point1_y = std::stod(v.at(2));
+            //wire.point2_x = std::stod(v.at(3));
+            //wire.point2_y = std::stod(v.at(4));
+            wire.block1_id = std::stol(v.at(0));
+            wire.block2_id = std::stol(v.at(1));
+            wire.connector1 = std::stoi(v.at(2));
+            wire.connector2 = std::stoi(v.at(3));
 
             //GuiBlockDescriptor g;
             //g.pos = std::make_pair(x,y);
@@ -159,11 +159,11 @@ void Controller::slotSave(std::string path)
     os << "# WIRES #\n";
     for(auto& it: gs.wires)
     {
-        os << it.id << ","
-           << it.point1_x << ","
-           << it.point1_y << ","
-           << it.point2_x << ","
-           << it.point2_y << ","
+        os //<< it.id << ","
+           //<< it.point1_x << ","
+           //<< it.point1_y << ","
+           //<< it.point2_x << ","
+           //<< it.point2_y << ","
            << it.block1_id << ","
            << it.block2_id << ","
            << it.connector1 << ","
