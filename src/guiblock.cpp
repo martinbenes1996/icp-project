@@ -276,9 +276,10 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
-    mtext->setPos( (point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3, (point1.y()+point2.y())/2 );
-    mtext->setPlainText("N");
-    mtext->setDefaultTextColor(Qt::cyan);
+    mtext->setPos( /*(point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3*/ std::min(point1.x(), point2.x()), (point1.y()+point2.y())/2 );
+    mtext->setTextWidth(abs(point1.x()-point2.x()));
+    mtext->setHtml("<center>N</center>");
+    mtext->setDefaultTextColor(Qt::green);
 
     QFont font = QFont();
     font.setPixelSize(12);
@@ -311,9 +312,10 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
     mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
-    mtext->setPos( (point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3, (point1.y()+point2.y())/2 );
-    mtext->setPlainText("N");
-    mtext->setDefaultTextColor(Qt::cyan);
+    mtext->setPos( /*(point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3*/ std::min(point1.x(), point2.x()), (point1.y()+point2.y())/2 );
+    mtext->setTextWidth(abs(point1.x()-point2.x()));
+    mtext->setHtml("<center>N</center>");
+    mtext->setDefaultTextColor(Qt::green);
 
     QFont font = QFont();
     font.setPixelSize(12);
@@ -346,9 +348,10 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     mconnector2 = connector2;
 
     mtext = std::make_shared<QGraphicsTextItem>();
-    mtext->setPos( (point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3, (point1.y()+point2.y())/2 );
-    mtext->setPlainText("N");
-    mtext->setDefaultTextColor(Qt::cyan);
+    mtext->setPos( /*(point1.x()+point2.x())/2 - abs(point2.x()-point1.x())/3*/ std::min(point1.x(), point2.x()), (point1.y()+point2.y())/2 );
+    mtext->setTextWidth(abs(point1.x()-point2.x()));
+    mtext->setHtml("<center>N</center>");
+    mtext->setDefaultTextColor(Qt::green);
 
     QFont font = QFont();
     font.setPixelSize(12);
@@ -379,7 +382,8 @@ void MyWire::setValue(Value v)
     mvalue = v;
     if(v.valid)
     {
-        mtext->setPlainText(QString::fromStdString(std::to_string(v.value)/*+" "+v.type*/));
+        mtext->setHtml(QString::fromStdString("<center>"+std::to_string(v.value)+"</center>"/*+" "+v.type*/));
+        //mtext->setPlainText(QString::fromStdString(std::to_string(v.value)/*+" "+v.type*/));
         for(auto& it: mLines)
         {
             it.get()->setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
