@@ -38,6 +38,10 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
      */
     long getType() { return mtype; }
 
+    long getWidth() { return mwidth; }
+
+    long getHeight() { return mheight; }
+
     // QRectF boundingRect() const override;
     /**
      * @brief   Function that paints the block.
@@ -182,7 +186,7 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
 {
     Q_OBJECT
     public:
-        GuiInput(QPointF pos, QGraphicsItem* g = 0);
+        GuiInput(QPointF pos, bool load = false, QGraphicsItem* g = 0);
 
         Value getValue() { return mvalue; }
         void setValue(Value v) { mvalue = v; }
@@ -194,6 +198,10 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *) override;
 
         bool isOk() { return mok; }
+
+        long getType() { return -1; }
+
+        long getRadius() { return mradius; }
 
         /**
          * @brief   Gets last mouse press event.

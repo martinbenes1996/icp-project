@@ -392,7 +392,7 @@ std::vector<std::pair<QPointF,QPointF>> MyWire::splitLine(QPointF s, QPointF f)
     return v;
 }
 
-GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
+GuiInput::GuiInput(QPointF pos, bool load, QGraphicsItem* g):
     QGraphicsEllipseItem(g)
 {
     Debug::Gui("GuiInput::GuiInput");
@@ -400,11 +400,20 @@ GuiInput::GuiInput(QPointF pos, QGraphicsItem* g):
     positionCenter = pos;
 
     // show input value dialog
-    getUserValue(&mvalue.value, mvalue.type, &mok);
-    mvalue.valid = true;
+    if(!load)
+    {
+        getUserValue(&mvalue.value, mvalue.type, &mok);
+        mvalue.valid = true;
+
+        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+    }
+    else
+    {
+        setToolTip(QString::fromStdString("Value: Not defined Type: Not defined"));
+    }
     //std::cout << value << " " << type << std::endl;
 
-    setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));
+
 
     setAcceptDrops(true);
     setAcceptHoverEvents(true);

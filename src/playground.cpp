@@ -126,7 +126,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
         std::shared_ptr<GuiInput> newInput = std::make_shared<GuiInput>(event->pos());
         if(!newInput->isOk()) return;
         mscene->addItem(newInput.get());
-        
+
 
         // collisions
         QList<QGraphicsItem *> tempList;
@@ -415,16 +415,16 @@ std::map<long,GuiBlockDescriptor> PlayGround::getBlockState()
     {
         GuiBlockDescriptor d;
         d.type = it.second->getType();
-        d.pos.first = it.second->x();
-        d.pos.second = it.second->y();
+        d.pos.first = it.second->x() + it.second->getWidth()/2;
+        d.pos.second = it.second->y() + it.second->getHeight()/2;
         m.insert( std::make_pair(it.first,d) );
     }
     for(auto& it: mInputs)
     {
         GuiBlockDescriptor d;
         d.type = it.second->getType();
-        d.pos.first = it.second->x();
-        d.pos.second = it.second->y();
+        d.pos.first = it.second->x() + it.second->getRadius()/2;
+        d.pos.second = it.second->y() + it.second->getRadius()/2;
         m.insert( std::make_pair(it.first,d) );
     }
     return m;
@@ -438,13 +438,27 @@ void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
         long id = it.first;
         long type = it.second.type;
 
-        std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(pos, type);
-        mscene->addItem(newBlock.get());
+        if(type == -1)      // input block
+        {
+            std::shared_ptr<GuiInput> newInput = std::make_shared<GuiInput>(pos, true);
+            mscene->addItem(newInput.get());
 
-        mmapper.setMapping(newBlock.get(), id);
-        QObject::connect(newBlock.get(), SIGNAL(sigBlockClick()),
-                         &mmapper, SLOT(map()));
+            mmapper.setMapping(newInput.get(), id);
+            QObject::connect(newInput.get(), SIGNAL(sigBlockClick()),
+                            &mmapper, SLOT(map()));
 
-        mBlocks.insert( std::make_pair(id,newBlock) );
+            mInputs.insert( std::make_pair(id,newInput) );
+        }
+        else
+        {
+            std::shared_ptr<GuiBlock> newBlock = std::make_shared<GuiBlock>(pos, type);
+            mscene->addItem(newBlock.get());
+
+            mmapper.setMapping(newBlock.get(), id);
+            QObject::connect(newBlock.get(), SIGNAL(sigBlockClick()),
+                            &mmapper, SLOT(map()));
+
+            mBlocks.insert( std::make_pair(id,newBlock) );
+        }
     }
 }
