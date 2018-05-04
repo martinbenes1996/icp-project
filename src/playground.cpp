@@ -418,6 +418,9 @@ std::map<long,GuiBlockDescriptor> PlayGround::getBlockState()
         d.type = it.second->getType();
         d.pos.first = it.second->x() + it.second->getWidth()/2;
         d.pos.second = it.second->y() + it.second->getHeight()/2;
+        d.val.type = "nepodstatne";
+        d.val.valid = false;
+        d.val.value = 0;
         m.insert( std::make_pair(it.first,d) );
     }
     for(auto& it: mInputs)
@@ -426,6 +429,9 @@ std::map<long,GuiBlockDescriptor> PlayGround::getBlockState()
         d.type = it.second->getPortType();
         d.pos.first = it.second->getPositionCenter().x();
         d.pos.second = it.second->getPositionCenter().y();
+        d.val.type = it.second->getValue().type;
+        d.val.valid = it.second->getValue().valid;
+        d.val.value = it.second->getValue().value;
         m.insert( std::make_pair(it.first,d) );
     }
     return m;
@@ -463,7 +469,12 @@ void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
 
         if(type == -1)      // input block
         {
+            Value val;
+            val.type = it.second.val.type;
+            val.valid = it.second.val.valid;
+            val.value = it.second.val.value;
             std::shared_ptr<GuiInput> newInput = std::make_shared<GuiInput>(pos, true);
+            newInput->setValue(val);
             mscene->addItem(newInput.get());
 
             mmapper.setMapping(newInput.get(), id);

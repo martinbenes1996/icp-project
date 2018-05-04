@@ -444,7 +444,7 @@ GuiInput::GuiInput(QPointF pos, bool load, QGraphicsItem* g):
     }
     else
     {
-        setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
+        //setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
     }
     //std::cout << value << " " << type << std::endl;
 

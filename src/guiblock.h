@@ -193,7 +193,7 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         GuiInput(QPointF pos, bool load = false, QGraphicsItem* g = 0);
 
         Value getValue() { return mvalue; }
-        void setValue(Value v) { mvalue = v; }
+        void setValue(Value v) { mvalue = v; setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));}
 
         void mousePressEvent(QGraphicsSceneMouseEvent*) override;
         void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*) override;

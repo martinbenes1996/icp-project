@@ -79,6 +79,10 @@ void Controller::slotOpen(std::string path)
             GuiBlockDescriptor g;
             g.pos = std::make_pair(x,y);
             g.type = type;
+            g.val.type = v.at(4);
+            if(v.at(5) == "true") g.val.valid = true;
+            else g.val.valid = false;
+            g.val.value = std::stod(v.at(6));
 
             gs.blocks.insert( std::make_pair(id, g) );
             ms.blocks.insert( std::make_pair(id, type) );
@@ -150,10 +154,17 @@ void Controller::slotSave(std::string path)
     os << "# BLOCKS #\n";
     for(auto& it: gs.blocks)
     {
+        std::string validStr;
+        if(it.second.val.valid) validStr = "true";
+        else validStr = "false";
+
         os << it.first << ","
            << ms.blocks.at(it.first) << ","
            << it.second.pos.first << ","
-           << it.second.pos.second << "\n";
+           << it.second.pos.second << ","
+           << it.second.val.type << ","
+           << validStr << ","
+           << it.second.val.value << "\n";
     }
     // save wires
     os << "# WIRES #\n";

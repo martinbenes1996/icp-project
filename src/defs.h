@@ -74,6 +74,7 @@ struct Value {
 struct GuiBlockDescriptor {
     std::pair<double, double> pos; /**< Position of the block in the scene. */
     long type; /**< Type of the placed block. */
+    Value val; /**< Value of the placed input block. */
 };
 
 struct wireState {
