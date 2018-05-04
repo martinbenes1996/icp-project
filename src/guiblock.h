@@ -87,7 +87,7 @@ class GuiBlock: public QObject, public QGraphicsPixmapItem
      */
     void printCon() { std::cout << input1<<input2<<output1<<output2<<"\n"; }
 
-    void setValue(Value v) { mvalue = v; setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+" Type: "+mvalue.type));}
+    void setValue(Value v);
 
     void setColor(bool active);
     // ----------------------------

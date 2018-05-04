@@ -208,6 +208,19 @@ void GuiBlock::setConnectorAvailability(int connector, bool addWire)
     }
 }
 
+void GuiBlock::setValue(Value v)
+{
+    mvalue = v;
+    if(v.valid)
+    {
+        setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
+    }
+    else
+    {
+        setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
+    }
+}
+
 void GuiBlock::setColor(bool active)
 {
     if(active)
@@ -387,6 +400,14 @@ void MyWire::setValue(Value v)
         for(auto& it: mLines)
         {
             it.get()->setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
+        }
+    }
+    else
+    {
+        mtext->setHtml("<center>N</center>");
+        for(auto& it: mLines)
+        {
+            it.get()->setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
         }
     }
 }
