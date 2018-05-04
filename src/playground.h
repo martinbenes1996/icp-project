@@ -65,6 +65,8 @@ class PlayGround: public QWidget
 
         void setBlockState(std::map<long,GuiBlockDescriptor>);
 
+        void setWireState(std::vector<struct wireState> v);
+
         void inputClick(int);
 
         /**

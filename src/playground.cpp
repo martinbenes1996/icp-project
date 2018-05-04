@@ -219,6 +219,7 @@ bool PlayGround::createWireFunction()
     long end;
     if(block2 == nullptr) end = getIDFromInput(iblock2);
     else end = getIDFromBlock(block2);
+    //std::cout << begin << connector1 << end << connector2 << std::endl;
     Debug::Gui("Create wire: "+std::to_string(begin)+"<->"+std::to_string(end));
     emit sigCreateWire({/*getIDFromBlock(block1)*/begin,connector1}, {/*getIDFromBlock(block2)*/end,connector2}, id, success);
     if(!success) return false;
@@ -482,5 +483,45 @@ void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
 
             mBlocks.insert( std::make_pair(id,newBlock) );
         }
+    }
+}
+void PlayGround::setWireState(std::vector<struct wireState> v)
+{
+    for(auto& it:v)
+    {std::cout << "jsem tu!\n";
+        if(mInputs.count(it.block1_id) > 0)
+        {
+            iblock1 = mInputs[it.block1_id];
+            block1 = nullptr;
+        }
+        else
+        {
+            iblock1 = nullptr;
+            block1 = mBlocks[it.block1_id];
+        }
+        if(mInputs.count(it.block2_id) > 0)
+        {
+            iblock2 = mInputs[it.block2_id];
+            block2 = nullptr;
+        }
+        else
+        {
+            iblock2 = nullptr;
+            block2 = mBlocks[it.block2_id];
+        }
+        connector1 = it.connector1;
+        connector2 = it.connector2;
+std::cout << "TADY TAKY: " << block1 << block2 << connector1 << connector2 << std::endl;
+        if(createWireFunction())
+        {std::cout << "TADY TAKY CREATE!\n";
+            if(iblock1 != nullptr) iblock1->setConnectorAvailability(connector1, true);
+            else block1->setConnectorAvailability(connector1, true);
+            if(iblock2 != nullptr) iblock2->setConnectorAvailability(connector2, true);
+            else block2->setConnectorAvailability(connector2, true);
+        }
+        iblock1 = nullptr;
+        block1 = nullptr;
+        iblock2 = nullptr;
+        block2 = nullptr;
     }
 }

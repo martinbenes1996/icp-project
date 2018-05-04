@@ -122,6 +122,7 @@ void Window::setState(GuiState s)
 {
     // blocks
     mplayground->setBlockState(s.blocks);
+    mplayground->setWireState(s.wires);
 
     // wires
 }
