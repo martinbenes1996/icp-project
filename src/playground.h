@@ -53,6 +53,16 @@ class PlayGround: public QWidget
 
         void reinit();
         std::map<long,GuiBlockDescriptor> getBlockState();
+        std::vector<struct wireState> getWireState();
+        /**
+         * @brief   Gets ID from block pointer.
+         * @param   block   pointer to a block
+         * @returns ID of the block
+         */
+        long getIDFromBlock(std::shared_ptr<GuiBlock> block);
+
+        long getIDFromInput(std::shared_ptr<GuiInput> block);
+
         void setBlockState(std::map<long,GuiBlockDescriptor>);
 
         void inputClick(int);
@@ -171,14 +181,6 @@ class PlayGround: public QWidget
         void sigDeleteWire(long key);
 
     private:
-        /**
-         * @brief   Gets ID from block pointer.
-         * @param   block   pointer to a block
-         * @returns ID of the block
-         */
-        long getIDFromBlock(std::shared_ptr<GuiBlock> block);
-
-        long getIDFromInput(std::shared_ptr<GuiInput> block);
         /**
          * @brief   Creates a wire.
          * @returns true -> success, false -> failure

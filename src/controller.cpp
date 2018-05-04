@@ -93,24 +93,31 @@ void Controller::slotOpen(std::string path)
         if(s == "# TYPES #") break;
         if(s == "") continue;
         std::vector<std::string> v = split(s);
-        /*
+
         try {
-            long id = std::stol(v.at(0));
-            long type = std::stol(v.at(1));
-            double x = std::stod(v.at(2));
-            double y = std::stod(v.at(3));
+            struct wireState wire;
+            wire.id = std::stol(v.at(0));
+            wire.point1_x = std::stod(v.at(1));
+            wire.point1_y = std::stod(v.at(2));
+            wire.point2_x = std::stod(v.at(3));
+            wire.point2_y = std::stod(v.at(4));
+            wire.block1_id = std::stol(v.at(5));
+            wire.block2_id = std::stol(v.at(6));
+            wire.connector1 = std::stoi(v.at(7));
+            wire.connector2 = std::stoi(v.at(8));
 
-            GuiBlockDescriptor g;
-            g.pos = std::make_pair(x,y);
-            g.type = type;
+            //GuiBlockDescriptor g;
+            //g.pos = std::make_pair(x,y);
+            //g.type = type;
 
-            gs.blocks.insert( std::make_pair(id, g) );
-            ms.blocks.insert( std::make_pair(id, type) );
+            //gs.blocks.insert( std::make_pair(id, g) );
+            gs.wires.push_back(wire);
+            //ms.blocks.insert( std::make_pair(id, type) );
         } catch(std::exception& e) {
             std::cerr << "Invalid input file!\n";
             return;
         }
-        */
+
     }
 
     std::vector<std::string> newtypes;
@@ -118,7 +125,7 @@ void Controller::slotOpen(std::string path)
         newtypes.push_back(s);
     }
 
-    
+
     w.reinit();
     m.reinit();
     auto types = Config::getTypes();
@@ -150,6 +157,18 @@ void Controller::slotSave(std::string path)
     }
     // save wires
     os << "# WIRES #\n";
+    for(auto& it: gs.wires)
+    {
+        os << it.id << ","
+           << it.point1_x << ","
+           << it.point1_y << ","
+           << it.point2_x << ","
+           << it.point2_y << ","
+           << it.block1_id << ","
+           << it.block2_id << ","
+           << it.connector1 << ","
+           << it.connector2 << "\n";
+    }
     // ...
 
     // save types
@@ -194,7 +213,7 @@ void Controller::slotRun(bool debug)
         }
         w.endComputation();
     }
-        
+
 }
 
 void Controller::slotPreviousResult()
@@ -207,7 +226,7 @@ void Controller::slotPreviousResult()
         // reset view
         w.getPG()->setAllDefaultColor();
         while(mblockit < mendit)
-        { 
+        {
             slotNextResult();
         }
         mblockit--;

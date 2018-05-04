@@ -422,12 +422,34 @@ std::map<long,GuiBlockDescriptor> PlayGround::getBlockState()
     for(auto& it: mInputs)
     {
         GuiBlockDescriptor d;
-        d.type = it.second->getType();
-        d.pos.first = it.second->x() + it.second->getRadius()/2;
-        d.pos.second = it.second->y() + it.second->getRadius()/2;
+        d.type = it.second->getPortType();
+        d.pos.first = it.second->getPositionCenter().x();
+        d.pos.second = it.second->getPositionCenter().y();
         m.insert( std::make_pair(it.first,d) );
     }
     return m;
+}
+std::vector<struct wireState> PlayGround::getWireState()
+{
+    std::vector<struct wireState> v;
+    for(auto& it:mWires)
+    {
+        struct wireState w;
+        w.id = it.first;
+        w.point1_x = it.second->getSavedPoint1().x();
+        w.point1_y = it.second->getSavedPoint1().y();
+        w.point2_x = it.second->getSavedPoint2().x();
+        w.point2_y = it.second->getSavedPoint2().y();
+        if(it.second->getIBlock1() == nullptr) w.block1_id = getIDFromBlock(it.second->getBlock1());
+        else w.block1_id = getIDFromInput(it.second->getIBlock1());
+        if(it.second->getIBlock2() == nullptr) w.block2_id = getIDFromBlock(it.second->getBlock2());
+        else w.block2_id = getIDFromInput(it.second->getIBlock2());
+        w.connector1 = it.second->getConnector1();
+        w.connector2 = it.second->getConnector2();
+
+        v.push_back(w);
+    }
+    return v;
 }
 
 void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)

@@ -10,6 +10,8 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <QPointF>
+
 
 /**
  * @brief Type of the error.
@@ -74,6 +76,18 @@ struct GuiBlockDescriptor {
     long type; /**< Type of the placed block. */
 };
 
+struct wireState {
+    int id;
+    double point1_x;
+    double point1_y;
+    double point2_x;
+    double point2_y;
+    int block1_id;
+    int block2_id;
+    int connector1;
+    int connector2;
+};
+
 struct Result {
     double value;
     std::string type;
@@ -98,7 +112,7 @@ struct SimulationResults {
 
     void mergeWith(const SimulationResults& s)
     {
-        for(auto& i: s.blocks) { 
+        for(auto& i: s.blocks) {
             for(auto& j: i.second) {
                 insertBlock(j.first, j.second);
             }

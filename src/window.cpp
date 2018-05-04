@@ -114,6 +114,7 @@ GuiState Window::getState()
 {
     GuiState s;
     s.blocks = mplayground->getBlockState();
+    s.wires = mplayground->getWireState();
     return s;
 }
 
@@ -137,17 +138,17 @@ void Window::slotSave()
     emit sigSave(filename.toStdString());
 }
 
-void Window::slotDebug() 
-{ 
+void Window::slotDebug()
+{
     Debug::Compute("Start debug.");
     mcompute = true;
     emit sigRun(true);
 }
-void Window::slotCalculate() 
-{ 
+void Window::slotCalculate()
+{
     Debug::Compute("Start calculate.");
-    mcompute = true; 
-    emit sigRun(false); 
+    mcompute = true;
+    emit sigRun(false);
 }
 
 void Window::slotAddType()
@@ -166,7 +167,7 @@ void Window::slotRemoveType()
     for(auto& it: Config::getTypes()) { items << QString::fromStdString(it); }
 
     bool ok;
-    QString val = QInputDialog::getItem(0, "Remove type", "Remove type:", 
+    QString val = QInputDialog::getItem(0, "Remove type", "Remove type:",
                 items, 0, true, &ok);
     if(!ok) return;
 
@@ -197,7 +198,7 @@ void Window::keyPressEvent(QKeyEvent *event)
             emit sigNextResult();
         }
     }
-    
+
 }
 
 void Window::endComputation()

@@ -21,6 +21,7 @@
 struct GuiState {
    std::map<long, GuiBlockDescriptor> blocks; /**< Block state <id,GuiBlockDescriptor>. */
    // wires
+   std::vector<struct wireState> wires;
 };
 
 class Window: public QWidget

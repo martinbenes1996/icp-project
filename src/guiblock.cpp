@@ -268,6 +268,9 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     gblock1 = gb1;
     gblock2 = gb2;
 
+    msavedPoint1 = point1;
+    msavedPoint2 = point2;
+
     mconnector1 = connector1;
     mconnector2 = connector2;
 
@@ -300,6 +303,9 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput
     iblock1 = gb1;
     gblock2 = gb2;
 
+    msavedPoint1 = point1;
+    msavedPoint2 = point2;
+
     mconnector1 = connector1;
     mconnector2 = connector2;
 
@@ -331,6 +337,9 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
 
     gblock1 = gb1;
     iblock2 = gb2;
+
+    msavedPoint1 = point1;
+    msavedPoint2 = point2;
 
     mconnector1 = connector1;
     mconnector2 = connector2;

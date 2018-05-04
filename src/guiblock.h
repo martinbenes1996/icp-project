@@ -157,6 +157,8 @@ class MyWire: public QObject
         std::shared_ptr<GuiBlock> getBlock2() { return gblock2; }
         int getConnector1() { return mconnector1; }
         int getConnector2() { return mconnector2; }
+        QPointF getSavedPoint1() { return msavedPoint1; }
+        QPointF getSavedPoint2() { return msavedPoint2; }
         //void setValue(Value v) { mvalue = v; }
         void setValue(Value v);
         // if active is true, it sets color of the wire to red, else black
@@ -178,6 +180,8 @@ class MyWire: public QObject
         std::shared_ptr<GuiBlock> gblock1 = nullptr;
         std::shared_ptr<GuiInput> iblock2 = nullptr;
         std::shared_ptr<GuiBlock> gblock2 = nullptr;
+        QPointF msavedPoint1;
+        QPointF msavedPoint2;
         int mconnector1;
         int mconnector2;
 };
@@ -199,9 +203,13 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
 
         bool isOk() { return mok; }
 
-        long getType() { return -1; }
+        long getType() { return -1; }       // dopln si tam co chces
+
+        long getPortType() { return mporttype; }
 
         long getRadius() { return mradius; }
+
+        QPointF getPositionCenter() { return positionCenter; }
 
         /**
          * @brief   Gets last mouse press event.
@@ -224,6 +232,7 @@ class GuiInput: public QObject, public QGraphicsEllipseItem
         void getUserValue(double *value, std::string &type, bool *mok);
 
         Value mvalue;
+        int mporttype = -1;
         double mradius = 30;
         bool mok;
         QPointF positionCenter;
