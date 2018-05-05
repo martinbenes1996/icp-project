@@ -182,8 +182,10 @@ ModelState Model::getState()
 
 void Model::setState(ModelState s)
 {
+    Debug::File("Model::setState()");
     for(auto& it: s.blocks)
     {
+        Debug::File("Save "+Config::getBlockName(it.second)+" as "+std::to_string(it.first));
         mblockkey = it.first;
         long key;
         slotCreateBlock(it.second, key);

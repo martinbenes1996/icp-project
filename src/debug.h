@@ -16,6 +16,7 @@
     //#define GUI_DEBUG
     //#define CONTROLLER_DEBUG
     //#define COMPUTE_DEBUG
+    #define FILE_DEBUG
     //...
 #endif // DEBUG_MODE
 
@@ -58,6 +59,13 @@ namespace Debug
 
     inline void Compute(std::string str) {
         #ifdef COMPUTE_DEBUG
+            std::cerr << str << "\n";
+        #endif
+        (void)str;
+    }
+
+    inline void File(std::string str) {
+        #ifdef FILE_DEBUG
             std::cerr << str << "\n";
         #endif
         (void)str;

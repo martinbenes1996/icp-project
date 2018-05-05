@@ -476,11 +476,27 @@ void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
         box.addItem(QString::fromStdString(it));
     }
     form.addRow(label2, &box);
-    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
-    form.addRow(&buttonBox);
 
-    QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
-    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+    QPushButton *okButton = new QPushButton("Ok");
+    okButton->setDefault(true);
+    okButton->setFixedHeight(30);
+    okButton->setFixedWidth(50);
+
+    QPushButton *cancelButton = new QPushButton("Cancel");
+    cancelButton->setCheckable(true);
+    cancelButton->setAutoDefault(false);
+    cancelButton->setFixedHeight(30);
+    cancelButton->setFixedWidth(50);
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
+    buttonBox->addButton(okButton, QDialogButtonBox::AcceptRole);
+    buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+    //QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &dialog);
+    form.addRow(buttonBox);
+
+    QObject::connect(buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    QObject::connect(buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
 
     if(dialog.exec() == QDialog::Accepted)
     {

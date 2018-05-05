@@ -18,7 +18,7 @@
 
 Controller::Controller()
 {
-    QMainWindow *win = new QMainWindow();
+    QMainWindow *win = new QMainWindow(0,Qt::Window);
     win->setCentralWidget(&w);
     win->show();
 
@@ -210,7 +210,7 @@ void Controller::slotRun(bool debug)
     {
         for(auto& j: i.second)
         {
-            std::cerr << "id " << j.first << " level " << i.first << "\n";
+            //std::cerr << "id " << j.first << " level " << i.first << "\n";
             assert(i.first == j.second.level);
             r.push_back( std::make_pair(j.first,j.second) );
         }

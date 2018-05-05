@@ -21,7 +21,7 @@ void Menu::createImageButton(QString s)
     QPushButton* btn = new QPushButton(this);
 
     QPixmap pixmap( QString::fromStdString(Config::getImagePath(s.toStdString())) );
-    pixmap = pixmap.scaledToHeight(50);
+    pixmap = pixmap.scaledToHeight(60);
     QIcon ButtonIcon(pixmap);
     btn->setIcon(ButtonIcon);
     btn->setIconSize(pixmap.rect().size());
@@ -42,6 +42,7 @@ void Menu::createTextButton(QString s, bool checkable = true)
 {
     // create button
     QPushButton* btn = new QPushButton(this);
+    btn->setFixedHeight(30);
 
     btn->setText(s);
     btn->setCheckable(checkable);

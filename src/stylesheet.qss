@@ -12,10 +12,15 @@ QMenuBar {
 QPushButton {
     background-color: #777777;
     border-radius: 0px;
-    color: #ffffff
+    color: #000000
 }
 
-QPushButton:checked {
+QPushButton:checked, QPushButton:hover:checked, QPushButton:pressed {
     background-color: #b3d9ff;
-    border-style: inset
+    border-style: inset;
+    color: #000000
+}
+
+QPushButton:hover {
+    background-color: #707070
 }
