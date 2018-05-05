@@ -1,15 +1,18 @@
-// wire.h
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file wire.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief wire and port
+ *
+ * This module contains model wire definition.
+ */
 
 #ifndef WIRE_H
 #define WIRE_H
 
 #include "defs.h"
 #include "iblock.h"
-
 
 /**
  * @brief Wire.
@@ -37,24 +40,46 @@ class Wire
             }
         }
 
+        /**
+         * @brief Wire destructor.
+         */
         ~Wire()
         {
             mo.removeWireKey(mkey);
             mi.removeWireKey(mkey);
         }
 
-        /** @brief Value getter (ask input). */
+        /**
+         * @brief Value getter (ask input).
+         * @returns Value of the input block.
+         */
         Value getValue() const { return mi.getValue(); }
-        /** @brief Value setter (set output). */
+        /**
+         * @brief Value setter (set output).
+         * @param value         New value to set.
+         */
         void setValue(const Value& value) { mo.setValue(value); }
 
-        /** @brief Level getter (ask input). */
+        /**
+         * @brief Level getter.
+         * @returns Incremented input block level.
+         */
         int getLevel() { return mi.getLevel()+1; }
+        /**
+         * @brief Propagates level from input to output.
+         * @param level         Level to propagate.
+         * @param prop          Set with block keys.
+         */
         void propagateLevel(int level, std::set<int> prop)
         {
             mo.propagateLevel(level+1, prop);
         }
-
+        
+        /**
+         * @brief Distributes result from input to output.
+         * @param sr            Results.
+         * @returns Merged results.
+         */
         SimulationResults& distributeResult(SimulationResults& sr) const
         {
             Debug::Block("Wire::distributeResult()");
@@ -73,8 +98,8 @@ class Wire
         IBlock& mi; /**< Input block reference. */
         IBlock& mo; /**< Output block reference. */
 
-        long mkey;
-        bool mstatus = false;
+        long mkey;  /**< Key of the wire. */
+        bool mstatus = false; /**< Status of the wire. */
 
 };
 
@@ -89,16 +114,34 @@ struct Port
     std::string type = ""; /* Type, that port accepts. */
     Wire* wire = nullptr;  /* Wire pointer. */
 
-    /** @brief Level getter. */
+    /** 
+     * @brief Level getter.
+     * @returns Level.
+     */
     int getLevel() { check(); return wire->getLevel(); }
-    /** @brief Value getter. */
+    /**
+     * @brief Value getter.
+     * @returns Value.
+     */
     Value getValue() { check(); return wire->getValue(); }
+    /**
+     * @brief Disconnects connected wire.
+     */
     void disconnect() { wire = nullptr; }
-    /** @brief Propagate level towards. */
+    /**
+     * @brief Propagate level towards.
+     * @param level     Propagated level value.
+     * @param prop      Set of keys of blocks already seen.
+     */
     void propagateLevel(int level, std::set<int> prop)
     {
         if(wire != nullptr) wire->propagateLevel(level, prop);
     }
+    /**
+     * @brief Distributes result from input to output.
+     * @param sr            Results.
+     * @returns Merged results.
+     */
     SimulationResults& distributeResult(SimulationResults& r) const 
     {
         if(wire == nullptr) return r;

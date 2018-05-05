@@ -1,8 +1,12 @@
-// controller.h
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file controller.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief controller 
+ *
+ * This module contains a Controller class, that holds the model and the window.
+ */
 
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
@@ -51,6 +55,10 @@ class Controller: public QObject
          * @brief   Sends previous result in computation.  
          */
         void slotPreviousResult();
+        /**
+         * @brief   End computation (from window).
+         */
+        void slotEndComputation();
 
     private:
         Model m; /**< Model object. */

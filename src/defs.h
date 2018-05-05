@@ -1,8 +1,12 @@
-// defs.h
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file defs.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief Global types
+ *
+ * This module contains a types, used in whole project.
+ */
 
 #ifndef DEFS_H
 #define DEFS_H
@@ -11,7 +15,6 @@
 #include <string>
 #include <map>
 #include <QPointF>
-
 
 /**
  * @brief Type of the error.
@@ -58,7 +61,12 @@ struct MyError {
 struct Value {
     std::string type; /**< Type of the value. */
     double value = 0; /**< Value itself. */
-    bool valid = false;
+    bool valid = false; /**< Weather the value is valid. */
+    /**
+     * @brief Assignment operator for value.
+     * @param v         Value to assign.
+     * @returns Reference to the object.
+     */
     Value& operator= (const Value& v)
     {
         this->type = v.type;
@@ -77,23 +85,33 @@ struct GuiBlockDescriptor {
     Value val; /**< Value of the placed input block. */
 };
 
+/**
+ * @brief State of the wire (to save/load).
+ */
 struct wireState {
     //int id;
     //double point1_x;
     //double point1_y;
     //double point2_x;
     //double point2_y;
-    int block1_id;
-    int block2_id;
-    int connector1;
-    int connector2;
+    int block1_id; /**< ID of input block. */
+    int block2_id; /**< ID of output block. */
+    int connector1; /**< Connector of the input block. */
+    int connector2; /**< Connector of the output block. */
 };
 
+/**
+ * @brief Result of the computation.
+ */
 struct Result {
-    double value;
-    std::string type;
-    int level;
+    double value; /**< Result value. */
+    std::string type; /**< Result type. */
+    int level; /**< Level of the block. */
 
+    /**
+     * @brief Typecast of Result to Value.
+     * @returns Casted Value.
+     */
     explicit operator Value()
     {
         Value v;
@@ -103,14 +121,33 @@ struct Result {
         return v;
     }
 };
-struct SimulationResults {
-    std::map<int, std::map<long,Result>> blocks = std::map<int, std::map<long,Result>>();
-    std::map<int, std::map<long,Result>> wires = std::map<int, std::map<long,Result>>();
 
+/**
+ * @brief Results of the simulation (wires and blocks).
+ */
+struct SimulationResults {
+    std::map<int, std::map<long,Result>> blocks = std::map<int, std::map<long,Result>>(); /**< Blocks results. */
+    std::map<int, std::map<long,Result>> wires = std::map<int, std::map<long,Result>>(); /**< WIres results. */
+
+    /**
+     * @brief Returns max level of all blocks.
+     * @returns Max block level.
+     */
     static int getMaxLevel();
+    /**
+     * @brief Max block level setter.
+     * @param max       New max level value.
+     */
     static void setMaxLevel(int max);
+    /**
+     * @brief Resets the max level (to 0).
+     */
     static void resetMaxLevel();
 
+    /**
+     * @brief Merge with another results into this.
+     * @param s         Another results.
+     */
     void mergeWith(const SimulationResults& s)
     {
         for(auto& i: s.blocks) {
@@ -125,6 +162,11 @@ struct SimulationResults {
         }
     }
 
+    /**
+     * @brief Block inserter.
+     * @param id        Id of the block (key).
+     * @param r         Computated result.
+     */
     void insertBlock(long id, Result r)
     {
         if(r.level > SimulationResults::getMaxLevel())
@@ -147,7 +189,11 @@ struct SimulationResults {
             }
         }
     }
-
+    /**
+     * @brief Wire inserter.
+     * @param id        Id of the wire (key).
+     * @param r         Computated result.
+     */
     void insertWire(long id, Result r)
     {
         if(r.level > SimulationResults::getMaxLevel())
@@ -171,8 +217,6 @@ struct SimulationResults {
         }
     }
 };
-
-
 
 
 #endif // DEFS_H

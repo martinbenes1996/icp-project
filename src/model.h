@@ -1,8 +1,12 @@
-// model.h
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file model.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief model interface
+ *
+ * This module contains model implementation.
+ */
 
 #ifndef MODEL_H
 #define MODEL_H
@@ -61,6 +65,11 @@ class Model: public QObject
          */
         void reinit() { slotReset(); }
 
+        /**
+         * @brief   Resets the model after the computation.
+         */
+        void endComputation();
+
     public slots:
         /**
          * @brief Invocated, when block is created (in GUI).
@@ -113,11 +122,6 @@ class Model: public QObject
         std::map<long, std::shared_ptr<IBlock>> mBlocks; /**< Map of blocks. */
         std::set<long> mInputs; /**< Input blocks set. */
         std::map<long, std::shared_ptr<Wire>> mWires;    /**< Map of wires. */
-
-        /**
-         * @brief   Resets the model after the computation.
-         */
-        void endComputation();
 
         int mblockkey = 0; /**< Key generator for the blocks. */
         int mwirekey = 0; /**< Key generator for the wires. */

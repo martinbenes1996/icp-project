@@ -1,7 +1,12 @@
-// defs.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
+
+/**
+ * @file defs.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief Global types
+ *
+ * This module contains a defs definitions.
+ */
 
 
 #include "defs.h"

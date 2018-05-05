@@ -9,6 +9,10 @@ blockeditor:
 	@printf "";\
 	cp src/blockeditor . 2> /dev/null > /dev/null
 
+.PHONY: doxygen
+doxygen:
+	@echo "Generating documentation";\
+	doxygen Doxyfile 2> /dev/null > /dev/null
 
 .PHONY: run
 run:

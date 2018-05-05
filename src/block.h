@@ -1,8 +1,13 @@
-// block.h
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file block.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief model objects interface
+ *
+ * This module contains the definition of Block and Input, the classes,
+ * that represent blocks and inputs and do the calculation.
+ */
 
 #ifndef BLOCK_H
 #define BLOCK_H
@@ -49,7 +54,10 @@ class Input: public IBlock
             propagateLevel(0, s);
             IBlock::addWire(w, key, port);
         }
-
+        /**
+         * @brief Removes wire key from the input.
+         * @param key       Wire key.
+         */
         void removeWireKey(long key) override
         {
             Debug::Block("Input::removeWireKey()");
@@ -57,33 +65,52 @@ class Input: public IBlock
             IBlock::removeWireKey(key);
         }
 
+        /**
+         * @brief Level getter.
+         * @returns Level.
+         */
         int getLevel() const override { return 0; }
+        /**
+         * @brief Level setter. Throws - level input is constantly 0.
+         * @param level     Level to set.
+         */
         void setLevel(int) override { throw MyError("Level of the input is constant", ErrorType::BlockError); }
 
+        /**
+         * @brief Indicator, weather the block is input.
+         * @returns True, if input.
+         */
         bool isInput() override { return true; }
 
-
+        /**
+         * @brief Initializes distributed computation in the scheme.
+         * @returns Results of each block on its way from input.
+         */
         SimulationResults distributeResult() override
         {
             Debug::Block("Input::distributeResult() = "+std::to_string(getId()));
+            // compute
             SimulationResults sr;
             Result r;
             Value v = getValue();
-
+            // assign
             r.value = v.value;
             r.type = v.type;
             r.level = 0;
-
+            // return
             //sr.insertBlock(getId(), r);
             return mO.distributeResult(sr);
         }
-
+        /**
+         * @brief Propagates level during the block creation.
+         * @param level     New level, hereby it is irrelevant (always 0).
+         * @param s         Set of already seen blocks (loop prevention).
+         */
         void propagateLevel(int, std::set<int> s) override
         {
             Debug::Block("Input::propageteLevel()");
             s.insert(getId());
             mO.propagateLevel(0, s);
-            std::cerr << "Final level of " << getId() << " is " << getLevel() << "\n";
         }
 
     private:
@@ -127,39 +154,56 @@ class Block: public IBlock
 
         inline void removeWireKey(long) override;
 
+        /**
+         * @brief Distributes the results. Compute itself.
+         * @param sr        Previous results.
+         * @returns Results merged from previous and next (received).
+         */
         SimulationResults& distributeResult(SimulationResults& sr) override 
         {
+            // control, if all previous have been counted
             for(auto& it: mIn) { if(!it->getValue().valid) { return sr; } }
             Debug::Block("Block::distributeResult() = " + std::to_string(getId()));
-
+            // compute value
             Result r;
             Compute();
             Value v = getValue();
-
             r.value = v.value;
             r.type = v.type;
             r.level = getLevel();
-
+            // insert into results
             sr.insertBlock(getId(),r);
 
+            // distribute results furthermore
             SimulationResults tmp;
             for(auto& it: mOut) { tmp.mergeWith(it->distributeResult(sr)); }
+            // merge all together
             sr.mergeWith(tmp);
+            // return
             return sr;
         }
 
     private:
         T mfunc; /**< Represents the functionality. */
 
-        std::vector<std::shared_ptr<Port>> mIn;
-        std::vector<std::shared_ptr<Port>> mOut;
+        std::vector<std::shared_ptr<Port>> mIn; /**< Input ports. */
+        std::vector<std::shared_ptr<Port>> mOut; /**< Output ports */
 
+        /**
+         * @brief Checks, weather the types are correct.
+         * @param v     Port vector to check.
+         */
         void CheckTypes(std::vector<std::shared_ptr<Port>>&);
 
         /**
          * @brief Compute the result.
          */
         void Compute();
+        /**
+         * @brief Template computation (dependent on template variable T).
+         * @param f         Function to call.
+         * @returns Result of computation.
+         */
         Value Compute(T) { throw MyError("Not implemented computation.", ErrorType::MathError); }
 
 };
@@ -218,7 +262,7 @@ void Block<T>::propagateLevel(int level, std::set<int> prop)
 
     // level setter
     if(level > getLevel()) { setLevel(level); }
-    std::cerr << "Final level of " << getId() << " is " << getLevel() << "\n";
+    //std::cerr << "Final level of " << getId() << " is " << getLevel() << "\n";
 
     // propagate
     prop.insert(getId());

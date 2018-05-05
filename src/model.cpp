@@ -1,8 +1,11 @@
-// model.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
-
+/**
+ * @file model.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief model module
+ *
+ * This module contains model implementation.
+ */
 
 #include <iostream>
 
@@ -79,13 +82,19 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
     }
     if(startkey.port >= 0 && endkey.port >= 0)
     {
-        std::cerr << "Must be output to input!\n";
+        //std::cerr << "Must be output to input!\n";
         success = false;
         return;
     }
 
     key = GenerateWireKey();
     Debug::Model( "Model::slotCreateWire("+std::to_string(key)+")" );
+    
+    if(mBlocks.count(startkey.key) == 0 || mBlocks.count(endkey.key) == 0)
+    {
+        success = false;
+        return;
+    }
 
     std::shared_ptr<Wire> w;
     try {
@@ -94,7 +103,7 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
             *mBlocks.at(endkey.key), endkey.port
         );
     } catch(MyError& e) { 
-        std::cerr << e.getMessage() << "\n";
+        //std::cerr << e.getMessage() << "\n";
         success = false; 
         return;
     }
@@ -135,18 +144,7 @@ SimulationResults Model::startComputation()
     SimulationResults sr;
     for(auto& inkey: mInputs)
     {
-        std::cerr << "key: " << inkey << "\n";
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
-        for(auto& it: sr.blocks)
-        {
-            std::cerr << it.first << ": ";
-            for(auto& i: it.second)
-            {
-                std::cerr << i.first << " ";
-            }
-            std::cerr << "\n";
-        }
-        
     }
     
     endComputation();
@@ -157,7 +155,8 @@ void Model::endComputation()
 {
     for(auto& it: mBlocks)
     {
-        it.second->resetValue();
+        if(!it.second->isInput()) 
+            it.second->resetValue();
     }
 }
 
@@ -182,13 +181,26 @@ ModelState Model::getState()
 
 void Model::setState(ModelState s)
 {
+    mblockkey = 0;
     Debug::File("Model::setState()");
     for(auto& it: s.blocks)
     {
-        Debug::File("Save "+Config::getBlockName(it.second)+" as "+std::to_string(it.first));
+        
         mblockkey = it.first;
         long key;
-        slotCreateBlock(it.second, key);
+
+        // input
+        if(it.second == -1)
+        {
+            slotCreateInput(Value(), key);
+        }
+        // blcok
+        else
+        {
+            slotCreateBlock(it.second, key);
+        }
+        Debug::File("Save "+std::to_string(it.second)+" as "+std::to_string(it.first));
+        
     }
     // wires
 }

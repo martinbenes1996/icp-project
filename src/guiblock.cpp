@@ -1,8 +1,12 @@
-// guiblock.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file guiblock.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief Graphical objects module
+ *
+ * This module contains graphical objects implementations.
+ */
 
 #include <iostream>
 
@@ -34,9 +38,6 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   setPos(pos.x()-mwidth/2,pos.y()-mheight/2);
 
   QRectF port(pos.x()+mwidth/2, pos.y(), 100,100);
-  //QPainter p;
-  //p.setBrush( QBrush(Qt::black) );
-  //p.drawRect(port);
 
   if(Config::decodeBlockType(type) == BlockType::OneIn_OneOut)
   {
@@ -53,14 +54,10 @@ GuiBlock::GuiBlock(QPointF pos, long type, QGraphicsItem *g):
   mvalue.valid = false;
   setToolTip(QString::fromStdString("Value: Not defined\nType: Not defined"));
 
-  //setRect(mrectangle);
-  //setBrush(blockBrush);
-  //setPen(blockPen);
+
   setAcceptDrops(true);
   setAcceptHoverEvents(true);
 }
-
-//QRectF GuiBlock::boundingRect() const { return rect(mrectangle.topLeft().x(), mrectangle.topLeft().y(), mwidth, mheight); }
 
 void GuiBlock::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
@@ -115,7 +112,7 @@ QPointF GuiBlock::getConnectorPoint(int connector)
     }
     else
     {
-        std::cout << "error getConnectorPoint\n";
+        //std::cout << "error getConnectorPoint\n";
     }
 
     return connectorPoint;
@@ -123,17 +120,6 @@ QPointF GuiBlock::getConnectorPoint(int connector)
 
 void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
 {
-    //std::cout << "getPoint_2I1O: im here!\n";
-    //QPointF itemPoint = mrectangle.center();
-    //QRectF tempRect1 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
-    //QRectF tempRect2 = QRectF(itemPoint.x(), itemPoint.y()-mheight/2, mwidth/2.0, mheight/2.0);
-    //QRectF tempRect3 = QRectF(itemPoint.x()-mwidth/2, itemPoint.y(), mwidth/2.0, mheight/2.0);
-    //QRectF tempRect4 = QRectF(itemPoint.x(), itemPoint.y(), mwidth/2.0, mheight/2.0);
-
-
-
-    //std::cout << itemPoint.x() << itemPoint.y() << std::endl;
-    //std::cout << MPEvent->pos().x() << MPEvent->pos().y() << std::endl;
     if(mporttype == 2)       // two_in_one_out
     {
         QRectF tempRect1 = QRectF(0.0, 0.0+mheight/8.0, mwidth/2.0, mheight/4.0);
@@ -179,7 +165,7 @@ void GuiBlock::getPointFromBlock(int *connector, bool *wireFree)
     }
     else
     {
-        std::cout << "error getpointfromblock\n";
+        //std::cout << "error getpointfromblock\n";
     }
 
 }
@@ -225,9 +211,6 @@ void GuiBlock::setColor(bool active)
 {
     if(active)
     {
-        //Debug::Gui(std::to_string(mtype));
-        //Debug::Gui(Config::getBlockName(mtype));
-        //Debug::Gui(Config::getHLImagePath(Config::getBlockName(mtype)));
         QPixmap i( QString::fromStdString(Config::getHLImagePath(
                     Config::getBlockName(mtype)
         )));
@@ -237,8 +220,6 @@ void GuiBlock::setColor(bool active)
     }
     else
     {
-        //Debug::Gui(Config::getBlockName(mtype));
-        //Debug::Gui(Config::getImagePath(Config::getBlockName(mtype)));
         QPixmap i( QString::fromStdString(Config::getImagePath(
                     Config::getBlockName(mtype)
         )));
@@ -248,22 +229,8 @@ void GuiBlock::setColor(bool active)
     }
 }
 
-void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*)
-{
-    //std::cerr << "enter\n";
-    //QBrush b = brush();
-    //b.setColor(Qt::gray);
-    //setBrush(b);
-}
-void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
-{
-    //std::cerr << "leave\n";
-    //QBrush b = brush();
-    //b.setColor(Qt::darkGray);
-    //setBrush(blockBrush);
-}
-
-
+void GuiBlock::hoverEnterEvent(QGraphicsSceneHoverEvent*) {}
+void GuiBlock::hoverLeaveEvent(QGraphicsSceneHoverEvent*) {}
 
 MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2): mid(id)
 {
@@ -301,6 +268,7 @@ MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiBlock
     mvalue.valid = false;
 
 }
+
 MyWire::MyWire(long id, QPointF point1, QPointF point2, std::shared_ptr<GuiInput> gb1, std::shared_ptr<GuiBlock> gb2, int connector1, int connector2): mid(id)
 {
     for(auto& it: MyWire::splitLine(point1, point2))
@@ -431,6 +399,7 @@ GuiInput::GuiInput(QPointF pos, bool load, QGraphicsItem* g):
     QGraphicsEllipseItem(g)
 {
     Debug::Gui("GuiInput::GuiInput");
+    setBrush(QBrush(Qt::black));
     setRect(pos.x()-mradius/2,pos.y()-mradius/2, mradius, mradius);
     positionCenter = pos;
 
@@ -506,7 +475,7 @@ void GuiInput::getUserValue(double *value, std::string &type, bool *mok)
         }
         catch(std::exception e)
         {
-            std::cerr << e.what() << std::endl;
+            //std::cerr << e.what() << std::endl;
             *mok = false;
             return;
         }
@@ -540,30 +509,20 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
         // show input value dialog
         getUserValue(&mvalue.value, mvalue.type, &mok);
         mvalue.valid = true;
+        emit sigValueChanged();
         //std::cout << mvalue.value << " " << mvalue.type << std::endl;
 
         setToolTip(QString::fromStdString("Value: "+std::to_string(mvalue.value)+"\nType: "+mvalue.type));
     }
 }
 
-void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    //QToolTip::showText(QWidget::mapToGlobal(event->pos().toPoint()), "heheheh");
-    //label = std::make_shared<QLabel>("text");
-
-    //QToolTip::showText(event->pos(), "text input!");
-}
-
-void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    //QToolTip::hideText();
-}
+void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {}
+void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {}
 
 void GuiInput::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
   QGraphicsEllipseItem::paint(p,s,w);
 }
-
 
 QPointF GuiInput::getConnectorPoint(int connector)
 {

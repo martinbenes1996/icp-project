@@ -1,7 +1,11 @@
-// main.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
+/**
+ * @file main.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief main module
+ *
+ * This module contains main.
+ */
 
 
 #include <iostream>
@@ -12,6 +16,10 @@
 #include "config.h"
 #include "controller.h"
 
+/**
+ * @brief Applies the style to the application.
+ * @param app       Application.
+ */
 void setAppStyle(QApplication& app)
 {
     QFile File( QString::fromStdString(Config::getStyleFileName()) );
@@ -20,6 +28,12 @@ void setAppStyle(QApplication& app)
     app.setStyleSheet(StyleSheet);
 }
 
+/**
+ * @brief Main function.
+ * @param argc      Count of input parameters.
+ * @param argv      Input parameters.
+ * @returns Exit code.
+ */
 int main(int argc, char *argv[])
 {
     // init config

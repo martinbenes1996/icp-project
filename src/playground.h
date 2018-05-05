@@ -1,8 +1,12 @@
-// playground.h
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file playground.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief draw place interface
+ *
+ * This module contains playground definition.
+ */
 
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
@@ -28,11 +32,17 @@
 
 class PlayGroundView;
 
+/**
+ * @brief PlayGround class.
+ */
 class PlayGround: public QWidget
 {
     Q_OBJECT
     public:
-
+        /**
+         * @brief PlayGround constructor.
+         * @param parent        Parent.
+         */
         PlayGround(QWidget* parent = 0);
 
         /**
@@ -51,22 +61,48 @@ class PlayGround: public QWidget
          */
         bool hasChoice() { return mchoice != -1; }
 
+        /**
+         * @brief Reinitializes the playground.
+         */
         void reinit();
+
+        /**
+         * @brief Returns block states (for saving).
+         * @returns Block states.
+         */
         std::map<long,GuiBlockDescriptor> getBlockState();
+        /**
+         * @brief Returns wire states (for saving).
+         * @returns Wire states.
+         */
         std::vector<struct wireState> getWireState();
+        /**
+         * @brief Sets block states (for loading).
+         * @param m         Block states.
+         */
+        void setBlockState(std::map<long,GuiBlockDescriptor>);
+        /**
+         * @brief Sets wire states (for loading).
+         * @param m         Wire states.
+         */
+        void setWireState(std::vector<struct wireState> v);
+
         /**
          * @brief   Gets ID from block pointer.
          * @param   block   pointer to a block
          * @returns ID of the block
          */
         long getIDFromBlock(std::shared_ptr<GuiBlock> block);
-
+        /**
+         * @brief   Gets ID from input pointer.
+         * @param   block   pointer to a input
+         * @returns ID of the input
+         */
         long getIDFromInput(std::shared_ptr<GuiInput> block);
-
-        void setBlockState(std::map<long,GuiBlockDescriptor>);
-
-        void setWireState(std::vector<struct wireState> v);
-
+        /**
+         * @brief Input clicked.
+         * @param id    Id of the input.
+         */
         void inputClick(int);
 
         /**
@@ -97,10 +133,11 @@ class PlayGround: public QWidget
          * @brief   Sets default color of all entities in scene.
          */
         void setAllDefaultColor();
-
+        /**
+         * @brief Clears all the values and the colors.
+         */
         void clearComputation();
 
-        // slots and signals will have to be reworked
     public slots:
         /**
          * @brief   Slot for menu's signal, that choice was set/unset.
@@ -139,6 +176,11 @@ class PlayGround: public QWidget
          * @param   index    Index of a wire.
          */
         void slotDeleteWire(long);
+        /**
+         * @brief   Slot for signal, that value changed.
+         */
+        void slotValueChanged();
+
     signals:
         /**
          * @brief   Signal (to the menu), that choice is rejected.
@@ -205,38 +247,40 @@ class PlayGround: public QWidget
         std::map<long, std::shared_ptr<MyWire>> mWires; /**< Placed wires. */
         std::map<long, std::shared_ptr<GuiInput>> mInputs; /**< Placed inputs. */
 
-        QSignalMapper mmapper;
+        QSignalMapper mmapper;  /**< Signal mapper for the blocks. */
+        QVBoxLayout *layout = nullptr; /**< Layout. */
 
-        QVBoxLayout *layout = nullptr;
+        PlayGroundView *mview = nullptr; /**< View. */
+        QGraphicsScene *mscene = nullptr; /**< Scene. */
 
-        PlayGroundView *mview = nullptr;
-        QGraphicsScene *mscene = nullptr;
-
-        //QPointF drawLinePoint = QPointF();
         bool createWire = false;    /**< True when two points are selected -> create wire. */
         int connector1;             /**< Connector of the first block. */
         int connector2;             /**< Connector of the second block. */
-        std::shared_ptr<GuiInput> iblock1 = nullptr;
+        std::shared_ptr<GuiInput> iblock1 = nullptr; /**< First input. */
         std::shared_ptr<GuiBlock> block1 = nullptr; /**< First block. */
-        std::shared_ptr<GuiInput> iblock2 = nullptr;
+        std::shared_ptr<GuiInput> iblock2 = nullptr; /**< Second input. */
         std::shared_ptr<GuiBlock> block2 = nullptr; /**< Second block. */
 
 };
 
-// class for displaying playground and processing mouse interactions
+/**
+ * @brief PlayGroundView class. For displaying playground and processing mouse interactions.
+ */
 class PlayGroundView: public QGraphicsView
 {
     Q_OBJECT
 
-    // borrowed constructor -> this class only overrides some methods and sends signals
+    /**
+     * @brief Borrowed constructor.
+     */
     using QGraphicsView::QGraphicsView;
 
     public:
-
-        //void mouseMoveEvent(QMouseEvent *event);
-        void mousePressEvent(QMouseEvent *event/*, PlayGround *par*/);
-        //void mouseReleaseEvent(QMouseEvent *event);
-        //void paintEvent(QPaintEvent*);
+        /**
+         * @brief   Mouse press handler.
+         * @param event     Description of event.
+         */  
+        void mousePressEvent(QMouseEvent *event);
 
     signals:
         /**

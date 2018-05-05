@@ -1,8 +1,11 @@
-// config.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
-
+/**
+ * @file config.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief configuration module
+ *
+ * This module contains a global configuration implementation.
+ */
 
 #include <iostream>
 #include <cmath>
@@ -10,24 +13,24 @@
 #include "config.h"
 #include "defs.h"
 
+/**
+ * @brief Private data of configuration.
+ */
 namespace
 {
-    std::map<long, std::function<double(double, double)>> mf_2I1O;
-    std::map<long, std::function<double(double)>> mf_1I1O;
-    std::map<long, std::vector<std::string>> mIn;
-    std::map<long, std::vector<std::string>> mOut;
+    std::map<long, std::function<double(double, double)>> mf_2I1O; /**< Lambdas of the 2 input 1 output blocks. */
+    std::map<long, std::function<double(double)>> mf_1I1O; /**< Lambdas of the 1 input 1 output blocks. */
+    std::map<long, std::vector<std::string>> mIn; /**< Types of the input block ports. */
+    std::map<long, std::vector<std::string>> mOut; /**< Types of the output block ports. */
 
-    std::map<std::string, long> mBlockNames;
-    std::set<std::string> mTypes;
+    std::map<std::string, long> mBlockNames; /**< Block name to block type mapping. */
+    std::set<std::string> mTypes; /**< Types. */
 }
 
 void Config::initConfig()
 {
     mTypes.insert("general");
     
-    // sem je potřeba dodat případ, kdy není zmáčklý žádný čudlík (zmáčknu čudlík a pak volbu zruším musí poslat -1)
-    //mBlockNames.insert( std::make_pair("nic", -1) );
-    //mf_2I1O.insert( std::make_pair(0, [](double a,double b){return a+b;}) );
     int id = 0;
     mBlockNames.insert( std::make_pair("adder", id) );
     mf_2I1O.insert( std::make_pair(id, [](double a,double b){return a+b;}) );

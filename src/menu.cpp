@@ -1,7 +1,12 @@
-// menu.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
+
+/**
+ * @file menu.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief menu module
+ *
+ * This module contains menu implementation.
+ */
 
 
 #include <iostream>

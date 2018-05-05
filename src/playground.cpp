@@ -1,8 +1,12 @@
-// playground.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file playground.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief draw place module
+ *
+ * This module contains playground (workplace) implementation.
+ */
 
 #include <iostream>
 #include <string>
@@ -20,7 +24,7 @@ void printNOISOMap(T a)
 {
     for(auto i:a)
     {
-        std::cout << "map: " << i.first << " " << i.second << std::endl;
+        //std::cout << "map: " << i.first << " " << i.second << std::endl;
     }
 }
 
@@ -158,7 +162,9 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 
         mmapper.setMapping(newInput.get(), id);
         QObject::connect(newInput.get(), SIGNAL(sigBlockClick()),
-                         &mmapper, SLOT(map()));
+                        &mmapper, SLOT(map()));
+        QObject::connect(newInput.get(), SIGNAL(sigValueChanged()),
+                        this, SLOT(slotValueChanged()));
 
         mInputs.insert( std::make_pair(id,newInput) );
 
@@ -496,6 +502,7 @@ void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
                             &mmapper, SLOT(map()));
 
             mInputs.insert( std::make_pair(id,newInput) );
+            emit sigInputValueChanged(id, val);
         }
         else
         {
@@ -513,7 +520,7 @@ void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
 void PlayGround::setWireState(std::vector<struct wireState> v)
 {
     for(auto& it:v)
-    {std::cout << "jsem tu!\n";
+    {//std::cout << "jsem tu!\n";
         if(mInputs.count(it.block1_id) > 0)
         {
             iblock1 = mInputs[it.block1_id];
@@ -536,9 +543,9 @@ void PlayGround::setWireState(std::vector<struct wireState> v)
         }
         connector1 = it.connector1;
         connector2 = it.connector2;
-std::cout << "TADY TAKY: " << block1 << block2 << connector1 << connector2 << std::endl;
+//std::cout << "TADY TAKY: " << block1 << block2 << connector1 << connector2 << std::endl;
         if(createWireFunction())
-        {std::cout << "TADY TAKY CREATE!\n";
+        {//std::cout << "TADY TAKY CREATE!\n";
             if(iblock1 != nullptr) iblock1->setConnectorAvailability(connector1, true);
             else block1->setConnectorAvailability(connector1, true);
             if(iblock2 != nullptr) iblock2->setConnectorAvailability(connector2, true);
@@ -548,5 +555,15 @@ std::cout << "TADY TAKY: " << block1 << block2 << connector1 << connector2 << st
         block1 = nullptr;
         iblock2 = nullptr;
         block2 = nullptr;
+    }
+}
+
+void PlayGround::slotValueChanged()
+{
+    Debug::Gui("PlayGround::slotValueChanged");
+    for(auto& it: mInputs)
+    {
+        emit sigInputValueChanged(it.first, it.second->getValue());
+        //std::cerr << "Value of " << it.first << " is " << it.second->getValue().value << "\n";
     }
 }

@@ -1,8 +1,12 @@
-// window.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file window.h
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief window module
+ *
+ * This module contains window implementation.
+ */
 
 #include <QFileDialog>
 #include <QInputDialog>
@@ -194,7 +198,7 @@ void Window::keyPressEvent(QKeyEvent *event)
         //    Debug::Compute("Previous step.");
         //    emit sigPreviousResult();
         //}
-        else if(event->key() == Qt::Key_D)
+        else if(event->key() == Qt::Key_Space)
         {
             Debug::Compute("Next step.");
             emit sigNextResult();
@@ -209,6 +213,7 @@ void Window::endComputation()
     mcompute = false;
     mmenu->endComputation();
     mplayground->setAllDefaultColor();
+    emit sigEndComputation();
 }
 
 void Window::showDialog(const char * msg)

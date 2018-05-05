@@ -1,8 +1,12 @@
-// controller.cpp
-// Autoři: xbenes49, xpolan09
-// Projekt do předmětu ICP.
-// Datum: 29.04.5018
 
+/**
+ * @file controller.cpp
+ * @author xbenes49, xpolan09
+ * @date 5 May 2018
+ * @brief controller
+ *
+ * This module contains a Controller implementation.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -39,6 +43,7 @@ Controller::Controller()
     QObject::connect(&w, SIGNAL(sigRun(bool)), this, SLOT(slotRun(bool)));
     QObject::connect(&w, SIGNAL(sigPreviousResult()), this, SLOT(slotPreviousResult()));
     QObject::connect(&w, SIGNAL(sigNextResult()), this, SLOT(slotNextResult()));
+    QObject::connect(&w, SIGNAL(sigEndComputation()), this, SLOT(slotEndComputation()));
     w.show();
 }
 
@@ -91,7 +96,7 @@ void Controller::slotOpen(std::string path)
             gs.blocks.insert( std::make_pair(id, g) );
             ms.blocks.insert( std::make_pair(id, type) );
         } catch(std::exception& e) {
-            std::cerr << "Invalid input file!\n";
+            w.showDialog("Invalid input file!");
             return;
         }
     }
@@ -122,7 +127,7 @@ void Controller::slotOpen(std::string path)
             gs.wires.push_back(wire);
             //ms.blocks.insert( std::make_pair(id, type) );
         } catch(std::exception& e) {
-            std::cerr << "Invalid input file!\n";
+            w.showDialog("Invalid input file!");
             return;
         }
 
@@ -139,8 +144,8 @@ void Controller::slotOpen(std::string path)
     auto types = Config::getTypes();
     for(auto& it: types) { Config::removeType(it); }
 
-    w.setState(gs);
     m.setState(ms);
+    w.setState(gs);
     for(auto& it: newtypes) { Config::addType(it); }
 }
 
@@ -280,4 +285,13 @@ void Controller::sendWireResults(int level)
         w.getPG()->setWireValue(id, v);
         w.getPG()->setWireColor(id, true);
     }
+}
+
+void Controller::slotEndComputation()
+{
+    mlastlevel = 0;
+    mwireresults.clear();
+    mblockresults.clear();
+    mblockit = 0;
+    m.endComputation();
 }
