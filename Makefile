@@ -19,12 +19,12 @@ run:
 	@printf "";\
 	./blockeditor
 
-.PHONY: zip
-zip:
-	@printf "";\
-	zip xbenes49_xpolan09.zip src/*.cpp src/*.h src/icp.pro src/gen/ README.md Makefile 2> /dev/null > /dev/null
+.PHONY: pack
+pack:
+	@echo "Packing to the archive.";\
+	zip xbenes49_xpolan09.zip Doxyfile src/*.cpp src/*.h src/icp.pro src/bordel/ styles/* doc/*.png doc/*.jpg styles/* examples/* README.txt Makefile 2> /dev/null > /dev/null
 
 .PHONY: clean
 clean:
 	@echo "Cleaning generated files.";\
-	rm -rf src/bordel/moc_* src/bordel/*.o *~ *.gch src/Makefile src/blockeditor blockeditor xbenes49_xpolan09.zip src/.qmake.stash 2> /dev/null > /dev/null
+	rm -rf src/bordel/moc_* src/bordel/*.o *~ *.gch src/Makefile blockeditor xbenes49_xpolan09.zip doc/html src/.qmake.stash 2> /dev/null > /dev/null

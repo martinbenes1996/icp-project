@@ -79,6 +79,8 @@ int main(int argc, char *argv[])
  * asking you to enter value and type of the input block. This value will be sent through a connected wire to a
  * normal block. To remove input blocks, right-click them. The value of input blocks can be changed by double-clicking
  * the block and entering updated value. All buttons in menu must be unchecked during this process!
+ * 
+ * \image html inputdialog.png "Input dialog."
  *
  * \subsection Computation
  * There is not any output block. Every block or wire will tell you its value and type when you hover the cursor
@@ -88,6 +90,8 @@ int main(int argc, char *argv[])
  * To perform computation choose "run" option from top bar and then "compute". This will compute everything. If you desire
  * to enjoy the computation step by step press "run" -> "debug" option and use your spacebar to move forward. To interrupt
  * debugging press escape. Progress of the debugging will be highlighted with red color.
+ * 
+ * \image html debug.png "Debug mode"
  *
  * \subsection Saving
  * Your work can be saved by choosing "file" -> "save" and entering file name and later loaded by pressing
@@ -95,11 +99,43 @@ int main(int argc, char *argv[])
  *
  * Our program also allows you to enter your own custom types (apart from default "general" type). Press "types"
  * -> "add type"/"remove type" to do that.
+ * 
+ * \image html addtype.png "Add type dialog."
+ * 
+ * \image html removetype.png "Remove type dialog"
  *
- *
- * \section install_sec Installation
- *
- * \subsection step1 Step 1: Opening the box
- *
- * etc...
+ * \section Implementation
+ * 
+ * The program is implemented in C++ (standard C++17) and Qt framework 3.5. We used Git for versioning
+ * and cooperation. The documentation is generated using Doxygen.
+ * 
+ * \subsection Design
+ * 
+ * The whole design is based on MVC architecture. The Controller instantiates the Model and Window, and
+ * connects them with the signals (Qt specific), so they may communicate simply. The Window instantiates
+ * the parts, it consists of, Menu and PlayGround. After that, the event loop is executed and whole
+ * system waits for user to do his actions.
+ * 
+ * When A block in Menu is selected, the PlayGround receives signal, and when it is clicked, it already
+ * knows, which type of block it should place on the position. The model is asked to generate a ID for
+ * the block, and the block is placed to the scene, and saved inside a PlayGround (as GuiBlock) and 
+ * inside the Model too (as Block).
+ * 
+ * When the wire is connected, the specification of the block is done by giving its ID. In model,
+ * each IBlock (generalization over Block and Input) knows the Wire objects connected to it,
+ * as same as every Wire instance knows the IBlock, it is connected to.
+ * 
+ * When the Wire is instatiated, it is also connected. The blocks must actualize their level (aka
+ * discrete time value, when they are going to have result during evaluation). The distribute it
+ * through the wires. During this process, they also detect possible loops in the scheme and prevent it.
+ * 
+ * When the computation is initialized, the Model provides its results in advance. Every input returns
+ * the structure with results, it may provide, and afterwards, they all are merged together.
+ * When debugging, the vector is simply iterated on spacebar event.
+ * 
+ * When saving, the Model and the Window provide its states and the Controller then saves it to the file.
+ * When reading, the read information are propagated to the Model and the Window, when the objects are
+ * generated.
+ * 
+ * \image html classes.png "Class diagram."
  */
