@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
  *
  * \section Controls
  *
+ * \subsection Blocks
  * After you start the application, you will see a neat menu on the left side and a play ground on the right side.
  * Use the menu to choose from eleven different blocks by left-clicking the block icon and then left-clicking
  * the free space. Each block type performs a different operation displayed by an intuitive icon.
@@ -64,18 +65,22 @@ int main(int argc, char *argv[])
  * be too close to each other. In order to delete blocks just simply right-click them and they will disappear
  * together with all wires connected to them.
  *
+ * \subsection Wires
  * Each block (apart from input blocks, about them later) requires either one or two input wires and allows
- * you to connect one output wire. In order to place a wire, chose "wire" in the menu and then left-click
+ * you to connect one output wire. The whole playground is situated left-to-right, the inputs are the ones on the
+ * left of the box. In order to place a wire, choose "wire" in the menu and then left-click
  * two connectors of two different blocks. Wires can only connect output connectors with input ones and
  * do not allow you to use one connector multiple times. If any action violates these rules, nothing will happen.
  * Wires can be deleted, as well as blocks, by right-clicking them or removing any adjacent block.
  *
+ * \subsection Inputs
  * To be able to compute anything, input blocks are required. Choose "input" option in menu and left-click
  * empty space. Beware collisions with other blocks. After placing an input block, a dialog window will pop up
  * asking you to enter value and type of the input block. This value will be sent through a connected wire to a
  * normal block. To remove input blocks, right-click them. The value of input blocks can be changed by double-clicking
  * the block and entering updated value. All buttons in menu must be unchecked during this process!
  *
+ * \subsection Computation
  * There is not any output block. Every block or wire will tell you its value and type when you hover the cursor
  * over it. Use this method to get the final value of the last block or any other. Wires will automatically display
  * value in the middle (N means not defined value). Do not try to add wire to output connector of the last block.
@@ -84,6 +89,7 @@ int main(int argc, char *argv[])
  * to enjoy the computation step by step press "run" -> "debug" option and use your spacebar to move forward. To interrupt
  * debugging press escape. Progress of the debugging will be highlighted with red color.
  *
+ * \subsection Saving
  * Your work can be saved by choosing "file" -> "save" and entering file name and later loaded by pressing
  * "file" -> "open". The "new" option resets the play ground and discards all unsaved work.
  *
