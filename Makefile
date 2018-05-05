@@ -22,7 +22,7 @@ run:
 .PHONY: pack
 pack:
 	@echo "Packing to the archive.";\
-	zip xbenes49_xpolan09.zip Doxyfile src/*.cpp src/*.h src/icp.pro src/bordel/ styles/* doc/*.png doc/*.jpg styles/* examples/* README.txt Makefile 2> /dev/null > /dev/null
+	zip xbenes49-xpolan09.zip Doxyfile src/*.cpp src/*.h src/icp.pro src/bordel/ styles/* doc/*.png doc/*.jpg styles/* examples/* README.txt Makefile 2> /dev/null > /dev/null
 
 .PHONY: clean
 clean:

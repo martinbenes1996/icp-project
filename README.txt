@@ -19,6 +19,23 @@ program with
 or simply
     $ make run
 
+*----------------------------------------*
+|               CONTROLS                 |
+|                                        |
+| left-click       select button         |
+|                  place item            |
+| double-left      set value (on input)  |
+| right-click      remove item           |
+| mouse hover      show info             |
+| space            step during debug     |
+| esc              end debug / edit mode | 
+*----------------------------------------*
+
+Evaluate:
+Run > Compute
+
+Debug:
+Run > Debug
 
 For more information, read the documentation.
 It must be generated first:

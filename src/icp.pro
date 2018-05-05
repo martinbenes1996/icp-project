@@ -7,7 +7,7 @@ TARGET = blockeditor
 
 
 CONFIG += qt debug
-QT += widgets designer
+QT += widgets
 LIBS += -lm
 QMAKE_CXXFLAGS += -std=c++17 -Wall -Wextra -pedantic -DDEBUG_MODE
 
