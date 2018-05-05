@@ -101,6 +101,7 @@ Window::Window(QWidget *parent): QWidget(parent)
     // create help
     QMenu *menu4 = new QMenu(QString("Help"), this);
     QAction *helpAction = menu4->addAction(QString("ShowHelp"));
+    QObject::connect(helpAction, SIGNAL(triggered()), this, SLOT(slotHelp()));
     menubar->addMenu(menu4);
 
     QWidget *content = new QWidget(this);
@@ -221,4 +222,9 @@ void Window::showDialog(const char * msg)
     QMessageBox mb(QMessageBox::Critical, "BlockEditor error", QString::fromStdString(msg), QMessageBox::Ok);
     mb.exec();
     endComputation();
+}
+
+void Window::slotHelp()
+{
+
 }

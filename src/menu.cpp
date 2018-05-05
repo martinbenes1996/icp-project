@@ -107,7 +107,6 @@ void Menu::slotChoicePressed(QString name)
 {
 
     for(auto& it: mButtons) { if(it.first != name) it.second->setChecked(false); }
-    #warning wtf logic?
     if(mButtons.at(name)->isChecked()) { emit sigChoiceMode(-1); return; }
     if(name == wireBtn) { emit sigWireMode(); return; }
     if(name == inputBtn) { emit sigInput(); return; }

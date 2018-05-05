@@ -7,7 +7,6 @@
  * This module contains main.
  */
 
-
 #include <iostream>
 
 #include <QApplication>
@@ -51,3 +50,18 @@ int main(int argc, char *argv[])
 }
 
 
+/*! \mainpage BlockEditor 
+ * 
+ * This app enables to create block schemes, save and load them and do a calculation using them.
+ * It is very easy to learn it, and it is a great fun.
+ * 
+ * \section Controls
+ *
+ * This application enables to 
+ *
+ * \section install_sec Installation
+ *
+ * \subsection step1 Step 1: Opening the box
+ *  
+ * etc...
+ */

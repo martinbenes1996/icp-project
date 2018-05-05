@@ -7,7 +7,7 @@ blockeditor:
 	@echo "Compiling the files.";\
 	$(MAKE) -C src/ -s
 	@printf "";\
-	cp src/blockeditor . 2> /dev/null > /dev/null
+	mv src/blockeditor . 2> /dev/null > /dev/null
 
 .PHONY: doxygen
 doxygen:

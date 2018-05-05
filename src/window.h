@@ -118,6 +118,10 @@ class Window: public QWidget
          * @param s         Type to be removed.
          */
         void slotRemoveType(const QString&);
+        /**
+         * @brief Help slot.
+         */
+        void slotHelp();
     signals:
         /**
          * @brief Emitted, when reset.

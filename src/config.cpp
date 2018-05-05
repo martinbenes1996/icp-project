@@ -119,8 +119,8 @@ std::vector<std::string> Config::getOutput(long key)
 }
 
 std::map<std::string, long>& Config::getBlockNames() { return mBlockNames; }
-std::string Config::getImagePath(std::string s) { return ".." + PathSep + "examples" + PathSep + s + ".png"; }
-std::string Config::getHLImagePath(std::string s) { return ".." + PathSep + "examples" + PathSep + s + "_hl.png"; }
+std::string Config::getImagePath(std::string s) { return "styles" + PathSep + s + ".png"; }
+std::string Config::getHLImagePath(std::string s) { return "styles" + PathSep + s + "_hl.png"; }
 std::string Config::getBlockName(long key)
 {
     for(auto& it: mBlockNames)
@@ -133,4 +133,4 @@ void Config::addType(std::string type) { mTypes.insert(type); }
 void Config::removeType(std::string type) { mTypes.erase(type); }
 std::set<std::string> Config::getTypes() { return mTypes; }
 
-std::string Config::getStyleFileName() { return "stylesheet.qss"; }
+std::string Config::getStyleFileName() { return "styles"+PathSep+"stylesheet.qss"; }

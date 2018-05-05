@@ -204,10 +204,9 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     }
     //std::cout << "PG: Accepted signal left click\n";
 }
-void PlayGround::slotViewRightClick(QMouseEvent *event)
+void PlayGround::slotViewRightClick(QMouseEvent *)
 {
     Debug::Events("PlayGround::slotViewRightClick");
-    (void *)event;
 
     // for testing a loop detection
     //long id;

@@ -516,15 +516,15 @@ void GuiInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     }
 }
 
-void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {}
-void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {}
+void GuiInput::hoverEnterEvent(QGraphicsSceneHoverEvent *) {}
+void GuiInput::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {}
 
 void GuiInput::paint(QPainter *p, const QStyleOptionGraphicsItem *s, QWidget *w)
 {
   QGraphicsEllipseItem::paint(p,s,w);
 }
 
-QPointF GuiInput::getConnectorPoint(int connector)
+QPointF GuiInput::getConnectorPoint(int)
 {
     QPointF itemPoint = positionCenter;
     QPointF connectorPoint;
@@ -541,7 +541,7 @@ void GuiInput::getPointFromBlock(int *connector, bool *wireFree)
     *wireFree = !output1;
 }
 
-void GuiInput::setConnectorAvailability(int connector, bool addWire)
+void GuiInput::setConnectorAvailability(int, bool addWire)
 {
     if(addWire) output1 = true;
     else output1 = false;
