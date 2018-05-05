@@ -134,6 +134,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
     //std::cout << event->x() << " PG " << event->y() << std::endl;
 
     // umisteni dratu - K CEMU TO JE DOBRE??? Draty tvorim klikem na blok, ne na playground
+    if(mcompute) return;
     if(mwire)
     {
 
@@ -207,6 +208,7 @@ void PlayGround::slotViewLeftClick(QMouseEvent *event)
 void PlayGround::slotViewRightClick(QMouseEvent *)
 {
     Debug::Events("PlayGround::slotViewRightClick");
+    if(mcompute) return;
 
     // for testing a loop detection
     //long id;

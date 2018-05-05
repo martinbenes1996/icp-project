@@ -14,6 +14,7 @@
 #include <iostream>
 #include <memory>
 
+#include <QAction>
 #include <QWidget>
 
 #include "menu.h"
@@ -158,6 +159,16 @@ class Window: public QWidget
         std::shared_ptr<PlayGround> mplayground; /**< Playground. */
         std::shared_ptr<Menu> mmenu; /**< Menu. */
         bool mcompute = false; /**< Compute mode is on. */
+        std::vector<QAction*> mactions;
+
+        void setCompute(bool v) 
+        { 
+            mplayground->setComputing(v); 
+            mcompute = v;
+            for(auto& a: mactions) {
+                a->setEnabled(v);
+            }
+        }
 };
 
 #endif // WINDOW_H
