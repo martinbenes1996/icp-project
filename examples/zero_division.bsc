@@ -1,0 +1,9 @@
+# BLOCKS #
+0,-1,173,219,general,true,5
+1,-1,169,347,general,true,0
+2,3,343,288,nepodstatne,false,0
+# WIRES #
+1,2,-1,1
+2,0,0,-1
+# TYPES #
+general

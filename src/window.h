@@ -166,7 +166,7 @@ class Window: public QWidget
             mplayground->setComputing(v); 
             mcompute = v;
             for(auto& a: mactions) {
-                a->setEnabled(v);
+                a->setEnabled(!v);
             }
         }
 };

@@ -143,12 +143,14 @@ void Window::setState(GuiState s)
 void Window::slotOpen()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Open file", "", "Block scheme (*.bsc);;All Files (*)");
+    if(filename == "") return;
     emit sigOpen(filename.toStdString());
 }
 
 void Window::slotSave()
 {
     QString filename = QFileDialog::getSaveFileName(this, "Save file", ".bsc", "Block scheme (*.bsc);;All Files (*)");
+    if(filename == "") return;
     emit sigSave(filename.toStdString());
 }
 
