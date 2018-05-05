@@ -64,13 +64,13 @@ Menu::Menu(QWidget* parent): QWidget(parent)
 {
     mlayout = new QVBoxLayout(this);
     mlayout->setAlignment(Qt::AlignTop);
-    mlayout->setContentsMargins(0,0,0,0);
-    mlayout->setSpacing(0);
+    mlayout->setContentsMargins(0,0,8,0);
+    mlayout->setSpacing(3);
 
     QWidget * blocksection = new QWidget();
     
     mblocklayout = new QGridLayout(blocksection);
-    mblocklayout->setSpacing(0);
+    mblocklayout->setSpacing(2);
     mblocklayout->setContentsMargins(0,0,0,0);
     mlayout->addWidget(blocksection);
 

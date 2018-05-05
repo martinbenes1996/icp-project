@@ -17,6 +17,7 @@
 
 Window::Window(QWidget *parent): QWidget(parent)
 {
+    setObjectName("Window");
     mmenu = std::make_shared<Menu>(this);
     mplayground = std::make_shared<PlayGround>(this);
 
@@ -188,11 +189,11 @@ void Window::keyPressEvent(QKeyEvent *event)
         {
             endComputation();
         }
-        else if(event->key() == Qt::Key_A)
-        {
-            Debug::Compute("Previous step.");
-            emit sigPreviousResult();
-        }
+        //else if(event->key() == Qt::Key_A)
+        //{
+        //    Debug::Compute("Previous step.");
+        //    emit sigPreviousResult();
+        //}
         else if(event->key() == Qt::Key_D)
         {
             Debug::Compute("Next step.");

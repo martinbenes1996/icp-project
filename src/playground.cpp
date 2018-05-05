@@ -101,13 +101,27 @@ void PlayGround::setBlockColor(long id, bool active)
 }
 void PlayGround::setAllDefaultColor()
 {
-    for(auto const& x: mWires)
+    for(auto& x: mWires)
     {
         x.second.get()->setColor(false);
     }
     for(auto x: mBlocks)
     {
         x.second.get()->setColor(false);
+    }
+}
+
+void PlayGround::clearComputation()
+{
+    for(auto& x: mWires)
+    {
+        x.second.get()->setColor(false);
+        x.second->setValue(Value());
+    }
+    for(auto x: mBlocks)
+    {
+        x.second.get()->setColor(false);
+        x.second->setValue(Value());
     }
 }
 

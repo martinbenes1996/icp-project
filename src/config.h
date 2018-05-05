@@ -47,6 +47,8 @@ namespace Config
     void removeType(std::string);
     std::set<std::string> getTypes();
 
+    std::string getStyleFileName();
+
 }
 
 #endif // CONFIG_H

@@ -1,0 +1,21 @@
+
+
+QMainWindow {
+    background-color: #222222
+}
+
+QMenuBar {
+    background-color: #222222
+}
+
+
+QPushButton {
+    background-color: #777777;
+    border-radius: 0px;
+    color: #ffffff
+}
+
+QPushButton:checked {
+    background-color: #b3d9ff;
+    border-style: inset
+}

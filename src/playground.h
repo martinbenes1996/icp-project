@@ -98,6 +98,8 @@ class PlayGround: public QWidget
          */
         void setAllDefaultColor();
 
+        void clearComputation();
+
         // slots and signals will have to be reworked
     public slots:
         /**

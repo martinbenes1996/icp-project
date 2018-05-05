@@ -12,14 +12,28 @@
 #include "config.h"
 #include "controller.h"
 
+void setAppStyle(QApplication& app)
+{
+    QFile File( QString::fromStdString(Config::getStyleFileName()) );
+    File.open(QFile::ReadOnly);
+    QString StyleSheet = QLatin1String(File.readAll());
+    app.setStyleSheet(StyleSheet);
+}
+
 int main(int argc, char *argv[])
 {
-    QApplication app (argc, argv);
-
+    // init config
     Config::initConfig();
-    Controller c;
-    //QPushButton button ("Hello world !");
-    //button.show();
 
+    // init qapp
+    QApplication app (argc, argv);
+    setAppStyle(app);
+
+    // init model
+    Controller c;
+
+    // run
     return app.exec();
 }
+
+

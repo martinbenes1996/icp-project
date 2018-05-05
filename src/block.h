@@ -74,7 +74,7 @@ class Input: public IBlock
             r.type = v.type;
             r.level = 0;
 
-            sr.insertBlock(getId(), r);
+            //sr.insertBlock(getId(), r);
             return mO.distributeResult(sr);
         }
 

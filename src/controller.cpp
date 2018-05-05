@@ -9,6 +9,7 @@
 #include <cassert>
 
 #include <QObject>
+#include <QMainWindow>
 
 #include "config.h"
 #include "controller.h"
@@ -17,6 +18,9 @@
 
 Controller::Controller()
 {
+    QMainWindow *win = new QMainWindow();
+    win->setCentralWidget(&w);
+    win->show();
 
     QObject::connect(w.getPG(), SIGNAL(sigCreateBlock(long, long&)), &m, SLOT(slotCreateBlock(long, long&)), Qt::DirectConnection);
     QObject::connect(w.getPG(), SIGNAL(sigDeleteBlock(long)), &m, SLOT(slotDeleteBlock(long)));
@@ -235,7 +239,7 @@ void Controller::slotPreviousResult()
         mblockit = 0;
         mlastlevel = 0;
         // reset view
-        w.getPG()->setAllDefaultColor();
+        w.getPG()->clearComputation();
         while(mblockit < mendit)
         {
             slotNextResult();
@@ -258,7 +262,8 @@ void Controller::slotNextResult()
     {
         long id = mblockresults.at(mblockit).first;
         Value v = (Value)mblockresults.at(mblockit).second;
-        std::cerr << id << ":" << v.value << " " << v.type << " " << v.valid << "\n";
+        Debug::Compute(std::to_string(mblockit) + ": block " + std::to_string(id));
+
         w.getPG()->setBlockValue(id, v);
         w.getPG()->setBlockColor(id, true);
         mblockit++;

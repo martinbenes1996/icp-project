@@ -15,7 +15,7 @@
     //#define EVENTS_DEBUG
     //#define GUI_DEBUG
     //#define CONTROLLER_DEBUG
-    #define COMPUTE_DEBUG
+    //#define COMPUTE_DEBUG
     //...
 #endif // DEBUG_MODE
 
@@ -60,6 +60,7 @@ namespace Debug
         #ifdef COMPUTE_DEBUG
             std::cerr << str << "\n";
         #endif
+        (void)str;
     }
 }
 

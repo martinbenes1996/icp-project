@@ -129,3 +129,5 @@ std::string Config::getBlockName(long key)
 void Config::addType(std::string type) { mTypes.insert(type); }
 void Config::removeType(std::string type) { mTypes.erase(type); }
 std::set<std::string> Config::getTypes() { return mTypes; }
+
+std::string Config::getStyleFileName() { return "stylesheet.qss"; }
