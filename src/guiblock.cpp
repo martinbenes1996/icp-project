@@ -399,7 +399,7 @@ GuiInput::GuiInput(QPointF pos, bool load, QGraphicsItem* g):
     QGraphicsEllipseItem(g)
 {
     Debug::Gui("GuiInput::GuiInput");
-    setBrush(QBrush(Qt::black));
+    setBrush(QBrush(Qt::white));
     setRect(pos.x()-mradius/2,pos.y()-mradius/2, mradius, mradius);
     positionCenter = pos;
 

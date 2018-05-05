@@ -1,11 +1,11 @@
 
 
 QMainWindow {
-    background-color: #222222
+    background-color: #ffffff
 }
 
 QMenuBar {
-    background-color: #222222
+    background-color: #ffffff
 }
 
 
