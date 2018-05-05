@@ -30,6 +30,8 @@ namespace
 void Config::initConfig()
 {
     mTypes.insert("general");
+    mTypes.insert("type2");
+    mTypes.insert("type3");
     
     int id = 0;
     mBlockNames.insert( std::make_pair("adder", id) );
