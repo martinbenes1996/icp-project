@@ -137,6 +137,11 @@ class PlayGround: public QWidget
          * @brief Clears all the values and the colors.
          */
         void clearComputation();
+        /**
+         * @brief   Computing bit setter.
+         * @param v         True if computing.
+         */
+        void setComputing(bool v) { mcompute = v; }
 
     public slots:
         /**
@@ -241,6 +246,7 @@ class PlayGround: public QWidget
         long mchoice = -1;  /**< Weather the block is being placed. */
         bool mwire = false; /**< Weather the wire is being placed. */
         bool minput = false; /**< Weather the input is being placed. */
+        bool mcompute = false; /**< Weather computing. */
         void annulateChoice() { mchoice = -1; mwire = minput = false; }
 
         std::map<long, std::shared_ptr<GuiBlock>> mBlocks; /**< Placed blocks. */
@@ -291,6 +297,7 @@ class PlayGroundView: public QGraphicsView
          * @brief   Signal to the PlayGround, right click.
          */
         void sigViewRightClick(QMouseEvent *event);
+    
 };
 
 #endif // PLAYGROUND_H

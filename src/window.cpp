@@ -114,6 +114,13 @@ Window::Window(QWidget *parent): QWidget(parent)
 
     QObject::connect(this, SIGNAL(sigRun(bool)), mmenu.get(), SLOT(slotRun(bool)));
 
+    mactions.push_back(newAction);
+    mactions.push_back(loadAction);
+    mactions.push_back(saveAction);
+    mactions.push_back(calculateAction);
+    mactions.push_back(debugAction);
+    mactions.push_back(addTypeAction);
+    mactions.push_back(removeTypeAction);
 }
 
 GuiState Window::getState()
@@ -148,13 +155,13 @@ void Window::slotSave()
 void Window::slotDebug()
 {
     Debug::Compute("Start debug.");
-    mcompute = true;
+    setCompute(true);
     emit sigRun(true);
 }
 void Window::slotCalculate()
 {
     Debug::Compute("Start calculate.");
-    mcompute = true;
+    setCompute(true);
     emit sigRun(false);
 }
 
@@ -211,7 +218,7 @@ void Window::keyPressEvent(QKeyEvent *event)
 void Window::endComputation()
 {
     Debug::Compute("End computation.");
-    mcompute = false;
+    setCompute(false);
     mmenu->endComputation();
     mplayground->setAllDefaultColor();
     emit sigEndComputation();
