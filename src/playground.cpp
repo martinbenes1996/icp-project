@@ -380,6 +380,7 @@ void PlayGround::slotBlockClick(int i)
             }
             else
             {
+                if(connector > 1 || connector < -1) return;
                 block2 = block;
                 connector2 = connector;
                 createWire = createWire && wireFree;

@@ -137,5 +137,13 @@ int main(int argc, char *argv[])
  * When reading, the read information are propagated to the Model and the Window, when the objects are
  * generated.
  * 
+ * 
  * \image html classes.png "Class diagram."
+ * 
+ * \subsection Future
+ * 
+ * Since the functionality of the block is represented with lambda, it is more than easy to make more
+ * block types: define the lambda (in config.h) and create a picture for it. More difficult thing
+ * would be to define a new block layout (not 2 inputs 1 output, or 1 input 1 output), but it is
+ * not hard at all.
  */

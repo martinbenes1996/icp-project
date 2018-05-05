@@ -286,7 +286,7 @@ template<>
 Value Block<std::function<double(double,double)>>::Compute(std::function<double(double,double)>)
 {
     Value v;
-    v.type = mOut.at(0)->type;
+    v.type = mIn.at(0)->getValue().type;
     v.value = mfunc(mIn.at(0)->getValue().value, mIn.at(1)->getValue().value);
     v.valid = true;
     return v;
@@ -296,16 +296,22 @@ template<>
 Value Block<std::function<double(double)>>::Compute(std::function<double(double)>)
 {
     Value v;
-    v.type = mOut.at(0)->type;
+    v.type = mIn.at(0)->getValue().type;
     v.value = mfunc(mIn.at(0)->getValue().value);
     v.valid = true;
     return v;
 }
 
 template <class T>
-void Block<T>::CheckTypes(std::vector<std::shared_ptr<Port>>&)
+void Block<T>::CheckTypes(std::vector<std::shared_ptr<Port>>& v)
 {
-    // add type check
+    std::string s = "";
+    for(auto& it: v)
+    {
+        if(it->wire == nullptr) continue;
+        if(s == "") s = it->getValue().type;
+        if(s != it->getValue().type) throw "incompatible types";
+    }
 }
 
 #endif // BLOCK_H
