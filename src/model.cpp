@@ -59,7 +59,7 @@ void Model::slotDeleteBlock(long key)
     std::map<long,int> wkeys = mBlocks.at(key)->getWireKeys();
 
     // erase connected wires
-    for(auto& it: wkeys) 
+    for(auto& it: wkeys)
     {
         slotDeleteWire(it.first);
         emit sigDeleteWire(it.first);
@@ -68,7 +68,7 @@ void Model::slotDeleteBlock(long key)
     // erase the block
     if(mInputs.count(key) > 0) mInputs.erase(key);
     mBlocks.erase(key);
-    
+
 }
 
 void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& success)
@@ -89,7 +89,7 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
 
     key = GenerateWireKey();
     Debug::Model( "Model::slotCreateWire("+std::to_string(key)+")" );
-    
+
     if(mBlocks.count(startkey.key) == 0 || mBlocks.count(endkey.key) == 0)
     {
         success = false;
@@ -102,14 +102,14 @@ void Model::slotCreateWire(PortID startkey, PortID endkey, long& key, bool& succ
         key,*mBlocks.at(startkey.key), startkey.port,
             *mBlocks.at(endkey.key), endkey.port
         );
-    } catch(MyError& e) { 
+    } catch(MyError& e) {
         //std::cerr << e.getMessage() << "\n";
-        success = false; 
+        success = false;
         return;
     }
 
     mWires.insert( std::make_pair(key, w) );
-    
+
     success = true;
 
 }
@@ -146,7 +146,7 @@ SimulationResults Model::startComputation()
     {
         sr.mergeWith(mBlocks.at(inkey)->distributeResult());
     }
-    
+
     endComputation();
     return sr;
 }
@@ -155,7 +155,7 @@ void Model::endComputation()
 {
     for(auto& it: mBlocks)
     {
-        if(!it.second->isInput()) 
+        if(!it.second->isInput())
             it.second->resetValue();
     }
 }
@@ -185,7 +185,7 @@ void Model::setState(ModelState s)
     Debug::File("Model::setState()");
     for(auto& it: s.blocks)
     {
-        
+
         mblockkey = it.first;
         long key;
 
@@ -200,7 +200,7 @@ void Model::setState(ModelState s)
             slotCreateBlock(it.second, key);
         }
         Debug::File("Save "+std::to_string(it.second)+" as "+std::to_string(it.first));
-        
+
     }
     // wires
 }

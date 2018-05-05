@@ -519,7 +519,7 @@ void PlayGround::setBlockState(std::map<long,GuiBlockDescriptor> m)
 void PlayGround::setWireState(std::vector<struct wireState> v)
 {
     for(auto& it:v)
-    {//std::cout << "jsem tu!\n";
+    {
         if(mInputs.count(it.block1_id) > 0)
         {
             iblock1 = mInputs[it.block1_id];
@@ -542,9 +542,9 @@ void PlayGround::setWireState(std::vector<struct wireState> v)
         }
         connector1 = it.connector1;
         connector2 = it.connector2;
-//std::cout << "TADY TAKY: " << block1 << block2 << connector1 << connector2 << std::endl;
+
         if(createWireFunction())
-        {//std::cout << "TADY TAKY CREATE!\n";
+        {
             if(iblock1 != nullptr) iblock1->setConnectorAvailability(connector1, true);
             else block1->setConnectorAvailability(connector1, true);
             if(iblock2 != nullptr) iblock2->setConnectorAvailability(connector2, true);
